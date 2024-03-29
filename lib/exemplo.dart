@@ -1,7 +1,9 @@
 // import 'package:chat2p/login/login_page.dart';
+import 'package:chat2p/shared/contact_component.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:path_provider/path_provider.dart';
 // import 'package:provider/provider.dart';
 
@@ -234,6 +236,7 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   late final Future<Timeline> _timelineFuture;
+
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   int _count = 0;
 
@@ -274,6 +277,18 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    final client = Client(
+      'Chat2P',
+      databaseBuilder: (_) async {
+        final dir = await getApplicationSupportDirectory();
+        final db = HiveCollectionsDatabase('Chat2P', dir.path);
+        await db.open();
+        return db;
+      },
+    );
+
+    final my_user = client.userID;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 123, 2, 204),
@@ -294,8 +309,7 @@ class _RoomPageState extends State<RoomPage> {
                     );
                   }
                   _count = timeline.events.length;
-                  // var printar = timeline.getRoomEvents(direction: timeline);
-                  // print('meu print ------ $printar');
+
                   return Column(
                     children: [
                       Center(
@@ -319,69 +333,115 @@ class _RoomPageState extends State<RoomPage> {
                                     opacity: timeline.events[i].status.isSent
                                         ? 1
                                         : 0.5,
-                                    child: Container(
-                                      margin: timeline.events[i].sender
-                                                  .calcDisplayname() !=
-                                              'Welton Moura'
-                                          ? EdgeInsets.only(
-                                              top: 8,
-                                              bottom: 8,
-                                              left: 8,
-                                              right: 80)
-                                          : EdgeInsets.only(
-                                              top: 8,
-                                              bottom: 8,
-                                              left: 80,
-                                              right: 8),
-                                      decoration: BoxDecoration(
-                                          color: Color.fromARGB(153, 145, 55, 206),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: const <BoxShadow>[
-                                            BoxShadow(
-                                                color: Colors.black,
-                                                blurRadius: 1,
-                                                offset: Offset(
-                                                  0.0,
-                                                  0.3,
-                                                ))
-                                          ]),
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          foregroundImage: timeline.events[i]
-                                                      .sender.avatarUrl ==
-                                                  null
-                                              ? const NetworkImage(
-                                                  'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png')
-                                              : NetworkImage(timeline
-                                                  .events[i].sender.avatarUrl!
-                                                  .getThumbnail(
-                                                    widget.room.client,
-                                                    width: 56,
-                                                    height: 56,
-                                                  )
-                                                  .toString()),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(timeline
-                                                  .events[i].sender
-                                                  .calcDisplayname()),
-                                            ),
-                                            Text(
-                                              timeline.events[i].originServerTs
-                                                  .toIso8601String(),
-                                              style:
-                                                  const TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                        subtitle: Text(timeline.events[i]
-                                            .getDisplayEvent(timeline)
-                                            .body),
+                                    child: timeline.events[i].type == "m.room.message" ?
+
+
+                                    
+                                    BalonChatReceive(
+                                      name: timeline.events[i].sender.calcDisplayname(), 
+                                      // ignore: unnecessary_null_comparison
+                                      picture: 
+                                      timeline.events[i].sender.avatarUrl == null ? 
+                                               'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png': 
+                                                timeline.events[i].sender.avatarUrl!.getThumbnail(widget.room.client, width: 56,height: 56,).toString(),
+                                      body_msg: timeline.events[i].getDisplayEvent(timeline).body,
+                                      data_time: timeline.events[i].originServerTs.toIso8601String(),
+                                      ): 
+                                      
+                                      timeline.events[i].type == "m.room.member" ? 
+                                      
+
+
+
+
+
+
+
+
+                                    // Container(
+                                    //   margin: timeline.events[i].sender.messageType == "m.room.message"
+                                              
+                                    //       ? const EdgeInsets.only(
+                                    //           top: 8,
+                                    //           bottom: 8,
+                                    //           left: 8,
+                                    //           right: 80)
+                                    //       : const EdgeInsets.only(
+                                    //           top: 8,
+                                    //           bottom: 8,
+                                    //           left: 80,
+                                    //           right: 8),
+                                    //   decoration: BoxDecoration(
+                                    //       color:
+                                    //           Color.fromARGB(153, 145, 55, 206),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10),
+                                    //       boxShadow: const <BoxShadow>[
+                                    //         BoxShadow(
+                                    //             color: Colors.black,
+                                    //             blurRadius: 1,
+                                    //             offset: Offset(
+                                    //               0.0,
+                                    //               0.3,
+                                    //             ))
+                                    //       ]),
+                                    //   child: ListTile(
+                                    //     leading: CircleAvatar(
+                                    //       foregroundImage: timeline.events[i]
+                                    //                   .sender.avatarUrl ==
+                                    //               null
+                                    //           ? const NetworkImage(
+                                    //               'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png')
+                                    //           : NetworkImage(timeline
+                                    //               .events[i].sender.avatarUrl!
+                                    //               .getThumbnail(
+                                    //                 widget.room.client,
+                                    //                 width: 56,
+                                    //                 height: 56,
+                                    //               )
+                                    //               .toString()),
+                                    //     ),
+                                    //     title: Row(
+                                    //       children: [
+                                    //         Expanded(
+                                    //           child: Text(timeline
+                                    //               .events[i].sender
+                                    //               .calcDisplayname()),
+                                    //         ),
+                                    //         Text(
+                                    //           timeline.events[i].originServerTs
+                                    //               .toIso8601String(),
+                                    //           style:
+                                    //               const TextStyle(fontSize: 10),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //     subtitle: Text(timeline.events[i]
+                                    //         .getDisplayEvent(timeline)
+                                    //         .body),
+                                    //   ),
+                                    // ) 
+
+
+
+
+
+
+
+                                     Center(
+                                      child: Container(margin: const EdgeInsets.all(3),
+                                        // child: Text(timeline.events[i].getDisplayEvent(timeline).body),
+                                        child: timeline.events[i].asUser.membership.toString() ==  Null ? 
+                                          Text(timeline.events[i].sender.calcDisplayname() + ' nulo') : 
+                                            timeline.events[i].asUser.membership.toString() == 'Membership.leave' ? 
+                                              Text(timeline.events[i].sender.calcDisplayname() + ' saiu da sala') : 
+                                                timeline.events[i].asUser.membership.toString() == 'Membership.join' ? 
+                                                  Text(timeline.events[i].sender.calcDisplayname() +' entrou na sala') :
+
+
+                                                Text('outro evento'),
                                       ),
-                                    ),
+                                            ): Text('')
                                   ),
                                 ),
                         ),

@@ -39,8 +39,8 @@ const colorizeTextStyle = TextStyle(
       body: Center(
         child: Container(
           color: const Color.fromARGB(255, 63, 63, 63),
-        width: double.infinity,
-        height: double.infinity,
+        // width: double.infinity,
+        // height: double.infinity,
         child: Center(
           child: AnimatedTextKit(
              animatedTexts: [
