@@ -74,6 +74,7 @@ class _RoomPageState extends State<RoomPage> {
 
     final my_user = client.userID;
 
+
     return Container(
 
 
@@ -111,11 +112,11 @@ class _RoomPageState extends State<RoomPage> {
                       onRefresh: () async => await timeline.requestHistory,
                       child: Column(
                         children: [
-                          // Center(
-                          //   child: TextButton(
-                          //       onPressed: timeline.requestHistory,
-                          //       child: const Text('Load more...')),
-                          // ),
+                          Center(
+                            child: TextButton(
+                                onPressed: timeline.requestHistory,
+                                child: const Text('Load more...')),
+                          ),
                           const Divider(height: 1),
                           Expanded(
                             child: AnimatedList(
@@ -179,6 +180,8 @@ class _RoomPageState extends State<RoomPage> {
                                                   //
                                                   //  timeline.events[i].getDisplayEvent(timeline).body
                                                   // body_msg: timeline.events[i].getDisplayEvent(timeline).attachmentMxcUrl.toString(),
+
+                                                  //timeline.events[i].room.fullyRead
                                 
                                                   Center(
                                                       child: Container(
@@ -222,8 +225,8 @@ class _RoomPageState extends State<RoomPage> {
                                                                   .messageType ==
                                                               "m.image"
                                                       ? BalonImageReceive(
-                                                          url_image:
-                                                              'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png',
+                                                          url_image: 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png',
+                                                              
                                 
                                                           name: timeline
                                                               .events[i].sender
@@ -257,9 +260,40 @@ class _RoomPageState extends State<RoomPage> {
                                                               .originServerTs
                                                               .toIso8601String(),
                                                         )
-                                                      : const Center(
+                                                      : timeline.events[i]
+                                                                  .messageType ==
+                                                              "m.file"
+                                                      ?  const Center(
                                                           child: Text(
-                                                              'evento aleatorio'))),
+                                                              'Arquivo')):timeline.events[i]
+                                                                  .messageType ==
+                                                              "m.video"
+                                                      ?  const Center(
+                                                          child: Text(
+                                                              'Video')):
+
+                                                        
+                                                               timeline.events[i]
+                                                                  .messageType ==
+                                                              "m.audio"
+                                                      ?  const Center(
+                                                          child: Text(
+                                                              'Audio')):
+
+                                                              timeline.events[i]
+                                                                  .messageType ==
+                                                              "m.location"
+                                                      ?  const Center(
+                                                          child: Text(
+                                                              'Localização')):
+
+                                                               const Center(
+                                                          child: Text(
+                                                              'evento aleatorio'))
+                                                      
+                                                      
+                                                      
+                                                     ),
                                     ),
                             ),
                           ),
