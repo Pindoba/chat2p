@@ -9,7 +9,12 @@ class TextBalloon extends StatelessWidget {
     return 
     Container(
                     constraints: const BoxConstraints(maxWidth: 250),
-                    child: SelectableText(
+                    child: body_msg == "Redacted" ?
+                    const Row(children: [
+                      Icon(Icons.delete, color: Colors.redAccent),
+                      Text("Mensagem apagada",style: TextStyle(color: Colors.redAccent,),)
+                    ],):
+                     SelectableText(
                       body_msg,
                     ))
     ;

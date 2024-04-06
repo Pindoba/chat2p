@@ -1,4 +1,5 @@
 import 'package:chat2p/shared/widgets/audio_balloon.dart';
+import 'package:chat2p/shared/widgets/image_balloon.dart';
 import 'package:chat2p/shared/widgets/text_balloon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -23,33 +24,50 @@ class BaseBalloonWidget extends StatelessWidget {
         : event.sender.avatarUrl!
             .getThumbnail(room.client, width: 56, height: 56)
             .toString();
-    final String body_msg = event.body;
+    final String body_msg = event.plaintextBody;
     final String data_time = event.originServerTs.toIso8601String();
     final String type = event.messageType;
-    final String image =
-        'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
-    // event.redactEvent();
+    final String image = event.attachmentMxcUrl == null
+        ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
+        // : event.attachmentMxcUrl!
+        //     .getDownloadLink(
+        //       room.client,
+        //     )
+        //     .toString();
+        : event.sender.avatarUrl!
+            .getDownloadLink(
+              room.client,
+            )
+            .toString();
+// event.sendAgain()
+    final bool send = event.senderId == room.client.userID ? true : false;
+    print(send);
+    // event.;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: send == true ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           height: 40,
           padding: const EdgeInsets.only(bottom: 10),
           alignment: Alignment.bottomLeft,
-          child: CircleAvatar(
+          child: send !=  true ? CircleAvatar(
             foregroundImage: NetworkImage(photo),
-          ),
+          ): Container(),
         ),
         GestureDetector(
           onTap: () {
             option(context, event);
           },
           child: Container(
-            margin: const EdgeInsets.only(left: 0, top: 8, right: 8, bottom: 8),
+            margin: const EdgeInsets.only(
+              left: 0, 
+              top: 8, 
+              right: 8, 
+              bottom: 8),
             padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              boxShadow: <BoxShadow>[
+            decoration:  BoxDecoration(
+              boxShadow: const <BoxShadow>[
                 BoxShadow(
                   color: Colors.black,
                   blurRadius: 3,
@@ -59,29 +77,31 @@ class BaseBalloonWidget extends StatelessWidget {
                   ),
                 )
               ],
-              color: Color.fromARGB(153, 145, 55, 206),
+              color: send == true ? Color.fromARGB(190, 4, 79, 218) :const Color.fromARGB(153, 145, 55, 206),
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(15),
+                  bottomLeft: send == true ? Radius.circular(15) : Radius.circular(0),
+                  bottomRight: send == true ? Radius.circular(0) : Radius.circular(15),
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15)),
             ),
-            child: Row(children: [
+            child: Row(
+              children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: send == true ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Text(
                         name,
                         style: TextStyle(fontSize: 18, color: Colors.orange),
-                      ),event.redacted == null ?
-                      Icon(Icons.check_sharp):Text(event.redacted.toString())
-                      // IconButton(
-                      //     onPressed: () {
-                      //       option(context, event);
-                      //     },
-                      //     icon: const Icon(Icons.drag_handle_outlined))
+                      ),
+                      // event.redacted == null
+                          // ? 
+                          event.receipts.toString() == '[]' ?
+                          Icon(Icons.check_sharp) : 
+                          Icon(Icons.check_sharp, color: Colors.green,) 
+                          // : Text('' )
+              
                     ],
                   ),
                   Container(
@@ -90,19 +110,27 @@ class BaseBalloonWidget extends StatelessWidget {
                           ? TextBalloon(body_msg: body_msg)
                           : type == "m.audio"
                               ? AudioBalloon()
-                              : Text('data'))
+                              : type == "m.image"
+                                  ? ImageBalloon(url_image: image)
+                                  : Text('data')),
+                      Text(
+              data_time,
+              overflow: TextOverflow.clip,
+              style: const TextStyle(fontSize: 8),
+            )
+                
                 ],
               ),
             ]),
           ),
         ),
-        SizedBox(
-            width: 50,
-            child: Text(
-              data_time,
-              overflow: TextOverflow.clip,
-              style: const TextStyle(fontSize: 8),
-            )),
+        // SizedBox(
+        //     width: 50,
+        //     child: Text(
+        //       data_time,
+        //       overflow: TextOverflow.clip,
+        //       style: const TextStyle(fontSize: 8),
+        //     )),
       ],
     );
   }
@@ -121,12 +149,12 @@ dynamic option(context, event) {
         ),
         ListTile(
           leading: const Icon(Icons.account_circle),
-          title: const Text('Editar'),
-          onTap: () => Navigator.pop(context, 'user2@gmail.com'),
+          title: const Text('Reenviar'),
+          onTap: () => resend(context,event),
         ),
         ListTile(
           leading: const Icon(Icons.add_circle),
-          title: const Text('Add account'),
+          title: const Text('Editar'),
           onTap: () => Navigator.pop(context, 'Add account'),
         ),
       ],
@@ -148,5 +176,17 @@ dynamic option(context, event) {
 
 dynamic delete_event(context, event) {
   event.redactEvent();
+  Navigator.pop(context);
+}
+
+
+dynamic resend(context, event) {
+  event.sendAgain();
+  Navigator.pop(context);
+}
+
+
+dynamic edit(context, event) {
+  event.sendAgain();
   Navigator.pop(context);
 }
