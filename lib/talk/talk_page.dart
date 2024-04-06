@@ -95,7 +95,7 @@ class _TalkPageState extends State<TalkPage> {
               icon: const Icon(Icons.search),
             ),
           ],
-          title: lupa == true ? TextFormField() : const Text('Convesas'),
+          title: lupa == true ? TextFormField() : const Text('Conversas'),
           // backgroundColor: Colors.cyan,
           bottom: TabBar(
             tabs: kTabs,
@@ -105,7 +105,8 @@ class _TalkPageState extends State<TalkPage> {
           stream: client.onSync.stream,
           builder: (context, _) => ListView.builder(
             itemCount: client.rooms.length,
-            itemBuilder: (context, i) => Container(
+            itemBuilder: (context, i) => client.rooms[i].isSpace == false
+              ? Container(
               margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: const Color.fromARGB(153, 123, 2, 204),
@@ -176,12 +177,16 @@ class _TalkPageState extends State<TalkPage> {
                   ],
                 ),
                 subtitle: Text(
+                  // client.rooms[i]. ?? 'Sem mensagem',
+                  client.rooms[i].typingUsers.toString() != '[]'? 'Digitando...': 
+                  
+                  // 'Sem mensagem',
                   client.rooms[i].lastEvent?.body ?? 'Sem mensagem',
                   maxLines: 1,
                 ),
                 onTap: () => _join(client.rooms[i]),
               ),
-            ),
+            ):Container(),
           ),
         ),
       ),

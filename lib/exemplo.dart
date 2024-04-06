@@ -1,18 +1,20 @@
 // import 'package:chat2p/login/login_page.dart';
+import 'dart:typed_data';
+
+import 'package:chat2p/shared/components/balloon_audio_receive_component.dart';
 import 'package:chat2p/shared/contact_component.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
-
-
-
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:uuid/uuid.dart';
+import 'package:matrix/src/utils/uri_extension.dart';
 
 class RoomPage extends StatefulWidget {
   final Room room;
 
-  const RoomPage({required this.room, Key? key})
-      : super(key: key);
+  const RoomPage({required this.room, Key? key}) : super(key: key);
 
   @override
   _RoomPageState createState() => _RoomPageState();
@@ -21,17 +23,8 @@ class RoomPage extends StatefulWidget {
 class _RoomPageState extends State<RoomPage> {
   late final Future<Timeline> _timelineFuture;
 
-
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   int _count = 0;
-
-  void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
-  }
 
   @override
   void initState() {
@@ -50,10 +43,38 @@ class _RoomPageState extends State<RoomPage> {
       print('On update');
     });
     super.initState();
-    // _timeline.requestHistory();
   }
 
   final TextEditingController _sendController = TextEditingController();
+
+  void _handleImageSelection() async {
+    final result = await ImagePicker().pickImage(
+      imageQuality: 70,
+      maxWidth: 1440,
+      source: ImageSource.gallery,
+    );
+
+    if (result != null) {
+      final bytes = await result.readAsBytes();
+      final image = await decodeImageFromList(bytes);
+
+      var _user;
+      final message = types.ImageMessage(
+        author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        height: image.height.toDouble(),
+        id: const Uuid().v4(),
+        name: result.name,
+        size: bytes.length,
+        uri: result.path,
+        width: image.width.toDouble(),
+      );
+
+      // _addMessage(message);
+      // widget.room.sendFileEvent(
+      //     MatrixImageFile(bytes: Uint8List.fromList(List<int> message.size), name: message.name));
+    }
+  }
 
   void _send() {
     widget.room.sendTextEvent(_sendController.text.trim());
@@ -74,24 +95,19 @@ class _RoomPageState extends State<RoomPage> {
 
     final my_user = client.userID;
 
-
     return Container(
-
-
-        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                'assets/image/f1.png'),
-                                fit: BoxFit.cover,
-                                
-                                )),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage('assets/image/f1.png'),
+        fit: BoxFit.cover,
+      )),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 123, 2, 204),
-          title: Text(widget.room.displayname),
-          centerTitle: true,
-          iconTheme: IconThemeData()      ),
+            backgroundColor: Color.fromARGB(255, 123, 2, 204),
+            title: Text(widget.room.displayname),
+            centerTitle: true,
+            iconTheme: IconThemeData()),
         body: SafeArea(
           child: Column(
             children: [
@@ -100,14 +116,15 @@ class _RoomPageState extends State<RoomPage> {
                   future: _timelineFuture,
                   builder: (context, snapshot) {
                     final timeline = snapshot.data;
-      
+                    timeline?.setReadMarker();
+
                     if (timeline == null) {
                       return const Center(
                         child: CircularProgressIndicator.adaptive(),
                       );
                     }
                     _count = timeline.events.length;
-      
+
                     return RefreshIndicator(
                       onRefresh: () async => await timeline.requestHistory,
                       child: Column(
@@ -123,111 +140,25 @@ class _RoomPageState extends State<RoomPage> {
                               key: _listKey,
                               reverse: true,
                               initialItemCount: timeline.events.length,
-                              itemBuilder: (context, i, animation) => timeline
-                                          .events[i].relationshipEventId !=
-                                      null
-                                  ? Container()
-                                  : ScaleTransition(
-                                      scale: animation,
-                                      child: Opacity(
-                                          opacity:
-                                              timeline.events[i].status.isSent
-                                                  ? 1
-                                                  : 0.5,
-                                          child: timeline.events[i].type ==
-                                                      "m.room.message" &&
-                                                  timeline.events[i]
-                                                          .messageType ==
-                                                      "m.text"
-                                              ?
-                                              //################################################mensagemde texto simples   ######################################
-                                              BalonChatReceive(
-                                                  name: timeline.events[i].sender
-                                                      .calcDisplayname(),
-                                                  picture: timeline.events[i]
-                                                              .sender.avatarUrl ==
-                                                          null
-                                                      ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-                                                      : timeline.events[i].sender
-                                                          .avatarUrl!
-                                                          .getThumbnail(
-                                                            widget.room.client,
-                                                            width: 56,
-                                                            height: 56,
-                                                          )
-                                                          .toString(),
-                                                  body_msg: timeline.events[i]
-                                                      .getDisplayEvent(timeline)
-                                                      .body,
-                                                  data_time: timeline
-                                                      .events[i].originServerTs
-                                                      .toIso8601String(),
-                                                )
-                                              //################################################   eventos relacionado aos menbros    ###########################################
-                                              : timeline.events[i].type ==
-                                                      "m.room.member"
-                                                  ?
-                                
-                                                  //   timeline.events[i].sender.messageType == "m.room.message"
-                                
-                                                  //   timeline.events[i].sender.avatarUrl
-                                                  //
-                                                  //  timeline.events[i].sender.avatarUrl!.getThumbnail(widget.room.client,width: 56,height: 56,).toString()
-                                                  //
-                                                  // timeline.events[i].sender.calcDisplayname()
-                                                  //
-                                                  //  timeline.events[i].originServerTs.toIso8601String()
-                                                  //
-                                                  //  timeline.events[i].getDisplayEvent(timeline).body
-                                                  // body_msg: timeline.events[i].getDisplayEvent(timeline).attachmentMxcUrl.toString(),
-
-                                                  //timeline.events[i].room.fullyRead
-                                
-                                                  Center(
-                                                      child: Container(
-                                                        margin:
-                                                            const EdgeInsets.all(
-                                                                3),
-                                                        // child: Text(timeline.events[i].getDisplayEvent(timeline).body),
-                                                        child: timeline
-                                                                    .events[i]
-                                                                    .asUser
-                                                                    .membership
-                                                                    .toString() ==
-                                                                Null
-                                                            ? Text('${timeline
-                                                                    .events[i]
-                                                                    .sender
-                                                                    .calcDisplayname()} nulo')
-                                                            : timeline
-                                                                        .events[i]
-                                                                        .asUser
-                                                                        .membership
-                                                                        .toString() ==
-                                                                    'Membership.leave'
-                                                                ? Text('${timeline
-                                                                        .events[i]
-                                                                        .sender
-                                                                        .calcDisplayname()} saiu da sala')
-                                                                : timeline
-                                                                            .events[i]
-                                                                            .asUser
-                                                                            .membership
-                                                                            .toString() ==
-                                                                        'Membership.join'
-                                                                    ? Text(timeline.events[i].sender.calcDisplayname() + ' entrou na sala')
-                                                                    : Text(timeline.events[i].asUser.membership.toString()),
-                                                      ),
-                                                    )
-                                                  : timeline.events[i].type ==
+                              itemBuilder: (context, i, animation) =>
+                                  timeline.events[i].relationshipEventId != null
+                                      ? Container()
+                                      : ScaleTransition(
+                                          scale: animation,
+                                          child: Opacity(
+                                              opacity:
+                                                  timeline.events[i].status.isSent
+                                                      ? 1
+                                                      : 0.5,
+                                              child:
+                                                  timeline.events[i].type ==
                                                               "m.room.message" &&
                                                           timeline.events[i]
                                                                   .messageType ==
-                                                              "m.image"
-                                                      ? BalonImageReceive(
-                                                          url_image: 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png',
-                                                              
-                                
+                                                              "m.text"
+                                                      ?
+                                                      //################################################mensagemde texto simples   ######################################
+                                                      BalonChatReceive(
                                                           name: timeline
                                                               .events[i].sender
                                                               .calcDisplayname(),
@@ -248,53 +179,143 @@ class _RoomPageState extends State<RoomPage> {
                                                                     height: 56,
                                                                   )
                                                                   .toString(),
-                                
                                                           body_msg: timeline
                                                               .events[i]
-                                                              .attachmentMxcUrl
-                                                              .toString(), //mxcUrlToHttp//(content.url, window.innerWidth, window.innerHeight, 'scale'),
-                                                          // body_msg: timeline.events[i].getDisplayEvent(timeline).body,
-                                
+                                                              .getDisplayEvent(
+                                                                  timeline)
+                                                              .body,
                                                           data_time: timeline
                                                               .events[i]
                                                               .originServerTs
                                                               .toIso8601String(),
                                                         )
-                                                      : timeline.events[i]
-                                                                  .messageType ==
-                                                              "m.file"
-                                                      ?  const Center(
-                                                          child: Text(
-                                                              'Arquivo')):timeline.events[i]
-                                                                  .messageType ==
-                                                              "m.video"
-                                                      ?  const Center(
-                                                          child: Text(
-                                                              'Video')):
+                                                      //################################################   eventos relacionado aos menbros    ###########################################
+                                                      : timeline.events[i].type ==
+                                                              "m.room.member"
+                                                          ?
 
-                                                        
-                                                               timeline.events[i]
-                                                                  .messageType ==
-                                                              "m.audio"
-                                                      ?  const Center(
-                                                          child: Text(
-                                                              'Audio')):
+                                                          //   timeline.events[i].sender.messageType == "m.room.message"
 
-                                                              timeline.events[i]
-                                                                  .messageType ==
-                                                              "m.location"
-                                                      ?  const Center(
-                                                          child: Text(
-                                                              'Localização')):
+                                                          //   timeline.events[i].sender.avatarUrl
+                                                          //
+                                                          //  timeline.events[i].sender.avatarUrl!.getThumbnail(widget.room.client,width: 56,height: 56,).toString()
+                                                          //
+                                                          // timeline.events[i].sender.calcDisplayname()
+                                                          //
+                                                          //  timeline.events[i].originServerTs.toIso8601String()
+                                                          //
+                                                          //  timeline.events[i].getDisplayEvent(timeline).body
+                                                          // body_msg: timeline.events[i].getDisplayEvent(timeline).attachmentMxcUrl.toString(),
 
-                                                               const Center(
-                                                          child: Text(
-                                                              'evento aleatorio'))
-                                                      
-                                                      
-                                                      
-                                                     ),
-                                    ),
+                                                          //timeline.events[i].room.fullyRead
+
+                                                          Center(
+                                                              child: Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .all(3),
+                                                                // child: Text(timeline.events[i].getDisplayEvent(timeline).body),
+                                                                child: timeline
+                                                                            .events[
+                                                                                i]
+                                                                            .asUser
+                                                                            .membership
+                                                                            .toString() ==
+                                                                        Null
+                                                                    ? Text(
+                                                                        '${timeline.events[i].sender.calcDisplayname()} nulo')
+                                                                    : timeline.events[i].asUser.membership.toString() ==
+                                                                            'Membership.leave'
+                                                                        ? Text(
+                                                                            '${timeline.events[i].sender.calcDisplayname()} saiu da sala')
+                                                                        : timeline.events[i].asUser.membership.toString() ==
+                                                                                'Membership.join'
+                                                                            ? Text(timeline.events[i].sender.calcDisplayname() +
+                                                                                ' entrou na sala')
+                                                                            : Text(timeline.events[i].asUser.membership.toString()),
+                                                              ),
+                                                            )
+                                                          : timeline.events[i].type ==
+                                                                      "m.room.message" &&
+                                                                  timeline.events[i].messageType ==
+                                                                      "m.image"
+                                                              ? BalonImageReceive(
+                                                                  url_image: timeline
+                                                                      .events[i]
+                                                                      .getAttachmentUrl(
+                                                                          getThumbnail:
+                                                                              false,
+                                                                          height:
+                                                                              800,
+                                                                          width:
+                                                                              800,
+                                                                          method:
+                                                                              ThumbnailMethod.scale)
+                                                                      .toString(),
+
+                                                                  name: timeline
+                                                                      .events[i]
+                                                                      .sender
+                                                                      .calcDisplayname(),
+                                                                  picture: timeline
+                                                                              .events[
+                                                                                  i]
+                                                                              .sender
+                                                                              .avatarUrl ==
+                                                                          null
+                                                                      ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
+                                                                      : timeline
+                                                                          .events[
+                                                                              i]
+                                                                          .sender
+                                                                          .avatarUrl!
+                                                                          .getThumbnail(
+                                                                            widget.room.client,
+                                                                            width:
+                                                                                56,
+                                                                            height:
+                                                                                56,
+                                                                          )
+                                                                          .toString(),
+
+                                                                  body_msg: timeline
+                                                                      .events[i]
+                                                                      .attachmentMxcUrl
+                                                                      .toString(), //mxcUrlToHttp//(content.url, window.innerWidth, window.innerHeight, 'scale'),
+                                                                  // body_msg: timeline.events[i].getDisplayEvent(timeline).body,
+
+                                                                  data_time: timeline
+                                                                      .events[i]
+                                                                      .originServerTs
+                                                                      .toIso8601String(),
+                                                                )
+                                                              : timeline.events[i].messageType ==
+                                                                      "m.file"
+                                                                  ? const Center(
+                                                                      child: Text(
+                                                                          'Arquivo'))
+                                                                  : timeline.events[i].messageType ==
+                                                                          "m.video"
+                                                                      ? const Center(child: Text('Video'))
+                                                                      : timeline.events[i].messageType == "m.audio"
+                                                                          ? BalloonAudioReceive(
+                                                                              name: timeline.events[i].sender.calcDisplayname(),
+                                                                              picture: timeline.events[i].sender.avatarUrl!
+                                                                                  .getThumbnail(
+                                                                                    widget.room.client,
+                                                                                    width: 56,
+                                                                                    height: 56,
+                                                                                  )
+                                                                                  .toString(),
+                                                                              body_msg: timeline.events[i].getDisplayEvent(timeline).body,
+                                                                              data_time: timeline.events[i].originServerTs.toIso8601String(),
+                                                                              url_image: 'url_image',
+                                                                              timeline: timeline,
+                                                                            )
+                                                                          : timeline.events[i].messageType == "m.location"
+                                                                              ? const Center(child: Text('Localização'))
+                                                                              : const Center(child: Text('evento aleatorio'))),
+                                        ),
                             ),
                           ),
                         ],

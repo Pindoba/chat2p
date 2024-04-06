@@ -1,8 +1,10 @@
 
 import 'package:chat2p/call/calls_page.dart';
 import 'package:chat2p/favorito_page.dart';
-import 'package:chat2p/new/new_page.dart';
+// import 'package:chat2p/new/new_page.dart';
 import 'package:chat2p/perfil_page.dart';
+// import 'package:chat2p/spaces/list_space_page.dart';
+import 'package:chat2p/spaces/space_page.dart';
 import 'package:chat2p/talk/talk_page.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,7 @@ class _AppBarPageState extends State<AppBarPage> {
                 children: [
                   TalkPage() ,
                   FavoritoPage(), 
-                  NewPage(), 
+                  SpacePage(), 
                   CallsPage() ,
                   PerfilPage()
 
