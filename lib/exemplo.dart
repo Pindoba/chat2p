@@ -1,8 +1,9 @@
 // import 'package:chat2p/login/login_page.dart';
 import 'dart:typed_data';
 
-import 'package:chat2p/shared/components/balloon_audio_receive_component.dart';
+import 'package:chat2p/shared/widgets/balloon_audio_receive_component.dart';
 import 'package:chat2p/shared/contact_component.dart';
+import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
@@ -93,8 +94,9 @@ class _RoomPageState extends State<RoomPage> {
       },
     );
 
-    final my_user = client.userID;
+    // final my_user = client.userID;
 
+  // final sala = widget.room;
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
@@ -126,14 +128,14 @@ class _RoomPageState extends State<RoomPage> {
                     _count = timeline.events.length;
 
                     return RefreshIndicator(
-                      onRefresh: () async => await timeline.requestHistory,
+                      onRefresh: timeline.requestHistory,
                       child: Column(
                         children: [
-                          Center(
-                            child: TextButton(
-                                onPressed: timeline.requestHistory,
-                                child: const Text('Load more...')),
-                          ),
+                          // Center(
+                          //   child: TextButton(
+                          //       onPressed: timeline.requestHistory,
+                          //       child: const Text('Load more...')),
+                          // ),
                           const Divider(height: 1),
                           Expanded(
                             child: AnimatedList(
@@ -152,43 +154,51 @@ class _RoomPageState extends State<RoomPage> {
                                                       : 0.5,
                                               child:
                                                   timeline.events[i].type ==
-                                                              "m.room.message" &&
-                                                          timeline.events[i]
-                                                                  .messageType ==
-                                                              "m.text"
+                                                              "m.room.message" 
+                                                          // timeline.events[i]
+                                                          //         .messageType ==
+                                                          //     "m.text"
                                                       ?
-                                                      //################################################mensagemde texto simples   ######################################
-                                                      BalonChatReceive(
-                                                          name: timeline
-                                                              .events[i].sender
-                                                              .calcDisplayname(),
-                                                          picture: timeline
-                                                                      .events[i]
-                                                                      .sender
-                                                                      .avatarUrl ==
-                                                                  null
-                                                              ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-                                                              : timeline
-                                                                  .events[i]
-                                                                  .sender
-                                                                  .avatarUrl!
-                                                                  .getThumbnail(
-                                                                    widget.room
-                                                                        .client,
-                                                                    width: 56,
-                                                                    height: 56,
-                                                                  )
-                                                                  .toString(),
-                                                          body_msg: timeline
-                                                              .events[i]
-                                                              .getDisplayEvent(
-                                                                  timeline)
-                                                              .body,
-                                                          data_time: timeline
-                                                              .events[i]
-                                                              .originServerTs
-                                                              .toIso8601String(),
-                                                        )
+                                                      //################################################    mensagemde texto simples   ######################################
+                                                      
+                                                      
+                                                      BaseBalloonWidget(event: timeline.events[i],room: widget.room,)
+                                                      
+                                                      
+                                                      
+                                                      
+                                                      
+                                                      // BalonChatReceive(
+                                                      //     name: timeline
+                                                      //         .events[i].sender
+                                                      //         .calcDisplayname(),
+                                                      //     picture: timeline
+                                                      //                 .events[i]
+                                                      //                 .sender
+                                                      //                 .avatarUrl ==
+                                                      //             null
+                                                      //         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
+                                                      //         : timeline
+                                                      //             .events[i]
+                                                      //             .sender
+                                                      //             .avatarUrl!
+                                                      //             .getThumbnail(
+                                                      //               widget.room
+                                                      //                   .client,
+                                                      //               width: 56,
+                                                      //               height: 56,
+                                                      //             )
+                                                      //             .toString(),
+                                                      //     body_msg: timeline
+                                                      //         .events[i]
+                                                      //         .getDisplayEvent(
+                                                      //             timeline)
+                                                      //         .body,
+                                                      //     data_time: timeline
+                                                      //         .events[i]
+                                                      //         .originServerTs
+                                                      //         .toIso8601String(),
+                                                      //   )
                                                       //################################################   eventos relacionado aos menbros    ###########################################
                                                       : timeline.events[i].type ==
                                                               "m.room.member"
