@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 const _kPages = {
   'Mensagens': Icons.message,
   'Favoritos': Icons.star,
-  'Novo': Icons.add,
+  'Espaços': Icons.groups_2_rounded,
   'Chamadas': Icons.call,
   'Perfil': Icons.person,
 };

@@ -27,46 +27,45 @@ class BaseBalloonWidget extends StatelessWidget {
     final String body_msg = event.plaintextBody;
     final String data_time = event.originServerTs.toIso8601String();
     final String type = event.messageType;
-    final String image = event.attachmentMxcUrl == null
-        ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-        // : event.attachmentMxcUrl!
-        //     .getDownloadLink(
-        //       room.client,
-        //     )
-        //     .toString();
-        : event.sender.avatarUrl!
-            .getDownloadLink(
-              room.client,
-            )
-            .toString();
+    final String image =
+        'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
+    // : event.attachmentMxcUrl!
+    //     .getDownloadLink(
+    //       room.client,
+    //     )
+    //     .toString();
+    // : event.sender.avatarUrl!
+    //     .getDownloadLink(
+    //       room.client,
+    //     )
+    //     .toString();
 // event.sendAgain()
     final bool send = event.senderId == room.client.userID ? true : false;
     print(send);
     // event.;
 
     return Row(
-      mainAxisAlignment: send == true ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          send == true ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           height: 40,
           padding: const EdgeInsets.only(bottom: 10),
           alignment: Alignment.bottomLeft,
-          child: send !=  true ? CircleAvatar(
-            foregroundImage: NetworkImage(photo),
-          ): Container(),
+          child: send != true
+              ? CircleAvatar(
+                  foregroundImage: NetworkImage(photo),
+                )
+              : Container(),
         ),
         GestureDetector(
           onTap: () {
             option(context, event);
           },
           child: Container(
-            margin: const EdgeInsets.only(
-              left: 0, 
-              top: 8, 
-              right: 8, 
-              bottom: 8),
+            margin: const EdgeInsets.only(left: 0, top: 8, right: 8, bottom: 8),
             padding: const EdgeInsets.all(8),
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               boxShadow: const <BoxShadow>[
                 BoxShadow(
                   color: Colors.black,
@@ -77,17 +76,22 @@ class BaseBalloonWidget extends StatelessWidget {
                   ),
                 )
               ],
-              color: send == true ? Color.fromARGB(190, 4, 79, 218) :const Color.fromARGB(153, 145, 55, 206),
+              color: send == true
+                  ? Color.fromARGB(190, 4, 79, 218)
+                  : const Color.fromARGB(153, 145, 55, 206),
               borderRadius: BorderRadius.only(
-                  bottomLeft: send == true ? Radius.circular(15) : Radius.circular(0),
-                  bottomRight: send == true ? Radius.circular(0) : Radius.circular(15),
+                  bottomLeft:
+                      send == true ? Radius.circular(15) : Radius.circular(0),
+                  bottomRight:
+                      send == true ? Radius.circular(0) : Radius.circular(15),
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15)),
             ),
-            child: Row(
-              children: [
+            child: Row(children: [
               Column(
-                crossAxisAlignment: send == true ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                crossAxisAlignment: send == true
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -96,12 +100,14 @@ class BaseBalloonWidget extends StatelessWidget {
                         style: TextStyle(fontSize: 18, color: Colors.orange),
                       ),
                       // event.redacted == null
-                          // ? 
-                          event.receipts.toString() == '[]' ?
-                          Icon(Icons.check_sharp) : 
-                          Icon(Icons.check_sharp, color: Colors.green,) 
-                          // : Text('' )
-              
+                      // ?
+                      event.receipts.toString() == '[]'
+                          ? Icon(Icons.check_sharp)
+                          : Icon(
+                              Icons.check_sharp,
+                              color: Colors.green,
+                            )
+                      // : Text('' )
                     ],
                   ),
                   Container(
@@ -113,12 +119,11 @@ class BaseBalloonWidget extends StatelessWidget {
                               : type == "m.image"
                                   ? ImageBalloon(url_image: image)
                                   : Text('data')),
-                      Text(
-              data_time,
-              overflow: TextOverflow.clip,
-              style: const TextStyle(fontSize: 8),
-            )
-                
+                  Text(
+                    data_time,
+                    overflow: TextOverflow.clip,
+                    style: const TextStyle(fontSize: 8),
+                  )
                 ],
               ),
             ]),
@@ -150,7 +155,7 @@ dynamic option(context, event) {
         ListTile(
           leading: const Icon(Icons.account_circle),
           title: const Text('Reenviar'),
-          onTap: () => resend(context,event),
+          onTap: () => resend(context, event),
         ),
         ListTile(
           leading: const Icon(Icons.add_circle),
@@ -179,12 +184,10 @@ dynamic delete_event(context, event) {
   Navigator.pop(context);
 }
 
-
 dynamic resend(context, event) {
   event.sendAgain();
   Navigator.pop(context);
 }
-
 
 dynamic edit(context, event) {
   event.sendAgain();

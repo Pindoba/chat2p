@@ -87,108 +87,111 @@ const colorizeTextStyle = TextStyle(
 );
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              child: Image.asset('assets/logo.png',fit: BoxFit.scaleDown,)),
-            
-            
-            
-            
-            Center(
-        child: Container(
-          // color: const Color.fromARGB(255, 63, 63, 63),
-        // width: double.infinity,
-        // height: double.infinity,
-        child: Center(
-          child: AnimatedTextKit(
-             animatedTexts: [
-            ColorizeAnimatedText(
-              'Chat2P',
-              textStyle: colorizeTextStyle,
-              colors: colorizeColors,
-              speed: const Duration(seconds: 2),
-      
-            ),
-            
-           
-          ],
-          isRepeatingAnimation: true,
-          onTap: () {
+      body: SingleChildScrollView(
+        reverse: true,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Container(
+                height: 200,
+                child: Image.asset('assets/logo.png',fit: BoxFit.scaleDown,)),
+              
+              
+              
+              
+              Center(
+          child: Container(
+            // color: const Color.fromARGB(255, 63, 63, 63),
+          // width: double.infinity,
+          // height: double.infinity,
+          child: Center(
+            child: AnimatedTextKit(
+               animatedTexts: [
+              ColorizeAnimatedText(
+                'Chat2P',
+                textStyle: colorizeTextStyle,
+                colors: colorizeColors,
+                speed: const Duration(seconds: 2),
+        
+              ),
+              
              
-          },
-            ),
-        ),
-        ),
-        )
-            
-            
-            
-            ,
-            TextField(
-              controller: _homeserverTextField,
-              readOnly: _loading,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                prefixText: 'https://',
-                border: OutlineInputBorder(),
-                labelText: 'Instância',
+            ],
+            isRepeatingAnimation: true,
+            onTap: () {
+               
+            },
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _usernameTextField,
-              readOnly: _loading,
-              autocorrect: false,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Nome de usuário',
+          ),
+          ),
+          )
+              
+              
+              
+              ,
+              TextField(
+                controller: _homeserverTextField,
+                readOnly: _loading,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  prefixText: 'https://',
+                  border: OutlineInputBorder(),
+                  labelText: 'Instância',
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _passwordTextField,
-              readOnly: _loading,
-              autocorrect: false,
-              obscureText: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Senha',
+              const SizedBox(height: 16),
+              TextField(
+                controller: _usernameTextField,
+                readOnly: _loading,
+                autocorrect: false,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Nome de usuário',
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _loading ? null : _login,
-                child: _loading
-                    ? const LinearProgressIndicator()
-                    : const Text('Entrar'),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _passwordTextField,
+                readOnly: _loading,
+                autocorrect: false,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Senha',
+                ),
               ),
-            ),
-            // ElevatedButton(
-            //     onPressed: () {
-            //       // Navigator.push(context,
-            //       //     MaterialPageRoute(builder: (context) => CreateCont()));
-            //       _launchUrl();
-            //     },
-            //     child: const Text('Criar uma conta no bolha.chat')),
-
-                Link(
-                uri: Uri.parse('https://element.bolha.chat/#/register'),
-                target: LinkTarget.self,
-                builder: (BuildContext ctx, FollowLink? openLink) {
-                  return TextButton.icon(
-                    onPressed: openLink,
-                    label: const Text('Criar conta no bolha.chat'),
-                    icon: const Icon(Icons.app_registration),
-                  );
-                },
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _loading ? null : _login,
+                  child: _loading
+                      ? const LinearProgressIndicator()
+                      : const Text('Entrar'),
+                ),
               ),
-          ],
+              // ElevatedButton(
+              //     onPressed: () {
+              //       // Navigator.push(context,
+              //       //     MaterialPageRoute(builder: (context) => CreateCont()));
+              //       _launchUrl();
+              //     },
+              //     child: const Text('Criar uma conta no bolha.chat')),
+        
+                  Link(
+                  uri: Uri.parse('https://element.bolha.chat/#/register'),
+                  target: LinkTarget.self,
+                  builder: (BuildContext ctx, FollowLink? openLink) {
+                    return TextButton.icon(
+                      onPressed: openLink,
+                      label: const Text('Criar conta no bolha.chat'),
+                      icon: const Icon(Icons.app_registration),
+                    );
+                  },
+                ),
+            ],
+          ),
         ),
       ),
     );
