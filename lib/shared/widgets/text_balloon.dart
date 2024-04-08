@@ -15,7 +15,7 @@ class TextBalloon extends StatelessWidget {
                       Text("Mensagem apagada",style: TextStyle(color: Colors.redAccent,),)
                     ],):
                      SelectableText(
-                      body_msg,
+                      body_msg,style: TextStyle(fontSize: 16),
                     ))
     ;
   }

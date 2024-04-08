@@ -148,6 +148,7 @@ const colorizeTextStyle = TextStyle(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Nome de usuário',
+                  
                 ),
               ),
               const SizedBox(height: 16),

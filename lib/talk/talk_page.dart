@@ -96,39 +96,54 @@ class _TalkPageState extends State<TalkPage> {
           IconButton(
               alignment: Alignment.centerRight,
               onPressed: () {
-                texto();
+                _create(client);
               },
-              icon: const Icon(Icons.close)),
+              icon: lupa == true ? const Icon(
+                Icons.add,
+              ): Text(''),),
 
           // ),
           IconButton(
-            onPressed: () {
-              pesquisa();
-            },
-            icon: const Icon(Icons.add),
+            onPressed: lupa != true
+                ? () {
+                    pesquisa();
+                  }
+                : () {
+                    texto();
+                  },
+            icon: lupa == true
+                ? const Icon(
+                    Icons.close,
+                  )
+                : const Icon(Icons.group_add_sharp),
           ),
         ],
         title: lupa == true
-            ? TextFormField(
+            ? TextField(
+                decoration: const InputDecoration(
+                    // border: OutlineInputBorder(),
+                    labelText: 'Id do usuário',
+                    hintText: '@usuario:servidor.com'),
                 controller: _addController,
               )
             : const Text('Conversas'),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: lupa == true ? FloatingActionButton(
-        
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          _create(client);
-          // showBottomSheet(
-          //     context: context,
-          //     builder: (BuildContext context) => BuscarPage());
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      ):Text(''),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      // floatingActionButton: lupa == true
+      //     ? FloatingActionButton(
+      //         backgroundColor: Colors.amber,
+      //         onPressed: () {
+      //           _create(client);
+      //           // showBottomSheet(
+      //           //     context: context,
+      //           //     builder: (BuildContext context) => BuscarPage());
+      //         },
+      //         child: Icon(
+      //           Icons.add,
+      //           color: Colors.black,
+      //         ),
+      //       )
+      //     : Text(''),
       body: StreamBuilder(
         stream: client.onSync.stream,
         builder: (context, _) => ListView.builder(

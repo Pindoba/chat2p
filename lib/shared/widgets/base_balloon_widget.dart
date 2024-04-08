@@ -3,6 +3,7 @@ import 'package:chat2p/shared/widgets/image_balloon.dart';
 import 'package:chat2p/shared/widgets/text_balloon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 import 'package:date_time_format/date_time_format.dart';
 
@@ -103,12 +104,7 @@ class BaseBalloonWidget extends StatelessWidget {
                       ),
                       // event.redacted == null
                       // ?
-                      event.receipts.toString() == '[]'
-                          ? Icon(Icons.check_sharp)
-                          : Icon(
-                              Icons.check_sharp,
-                              color: Colors.green,
-                            )
+                      
                       // : Text('' )
                     ],
                   ),
@@ -121,10 +117,30 @@ class BaseBalloonWidget extends StatelessWidget {
                               : type == "m.image"
                                   ? ImageBalloon(url_image: image)
                                   : Text('data')),
-                  Text(
-                    data_time,
-                    overflow: TextOverflow.clip,
-                    style: const TextStyle(fontSize: 10, color: Colors.black12),
+                  Row(
+                    children: [
+                      Text(
+                        data_time,
+                        overflow: TextOverflow.clip,
+                        style: const TextStyle(fontSize: 12, color: Colors.white54),
+                      ),
+
+                      send == true ? Icon(Icons.check_sharp,size: 17, color: event.receipts.toString() != '[]' ? Color.fromARGB(255, 169, 255, 56) : Colors.white54,):
+                      Text('')
+
+
+
+
+
+                      // event.receipts.toString() == '[]' && send == true
+                      //     ? Icon(Icons.check_sharp,size: 16,): 
+                      //     event.receipts.toString() == '[]' && send == false
+                      //    ? Icon(
+                      //         Icons.check_sharp,
+                      //         color: Colors.green, size: 17,
+                      //       ): Text('')
+
+                    ],
                   )
                 ],
               ),
