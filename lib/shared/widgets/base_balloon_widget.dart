@@ -4,6 +4,8 @@ import 'package:chat2p/shared/widgets/text_balloon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:matrix/matrix.dart';
+import 'package:date_time_format/date_time_format.dart';
+
 
 class BaseBalloonWidget extends StatelessWidget {
   const BaseBalloonWidget({
@@ -25,7 +27,7 @@ class BaseBalloonWidget extends StatelessWidget {
             .getThumbnail(room.client, width: 56, height: 56)
             .toString();
     final String body_msg = event.plaintextBody;
-    final String data_time = event.originServerTs.toIso8601String();
+    final String data_time = event.originServerTs.format('l, j M, H:i');
     final String type = event.messageType;
     final String image =
         'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
@@ -122,7 +124,7 @@ class BaseBalloonWidget extends StatelessWidget {
                   Text(
                     data_time,
                     overflow: TextOverflow.clip,
-                    style: const TextStyle(fontSize: 8),
+                    style: const TextStyle(fontSize: 10, color: Colors.black12),
                   )
                 ],
               ),
