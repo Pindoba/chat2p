@@ -9,9 +9,12 @@ class ImageBalloon extends StatelessWidget {
     return 
     
     Container(
-                  constraints: const BoxConstraints(maxWidth: 250),
+                  constraints: const BoxConstraints(
+                    
+                    maxWidth: 250),
                   child: Image.network(
                     url_image,
+
                     fit: BoxFit.fitWidth,
                   ),
                 )

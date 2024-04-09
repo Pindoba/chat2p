@@ -147,6 +147,7 @@ class _TalkPageState extends State<TalkPage> {
       body: StreamBuilder(
         stream: client.onSync.stream,
         builder: (context, _) => ListView.builder(
+          
           itemCount: client.rooms.length,
           itemBuilder: (context, i) => client.rooms[i].isSpace == false
               ? Container(

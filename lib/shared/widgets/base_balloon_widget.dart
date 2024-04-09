@@ -27,7 +27,7 @@ class BaseBalloonWidget extends StatelessWidget {
         : event.sender.avatarUrl!
             .getThumbnail(room.client, width: 56, height: 56)
             .toString();
-    final String body_msg = event.plaintextBody;
+    final String body_msg = event.body;
     final String data_time = event.originServerTs.format('l, j M, H:i');
     final String type = event.messageType;
     final String image =
@@ -128,17 +128,6 @@ class BaseBalloonWidget extends StatelessWidget {
                       send == true ? Icon(Icons.check_sharp,size: 17, color: event.receipts.toString() != '[]' ? Color.fromARGB(255, 169, 255, 56) : Colors.white54,):
                       Text('')
 
-
-
-
-
-                      // event.receipts.toString() == '[]' && send == true
-                      //     ? Icon(Icons.check_sharp,size: 16,): 
-                      //     event.receipts.toString() == '[]' && send == false
-                      //    ? Icon(
-                      //         Icons.check_sharp,
-                      //         color: Colors.green, size: 17,
-                      //       ): Text('')
 
                     ],
                   )

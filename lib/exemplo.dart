@@ -72,6 +72,7 @@ class _RoomPageState extends State<RoomPage> {
       //   width: image.width.toDouble(),
       // );
       
+      _image(bytes,'foto.jpg' );
      
 
       // _addMessage(message);
@@ -82,6 +83,10 @@ class _RoomPageState extends State<RoomPage> {
 
   void _send() {
     widget.room.sendTextEvent(_sendController.text.trim());
+    _sendController.clear();
+  }
+  void _image(bytes, name) {
+    widget.room.sendFileEvent(MatrixImageFile(bytes: bytes, name: name));
     _sendController.clear();
   }
 
