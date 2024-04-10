@@ -9,7 +9,6 @@ import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
 
-
 class TalkPage extends StatefulWidget {
   const TalkPage({super.key});
 
@@ -139,143 +138,169 @@ class _TalkPageState extends State<TalkPage> {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 123, 2, 204),
-        actions: [
-          // Visibility(
-          //   visible: lupa,
-          // child:
-          IconButton(
-            alignment: Alignment.centerRight,
-            onPressed: () {
-              _create(client);
-            },
-            icon: lupa == true
-                ? const Icon(
-                    Icons.add,
-                  )
-                : Text(''),
-          ),
-
-          // ),
-          IconButton(
-            onPressed: lupa != true
-                ? () {
-                    pesquisa();
-                  }
-                : () {
-                    texto();
-                  },
-            icon: lupa == true
-                ? const Icon(
-                    Icons.close,
-                  )
-                : const Icon(Icons.group_add_sharp),
-          ),
-        ],
-        title: lupa == true
-            ? TextField(
-                decoration: const InputDecoration(
-                    // border: OutlineInputBorder(),
-                    labelText: 'Id do usuário',
-                    hintText: '@usuario:servidor.com'),
-                controller: _addController,
-              )
-            : const Text('Conversas'),
-      ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
-        onPressed: () {
-          // BuscarPage(client: client);
-          showBottomSheet(
-              context: context,
-              builder: (BuildContext context) => BuscarPage(
-                    client: client,
-                  ));
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      ),
-
-      body: StreamBuilder(
-        stream: client.onSync.stream,
-        builder: (context, _) => ListView.builder(
-          itemCount: client.rooms.length,
-          itemBuilder: (context, i) => client.rooms[i].isSpace == false
-              ? Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(153, 123, 2, 204),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const <BoxShadow>[
-                        BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 1,
-                            offset: Offset(
-                              0.0,
-                              0.3,
-                            ))
-                      ]),
-                  child: ListTile(
-                    leading: GestureDetector(
-                      onTap:client.rooms[i].avatar != null ? () => _modal(context,client.rooms[i].avatar!.getDownloadLink(client, ).toString()) :(){},
-                      child: CircleAvatar(
-                        foregroundImage: client.rooms[i].avatar == null
-                            ? const NetworkImage(
-                                'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png')
-                            : NetworkImage(client.rooms[i].avatar!
-                                .getThumbnail(
-                                  client,
-                                  width: 60,
-                                  height: 60,
-                                )
-                                .toString()),
-                      ),
-                    ),
-                    title: Row(
-                      children: [
-                        Expanded(child: Text(client.rooms[i].displayname)),
-                        if (client.rooms[i].notificationCount > 0)
-                          Material(
-                              elevation: 8,
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.amber,
-                              child: SizedBox(
-                                width: 35,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Center(
-                                      child: Text(
-                                    client.rooms[i].notificationCount
-                                        .toString(),
-                                    style: TextStyle(color: Colors.black),
-                                  )),
-                                ),
-                              ))
-                      ],
-                    ),
-                    subtitle: Text(
-                      client.rooms[i].typingUsers.toString() != '[]'
-                          ? 'Digitando...'
-                          : client.rooms[i].lastEvent?.body ?? 'Sem mensagem',
-                      maxLines: 1,
-                    ),
-                    trailing: IconButton(
-                        onPressed: () {
-                          _option(context, client.rooms[i]);
-                        },
-                        icon: const Icon(
-                          Icons.more_vert,
-                        )),
-                    onTap: () => _join(client.rooms[i]),
-                  ),
+    return Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage('assets/image/f2.png'),
+        
+        fit: BoxFit.cover,
+      )),
+      child: Scaffold(
+        backgroundColor: Color.fromARGB(151, 0, 0, 0),
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 123, 2, 204),
+          actions: [
+            // Visibility(
+            //   visible: lupa,
+            // child:
+            IconButton(
+              alignment: Alignment.centerRight,
+              onPressed: () {
+                _create(client);
+              },
+              icon: lupa == true
+                  ? const Icon(
+                      Icons.add,
+                    )
+                  : Text(''),
+            ),
+      
+            // ),
+            IconButton(
+              onPressed: lupa != true
+                  ? () {
+                      pesquisa();
+                    }
+                  : () {
+                      texto();
+                    },
+              icon: lupa == true
+                  ? const Icon(
+                      Icons.close,
+                    )
+                  : const Icon(Icons.group_add_sharp),
+            ),
+          ],
+          title: lupa == true
+              ? TextField(
+                  decoration: const InputDecoration(
+                      // border: OutlineInputBorder(),
+                      labelText: 'Id do usuário',
+                      hintText: '@usuario:servidor.com'),
+                  controller: _addController,
                 )
-              : Container(),
+              : const Text('Conversas'),
+        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.amber,
+          onPressed: () {
+            // BuscarPage(client: client);
+            showBottomSheet(
+                context: context,
+                builder: (BuildContext context) => BuscarPage(
+                      client: client,
+                    ));
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.black,
+          ),
+        ),
+      
+        body: StreamBuilder(
+          stream: client.onSync.stream,
+          builder: (context, _) => ListView.builder(
+            itemCount: client.rooms.length,
+            itemBuilder: (context, i) => client.rooms[i].isSpace == false
+                ? Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(0),
+                        // decoration: BoxDecoration(
+                        //     // color: const Color.fromARGB(153, 123, 2, 204),
+                        //     borderRadius: BorderRadius.circular(5),
+                        //     boxShadow: const <BoxShadow>[
+                        //       BoxShadow(
+                        //           color: Color.fromARGB(141, 0, 0, 0),
+                        //           blurRadius: 3,
+                        //           offset: Offset(
+                        //             0.0,
+                        //             0.3,
+                        //           ))
+                        //     ]),
+                        child: ListTile(
+                          subtitleTextStyle: TextStyle(color: client.rooms[i].typingUsers.toString() != '[]' ? Colors.amber : Colors.white),
+                          leading: GestureDetector(
+                            onTap: client.rooms[i].avatar != null
+                                ? () => _modal(
+                                    context,
+                                    client.rooms[i].avatar!
+                                        .getDownloadLink(
+                                          client,
+                                        )
+                                        .toString())
+                                : () {
+                                    
+                                  },
+                            child: CircleAvatar(
+                              foregroundImage: client.rooms[i].avatar == null
+                                  ? const NetworkImage(
+                                      'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png')
+                                  : NetworkImage(client.rooms[i].avatar!
+                                      .getThumbnail(
+                                        client,
+                                        width: 60,
+                                        height: 80,
+                                      )
+                                      .toString()),
+                            ),
+                          ),
+                          title: Row(
+                            children: [
+                              Expanded(child: Text(client.rooms[i].displayname,maxLines: 2,)),
+                              if (client.rooms[i].notificationCount > 0)
+                                Material(
+                                    elevation: 8,
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.amber,
+                                    child: SizedBox(
+                                      width: 35,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Center(
+                                            child: Text(
+                                          client.rooms[i].notificationCount
+                                              .toString(),
+                                          style: TextStyle(color: Colors.black),
+                                        )),
+                                      ),
+                                    ))
+                            ],
+                          ),
+                          subtitle: Text(
+                            client.rooms[i].typingUsers.toString() != '[]'
+                                ? 'Digitando...'
+                                : client.rooms[i].lastEvent?.body ??
+                                    'Sem mensagem',
+                            maxLines: 1,
+                          ),
+                          trailing: IconButton(
+                              onPressed: () {
+                                _option(context, client.rooms[i]);
+                              },
+                              icon: const Icon(
+                                Icons.more_vert,
+                              )),
+                          onTap: () => _join(client.rooms[i]),
+                        ),
+                      ),
+                      Divider()
+                    ],
+                  )
+                : Container(),
+          ),
         ),
       ),
     );
@@ -284,9 +309,11 @@ class _TalkPageState extends State<TalkPage> {
 
 void _modal(BuildContext context, avatar) {
   Navigator.of(context).push(
-      MaterialPageRoute(
+    MaterialPageRoute(
       builder: (ctx) => Scaffold(
-        appBar: AppBar(title: const Text('Avatar'),),
+        appBar: AppBar(
+          title: const Text('Avatar'),
+        ),
         body: Center(
           child: Image.network(avatar),
         ),

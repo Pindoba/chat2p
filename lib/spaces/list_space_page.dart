@@ -40,6 +40,7 @@ class _ListSpacePageState extends State<ListSpacePage> {
   void _leave(Room room) async {
     if (room.membership != Membership.leave) {
       await room.leave();
+      
       Navigator.pop(context);
     }
     // Navigator.of(context).push(
@@ -58,7 +59,8 @@ class _ListSpacePageState extends State<ListSpacePage> {
     //   const Tab(text: 'Trabalho'),
     // ];
 
-    void pesquisa() {
+    void pesquisa(client) {
+      // print(client.room.spaceChildren);
       setState(() {
         lupa = true;
       });
@@ -69,9 +71,6 @@ class _ListSpacePageState extends State<ListSpacePage> {
         lupa = false;
       });
     }
-
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -90,22 +89,23 @@ class _ListSpacePageState extends State<ListSpacePage> {
           // ),
           IconButton(
             onPressed: () {
-              pesquisa();
+              pesquisa(client);
             },
             icon: const Icon(Icons.search),
           ),
-      // )
-      ],
+          // )
+        ],
         title: lupa == true ? TextFormField() : const Text('Espaços'),
       ),
       body: StreamBuilder(
         stream: client.onSync.stream,
         builder: (context, _) => ListView.builder(
-          itemCount: 
-          // so_space(client.rooms),
-          client.rooms.length,
+          itemCount:
+              // so_space(client.rooms),
+              client.rooms.length,
           itemBuilder: (context, i) => client.rooms[i].isSpace == true
-              ? Container(width: 80,
+              ? Container(
+                  width: 80,
                   // margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(153, 123, 2, 204),
@@ -122,32 +122,7 @@ class _ListSpacePageState extends State<ListSpacePage> {
                   child: ListTile(
                     leading: GestureDetector(
                       onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title:
-                                Text('Sair da ${client.rooms[i].displayname}?'),
-                            content: const Text(
-                                'Com essa ação você vai sair e apagar o chat.'),
-                            actions: <Widget>[
-                              TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'cancel'),
-                                  child: const Text('Cancelar')),
-                              TextButton(
-                                  onPressed: () => _leave(client.rooms[i]),
-                                  child: const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delete_forever,
-                                        color: Colors.red,
-                                      ),
-                                      Text('Sair e apagar'),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        );
+                        // room.spaceChildren;
                       },
                       child: CircleAvatar(
                         foregroundImage: client.rooms[i].avatar == null

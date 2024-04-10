@@ -112,7 +112,12 @@ class _RoomPageState extends State<RoomPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
             backgroundColor: Color.fromARGB(255, 123, 2, 204),
-            title: Text(widget.room.displayname),
+            title: Column(
+              children: [
+                Text(widget.room.displayname),
+                widget.room.typingUsers.toString() != '[]' ? Text('Digitando...',style: TextStyle(color: Colors.amber),) : Text('')
+              ],
+            ),
             centerTitle: true,
             iconTheme: IconThemeData()),
         body: SafeArea(
