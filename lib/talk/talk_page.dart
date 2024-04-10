@@ -7,6 +7,8 @@ import 'package:chat2p/menu_radial.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
+import 'package:page_transition/page_transition.dart';
+
 
 class TalkPage extends StatefulWidget {
   const TalkPage({super.key});
@@ -33,11 +35,63 @@ class _TalkPageState extends State<TalkPage> {
     if (room.membership != Membership.leave) {
       await room.leave();
       Navigator.pop(context);
+      Navigator.pop(context);
     }
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (_) => RoomPage(room: room),
-    //   ),
+  }
+
+  dynamic _option(context, Room room) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => SimpleDialog(
+        title: const Text('Opções'),
+        children: [
+          ListTile(
+            leading: const Icon(Icons.delete),
+            title: const Text('Apagar'),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        title: Text('Apagar conversa?'),
+                        content: Text(''),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              child: Text('Cancelar')),
+                          TextButton(
+                              onPressed: () {
+                                _leave(room);
+                              },
+                              child: Text("Apagar"))
+                        ],
+                      ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_circle),
+            title: const Text('Reenviar'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_circle),
+            title: const Text('Editar'),
+            onTap: () => Navigator.pop(context, 'Add account'),
+          ),
+        ],
+      ),
+    ).then((returnVal) {
+      if (returnVal != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('You clicked: $returnVal'),
+            action: SnackBarAction(label: 'OK', onPressed: () {}),
+          ),
+        );
+      }
+    });
   }
 
   final TextEditingController _addController = TextEditingController();
@@ -59,7 +113,7 @@ class _TalkPageState extends State<TalkPage> {
     // print(invite[0]);
     // print(room.id);
     // print(client.queryUserByID(invite[0]));
-    // print(client.queryPublicRooms());
+    // print(await client.queryPublicRooms());
     // room.invite('@weltonmoura:nitro.chat');
     // client.createGroupChat(preset: CreateRoomPreset.privateChat,invite: invite);
 
@@ -94,13 +148,16 @@ class _TalkPageState extends State<TalkPage> {
           //   visible: lupa,
           // child:
           IconButton(
-              alignment: Alignment.centerRight,
-              onPressed: () {
-                _create(client);
-              },
-              icon: lupa == true ? const Icon(
-                Icons.add,
-              ): Text(''),),
+            alignment: Alignment.centerRight,
+            onPressed: () {
+              _create(client);
+            },
+            icon: lupa == true
+                ? const Icon(
+                    Icons.add,
+                  )
+                : Text(''),
+          ),
 
           // ),
           IconButton(
@@ -129,25 +186,25 @@ class _TalkPageState extends State<TalkPage> {
             : const Text('Conversas'),
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      // floatingActionButton: lupa == true
-      //     ? FloatingActionButton(
-      //         backgroundColor: Colors.amber,
-      //         onPressed: () {
-      //           _create(client);
-      //           // showBottomSheet(
-      //           //     context: context,
-      //           //     builder: (BuildContext context) => BuscarPage());
-      //         },
-      //         child: Icon(
-      //           Icons.add,
-      //           color: Colors.black,
-      //         ),
-      //       )
-      //     : Text(''),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amber,
+        onPressed: () {
+          // BuscarPage(client: client);
+          showBottomSheet(
+              context: context,
+              builder: (BuildContext context) => BuscarPage(
+                    client: client,
+                  ));
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+      ),
+
       body: StreamBuilder(
         stream: client.onSync.stream,
         builder: (context, _) => ListView.builder(
-          
           itemCount: client.rooms.length,
           itemBuilder: (context, i) => client.rooms[i].isSpace == false
               ? Container(
@@ -166,34 +223,7 @@ class _TalkPageState extends State<TalkPage> {
                       ]),
                   child: ListTile(
                     leading: GestureDetector(
-                      onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title:
-                                Text('Sair da ${client.rooms[i].displayname}?'),
-                            content: const Text(
-                                'Com essa ação você vai sair e apagar o chat.'),
-                            actions: <Widget>[
-                              TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'cancel'),
-                                  child: const Text('Cancelar')),
-                              TextButton(
-                                  onPressed: () => _leave(client.rooms[i]),
-                                  child: const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delete_forever,
-                                        color: Colors.red,
-                                      ),
-                                      Text('Sair e apagar'),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        );
-                      },
+                      onTap:client.rooms[i].avatar != null ? () => _modal(context,client.rooms[i].avatar!.getDownloadLink(client, ).toString()) :(){},
                       child: CircleAvatar(
                         foregroundImage: client.rooms[i].avatar == null
                             ? const NetworkImage(
@@ -230,15 +260,18 @@ class _TalkPageState extends State<TalkPage> {
                       ],
                     ),
                     subtitle: Text(
-                      // client.rooms[i]. ?? 'Sem mensagem',
                       client.rooms[i].typingUsers.toString() != '[]'
                           ? 'Digitando...'
-                          :
-
-                          // 'Sem mensagem',
-                          client.rooms[i].lastEvent?.body ?? 'Sem mensagem',
+                          : client.rooms[i].lastEvent?.body ?? 'Sem mensagem',
                       maxLines: 1,
                     ),
+                    trailing: IconButton(
+                        onPressed: () {
+                          _option(context, client.rooms[i]);
+                        },
+                        icon: const Icon(
+                          Icons.more_vert,
+                        )),
                     onTap: () => _join(client.rooms[i]),
                   ),
                 )
@@ -247,4 +280,17 @@ class _TalkPageState extends State<TalkPage> {
       ),
     );
   }
+}
+
+void _modal(BuildContext context, avatar) {
+  Navigator.of(context).push(
+      MaterialPageRoute(
+      builder: (ctx) => Scaffold(
+        appBar: AppBar(title: const Text('Avatar'),),
+        body: Center(
+          child: Image.network(avatar),
+        ),
+      ),
+    ),
+  );
 }

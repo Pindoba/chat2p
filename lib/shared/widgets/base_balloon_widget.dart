@@ -100,7 +100,7 @@ class BaseBalloonWidget extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(fontSize: 18, color: Colors.orange),
+                        style: const TextStyle(fontSize: 18, color: Colors.orange),
                       ),
                       // event.redacted == null
                       // ?
@@ -183,7 +183,7 @@ dynamic option(context, event) {
   });
 
   // child: const Text('Simple dialog')
-  ;
+  
 }
 
 dynamic delete_event(context, event) {

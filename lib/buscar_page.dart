@@ -14,13 +14,22 @@ class BuscarPage extends StatefulWidget {
 class _BuscarPageState extends State<BuscarPage> {
   @override
   Widget build(BuildContext context) {
+
+
+
+      final TextEditingController _addController = TextEditingController();
+
     return Scaffold(
+      appBar: AppBar(title: Text('Buscar usuários ou salas'),),
       body: Column(
         children: [
           Text('Buscar usuário'),
-          TextFormField(),
+          TextFormField(
+            controller: _addController,
+          ),
           ElevatedButton(
               onPressed: () {
+                
               },
               child: Text('Convidar contato'))
         ],
