@@ -42,7 +42,7 @@ class _AppBarPageState extends State<AppBarPage> {
           onPressed: () {
            Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => const BuscarPage(),
+        builder: (_) => const BuscaPage(),
       ),
     );
 

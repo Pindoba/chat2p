@@ -2,7 +2,6 @@
 
 // import 'package:animated_radial_menu/animated_radial_menu.dart';
 // import 'package:chat2p/buscar_page.dart';
-import 'package:chat2p/exemplo.dart';
 import 'package:chat2p/shared/widgets/list_chat_wedget.dart';
 // import 'package:chat2p/menu_radial.dart';
 import 'package:flutter/material.dart';
@@ -20,82 +19,10 @@ class TalkPage extends StatefulWidget {
 bool lupa = false;
 
 class _TalkPageState extends State<TalkPage> {
-  // void _join(Room room) async {
-  //   if (room.membership != Membership.join) {
-  //     await room.join();
-  //   }
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (_) => RoomPage(room: room),
-  //     ),
-  //   );
-  // }
 
-  // void _leave(Room room) async {
-  //   if (room.membership != Membership.leave) {
-  //     await room.leave();
-  //     Navigator.pop(context);
-  //     Navigator.pop(context);
-  //   }
-  // }
-
-  // dynamic _option(context, Room room) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => SimpleDialog(
-  //       title: const Text('Opções'),
-  //       children: [
-  //         ListTile(
-  //           leading: const Icon(Icons.delete),
-  //           title: const Text('Apagar'),
-  //           onTap: () {
-  //             showDialog(
-  //                 context: context,
-  //                 builder: (BuildContext context) => AlertDialog(
-  //                       title: Text('Apagar conversa?'),
-  //                       content: Text(''),
-  //                       actions: [
-  //                         TextButton(
-  //                             onPressed: () {
-  //                               Navigator.pop(context);
-  //                               Navigator.pop(context);
-  //                             },
-  //                             child: Text('Cancelar')),
-  //                         TextButton(
-  //                             onPressed: () {
-  //                               _leave(room);
-  //                             },
-  //                             child: Text("Apagar"))
-  //                       ],
-  //                     ));
-  //           },
-  //         ),
-  //         ListTile(
-  //           leading: const Icon(Icons.account_circle),
-  //           title: const Text('Reenviar'),
-  //           onTap: () {},
-  //         ),
-  //         ListTile(
-  //           leading: const Icon(Icons.add_circle),
-  //           title: const Text('Editar'),
-  //           onTap: () => Navigator.pop(context, 'Add account'),
-  //         ),
-  //       ],
-  //     ),
-  //   ).then((returnVal) {
-  //     if (returnVal != null) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text('You clicked: $returnVal'),
-  //           action: SnackBarAction(label: 'OK', onPressed: () {}),
-  //         ),
-  //       );
-  //     }
-  //   });
-  // }
 
   final TextEditingController _addController = TextEditingController();
-  List<String> pin = ["\$NcVV2A6894exHh5yc6uDzTb01O382nD20YZHN2Bkn4Y"];
+  // List<String> pin = ["\$NcVV2A6894exHh5yc6uDzTb01O382nD20YZHN2Bkn4Y"];
   void _create(Client client) async {
     String iduser = _addController.text.trim();
     // room.addToDirectChat('@weltonmoura:nitro.chat');
@@ -147,14 +74,12 @@ class _TalkPageState extends State<TalkPage> {
         fit: BoxFit.cover,
       )),
       child: Scaffold(
-        backgroundColor: Color.fromARGB(151, 0, 0, 0),
+        backgroundColor: const Color.fromARGB(151, 0, 0, 0),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 123, 2, 204),
           actions: [
-            // Visibility(
-            //   visible: lupa,
-            // child:
+           
             IconButton(
               alignment: Alignment.centerRight,
               onPressed: () {
@@ -164,10 +89,10 @@ class _TalkPageState extends State<TalkPage> {
                   ? const Icon(
                       Icons.add,
                     )
-                  : Text(''),
+                  : const Text(''),
             ),
       
-            // ),
+           
             IconButton(
               onPressed: lupa != true
                   ? () {
@@ -193,22 +118,7 @@ class _TalkPageState extends State<TalkPage> {
                 )
               : const Text('Conversas'),
         ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: Colors.amber,
-        //   onPressed: () {
-        //     // BuscarPage(client: client);
-        //     showBottomSheet(
-        //         context: context,
-        //         builder: (BuildContext context) => BuscarPage(
-        //               // client: client,
-        //             ));
-        //   },
-        //   child: Icon(
-        //     Icons.add,
-        //     color: Colors.black,
-        //   ),
-        // ),
+
       
         body: StreamBuilder(
           stream: client.onSync.stream,
@@ -217,12 +127,9 @@ class _TalkPageState extends State<TalkPage> {
             itemBuilder: (context, i) => 
             
             client.rooms[i].isSpace == false ?
-            Container(
-              // width: double.infinity,
-              child: ListChat(room: client.rooms[i],client: client,),)
+            ListChat(room: client.rooms[i],client: client,)
             
-                // ? Column(
-                //     children: [
+              
                 //       Container(
                 //         margin: const EdgeInsets.all(0),
                 //         // decoration: BoxDecoration(
@@ -239,52 +146,8 @@ class _TalkPageState extends State<TalkPage> {
                 //         //     ]),
                 //         child: ListTile(
                 //           subtitleTextStyle: TextStyle(color: client.rooms[i].typingUsers.toString() != '[]' ? Colors.amber : Colors.white),
-                //           leading: GestureDetector(
-                //             onTap: client.rooms[i].avatar != null
-                //                 ? () => _modal(
-                //                     context,
-                //                     client.rooms[i].avatar!
-                //                         .getDownloadLink(
-                //                           client,
-                //                         )
-                //                         .toString())
-                //                 : () {
-                                    
-                //                   },
-                //             child: CircleAvatar(
-                //               foregroundImage: client.rooms[i].avatar == null
-                //                   ? const NetworkImage(
-                //                       'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png')
-                //                   : NetworkImage(client.rooms[i].avatar!
-                //                       .getThumbnail(
-                //                         client,
-                //                         width: 60,
-                //                         height: 80,
-                //                       )
-                //                       .toString()),
-                //             ),
-                //           ),
-                //           title: Row(
-                //             children: [
-                //               Expanded(child: Text(client.rooms[i].displayname,maxLines: 2,)),
-                //               if (client.rooms[i].notificationCount > 0)
-                //                 Material(
-                //                     elevation: 8,
-                //                     borderRadius: BorderRadius.circular(50),
-                //                     color: Colors.amber,
-                //                     child: SizedBox(
-                //                       width: 35,
-                //                       child: Padding(
-                //                         padding: const EdgeInsets.all(2.0),
-                //                         child: Center(
-                //                             child: Text(
-                //                           client.rooms[i].notificationCount
-                //                               .toString(),
-                //                           style: TextStyle(color: Colors.black),
-                //                         )),
-                //                       ),
-                //                     ))
-                //             ],
+                //        
+                //           
                 //           ),
                 //           subtitle: Text(
                 //             client.rooms[i].typingUsers.toString() != '[]'
@@ -299,13 +162,7 @@ class _TalkPageState extends State<TalkPage> {
                 //               },
                 //               icon: const Icon(
                 //                 Icons.more_vert,
-                //               )),
-                //           onTap: () => _join(client.rooms[i]),
-                //         ),
-                //       ),
-                //       Divider()
-                //     ],
-                //   )
+                //         
                 : Container(),
           ),
         ),
@@ -314,17 +171,3 @@ class _TalkPageState extends State<TalkPage> {
   }
 }
 
-// void _modal(BuildContext context, avatar) {
-//   Navigator.of(context).push(
-//     MaterialPageRoute(
-//       builder: (ctx) => Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Avatar'),
-//         ),
-//         body: Center(
-//           child: Image.network(avatar),
-//         ),
-//       ),
-//     ),
-//   );
-// }

@@ -19,8 +19,8 @@ class ListChat extends StatelessWidget {
         : room.avatar!
             .getThumbnail(
               client,
-              width: 65,
-              height: 65,
+              width: 55,
+              height: 55,
             )
             .toString();
 
@@ -37,8 +37,8 @@ class ListChat extends StatelessWidget {
               children: [
                 Container(
                     margin: EdgeInsets.only(left: 5, right: 15),
-                    width: 65,
-                    height: 65,
+                    width: 55,
+                    height: 55,
                     child: GestureDetector(
                       onTap: room.avatar != null
                           ? () => _modal(
@@ -79,7 +79,7 @@ class ListChat extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(50),
                                   color: Colors.amber,
                                   child: SizedBox(
-                                    width: 35,
+                                    width: 30,
                                     child: Padding(
                                       padding: const EdgeInsets.all(2.0),
                                       child: Center(
@@ -98,6 +98,7 @@ class ListChat extends StatelessWidget {
                               child: Text(
                                 last_msg,
                                 maxLines: 1,
+                                style: TextStyle(color: Colors.white54),
                               ),
                             ),
                           ],
@@ -115,7 +116,7 @@ class ListChat extends StatelessWidget {
                           },
                           icon: Icon(Icons.more_vert)),
                       room.isFavourite
-                          ? Icon(Icons.push_pin, color: Colors.amber)
+                          ? Icon(Icons.push_pin, color: const Color.fromARGB(255, 141, 141, 141))
                           : Text(''),
                     ],
                   ),
