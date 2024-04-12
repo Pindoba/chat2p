@@ -36,7 +36,7 @@ class ListChat extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                    margin: EdgeInsets.only(left: 5, right: 15),
+                    margin: EdgeInsets.only(left: 15, right: 15),
                     width: 55,
                     height: 55,
                     child: GestureDetector(
@@ -65,7 +65,7 @@ class ListChat extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: 18),
                                 name,
                                 overflow: TextOverflow.clip,
                                 maxLines: 2,
@@ -79,7 +79,7 @@ class ListChat extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(50),
                                   color: Colors.amber,
                                   child: SizedBox(
-                                    width: 30,
+                                    width: 25,
                                     child: Padding(
                                       padding: const EdgeInsets.all(2.0),
                                       child: Center(
@@ -116,7 +116,8 @@ class ListChat extends StatelessWidget {
                           },
                           icon: Icon(Icons.more_vert)),
                       room.isFavourite
-                          ? Icon(Icons.push_pin, color: const Color.fromARGB(255, 141, 141, 141))
+                          ? Icon(Icons.push_pin,
+                              color: const Color.fromARGB(255, 141, 141, 141))
                           : Text(''),
                     ],
                   ),
@@ -129,6 +130,11 @@ class ListChat extends StatelessWidget {
       ),
     );
   }
+}
+
+void _transforme_canal(Room room) {
+  // room.addTag('canal');
+  room.removeTag('canal');
 }
 
 void _modal(BuildContext context, avatar) {
@@ -178,16 +184,24 @@ dynamic _option(context, Room room) {
           },
         ),
         ListTile(
-          leading: room.isFavourite == true ? const Icon(Icons.block) :const Icon(Icons.push_pin) ,
-          title: room.isFavourite == true ? const Text('Desafixar') : Text("Fixar"),
+          leading: room.isFavourite == true
+              ? const Icon(Icons.block)
+              : const Icon(Icons.push_pin),
+          title: room.isFavourite == true
+              ? const Text('Desafixar')
+              : Text("Fixar"),
           onTap: () {
             _pin(room, context);
           },
         ),
         ListTile(
           leading: const Icon(Icons.add_circle),
-          title: const Text('Editar'),
-          onTap: () => Navigator.pop(context, 'Add account'),
+          title: const Text('T canal'),
+          onTap: () {
+            _transforme_canal(room);
+            Navigator.pop(context, 'Add account');
+            print(room.tags.isEmpty);
+          },
         ),
       ],
     ),
@@ -204,6 +218,7 @@ dynamic _option(context, Room room) {
 }
 
 void _join(Room room, context) async {
+  // print(room.spaceChildren);
   if (room.membership != Membership.join) {
     await room.join();
   }
@@ -217,9 +232,8 @@ void _join(Room room, context) async {
 void _pin(Room room, context) async {
   if (room.isFavourite == false) {
     await room.setFavourite(true);
-  }else{
+  } else {
     await room.setFavourite(false);
-
   }
   Navigator.pop(context);
 }

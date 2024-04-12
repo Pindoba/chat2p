@@ -9,16 +9,16 @@ import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 // import 'package:page_transition/page_transition.dart';
 
-class TalkPage extends StatefulWidget {
-  const TalkPage({super.key});
+class CanalPage extends StatefulWidget {
+  const CanalPage({super.key});
 
   @override
-  State<TalkPage> createState() => _TalkPageState();
+  State<CanalPage> createState() => _CanalPageState();
 }
 
 bool lupa = false;
 
-class _TalkPageState extends State<TalkPage> {
+class _CanalPageState extends State<CanalPage> {
   final TextEditingController _addController = TextEditingController();
   // List<String> pin = ["\$NcVV2A6894exHh5yc6uDzTb01O382nD20YZHN2Bkn4Y"];
   void _create(Client client) async {
@@ -33,19 +33,7 @@ class _TalkPageState extends State<TalkPage> {
       isDirect: true,
     );
     _addController.clear();
-    // client.setRoomAlias(client.getDisplayName(invite[0]).toString(), room.id);
 
-    // print(invite[0]);
-    // print(room.id);
-    // print(client.queryUserByID(invite[0]));
-    // print(await client.queryPublicRooms());
-    // room.invite('@weltonmoura:nitro.chat');
-    // client.createGroupChat(preset: CreateRoomPreset.privateChat,invite: invite);
-
-    // if (room.membership != Membership.leave) {
-    //   await room.leave();
-    //   Navigator.pop(context);
-    // }
   }
 
   @override
@@ -68,7 +56,7 @@ class _TalkPageState extends State<TalkPage> {
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
-        image: AssetImage('assets/image/f2.png'),
+        image: AssetImage('assets/image/f4.png'),
         fit: BoxFit.cover,
       )),
       child: Scaffold(
@@ -117,7 +105,7 @@ class _TalkPageState extends State<TalkPage> {
           stream: client.onSync.stream,
           builder: (context, _) => ListView.builder(
             itemCount: client.rooms.length,
-            itemBuilder: (context, i) => client.rooms[i].isSpace == false
+            itemBuilder: (context, i) => client.rooms[i].tags.isNotEmpty == true
                 ? ListChat(
                     room: client.rooms[i],
                     client: client,

@@ -12,16 +12,16 @@ import 'package:path_provider/path_provider.dart';
 // import 'package:uuid/uuid.dart';
 // import 'package:matrix/src/utils/uri_extension.dart';
 
-class RoomPage extends StatefulWidget {
+class CanalPageChat extends StatefulWidget {
   final Room room;
 
-  const RoomPage({required this.room, Key? key}) : super(key: key);
+  const CanalPageChat({required this.room, Key? key}) : super(key: key);
 
   @override
-  _RoomPageState createState() => _RoomPageState();
+  _CanalPageChatState createState() => _CanalPageChatState();
 }
 
-class _RoomPageState extends State<RoomPage> {
+class _CanalPageChatState extends State<CanalPageChat> {
   late final Future<Timeline> _timelineFuture;
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
