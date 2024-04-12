@@ -1,5 +1,5 @@
 // import 'package:chat2p/login/login_page.dart';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:chat2p/shared/widgets/balloon_audio_receive_component.dart';
 import 'package:chat2p/shared/contact_component.dart';
@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:uuid/uuid.dart';
-import 'package:matrix/src/utils/uri_extension.dart';
+// import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+// import 'package:uuid/uuid.dart';
+// import 'package:matrix/src/utils/uri_extension.dart';
 
 class RoomPage extends StatefulWidget {
   final Room room;
@@ -58,7 +58,7 @@ class _RoomPageState extends State<RoomPage> {
 
     if (result != null) {
       final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
+      // final image = await decodeImageFromList(bytes);
 
       // var _user = null;
       // final message = types.ImageMessage(

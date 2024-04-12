@@ -1,4 +1,4 @@
-
+import 'package:chat2p/buscar_page.dart';
 import 'package:chat2p/call/calls_page.dart';
 import 'package:chat2p/favorito_page.dart';
 // import 'package:chat2p/new/new_page.dart';
@@ -8,6 +8,7 @@ import 'package:chat2p/spaces/space_page.dart';
 import 'package:chat2p/talk/talk_page.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 const _kPages = {
   'Mensagens': Icons.message,
@@ -30,28 +31,42 @@ class _AppBarPageState extends State<AppBarPage> {
 
   @override
   Widget build(BuildContext context) {
-  // print('aqui ok');
+    // print('aqui ok');
 
     return DefaultTabController(
       length: 5,
       initialIndex: 0,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.amber,
+          onPressed: () {
+           Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const BuscarPage(),
+      ),
+    );
+
+            // (BuildContext context) => BuscarPage(
+            //       // client: client,
+            //     );
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.black,
+          ),
+        ),
         body: const Column(
           children: [
             // _buildStyleSelector(),
-  
+
             Expanded(
               child: TabBarView(
                 children: [
-                  TalkPage() ,
-                  FavoritoPage(), 
-                  SpacePage(), 
-                  CallsPage() ,
+                  TalkPage(),
+                  FavoritoPage(),
+                  SpacePage(),
+                  CallsPage(),
                   PerfilPage()
-
-
-                  // page,
-                  // for (final icon in _kPages.values) Icon(icon, size: 124),
                 ],
               ),
             ),
@@ -61,28 +76,16 @@ class _AppBarPageState extends State<AppBarPage> {
           //  Colors.amber,
           backgroundColor: const Color.fromARGB(255, 123, 2, 204),
           // const <int, dynamic>{3: '69'},
-          const <int, dynamic>{0: '24'},
+          const <int, dynamic>{0: 0},
           style: _tabStyle,
           items: <TabItem>[
-
-
-
-              
             for (final entry in _kPages.entries)
               TabItem(icon: entry.value, title: entry.key),
-          
-          
           ],
-
-
-
         ),
       ),
     );
   }
-
-
-
 
   // Select style enum from dropdown menu:
   // Widget _buildStyleSelector() {
@@ -105,9 +108,4 @@ class _AppBarPageState extends State<AppBarPage> {
   //     trailing: dropdown,
   //   );
   // }
-
-
-
-
-  
 }

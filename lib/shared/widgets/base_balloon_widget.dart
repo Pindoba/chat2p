@@ -7,7 +7,6 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 import 'package:date_time_format/date_time_format.dart';
 
-
 class BaseBalloonWidget extends StatelessWidget {
   const BaseBalloonWidget({
     super.key,
@@ -30,13 +29,17 @@ class BaseBalloonWidget extends StatelessWidget {
     final String body_msg = event.body;
     final String data_time = event.originServerTs.format('l, j M, H:i');
     final String type = event.messageType;
-    final String image =
-        'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
-    // : event.attachmentMxcUrl!
-    //     .getDownloadLink(
-    //       room.client,
-    //     )
-    //     .toString();
+    final String image = event.sender.avatarUrl != null
+        ? event.sender.avatarUrl!
+            .getDownloadLink(
+              room.client,
+            )
+            .toString()
+        : 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
+
+    // event.attachmentMxcUrl!.getDownloadLink(room.client, ).toString();
+    // final teste = await event.downloadAndDecryptAttachment(getThumbnail: false, );
+    // print(teste);
     // : event.sender.avatarUrl!
     //     .getDownloadLink(
     //       room.client,
@@ -100,11 +103,12 @@ class BaseBalloonWidget extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(fontSize: 18, color: Colors.orange),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.orange),
                       ),
                       // event.redacted == null
                       // ?
-                      
+
                       // : Text('' )
                     ],
                   ),
@@ -122,13 +126,18 @@ class BaseBalloonWidget extends StatelessWidget {
                       Text(
                         data_time,
                         overflow: TextOverflow.clip,
-                        style: const TextStyle(fontSize: 12, color: Colors.white54),
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.white54),
                       ),
-
-                      send == true ? Icon(Icons.check_sharp,size: 17, color: event.receipts.toString() != '[]' ? Color.fromARGB(255, 169, 255, 56) : Colors.white54,):
-                      Text('')
-
-
+                      send == true
+                          ? Icon(
+                              Icons.check_sharp,
+                              size: 17,
+                              color: event.receipts.toString() != '[]'
+                                  ? Color.fromARGB(255, 169, 255, 56)
+                                  : Colors.white54,
+                            )
+                          : Text('')
                     ],
                   )
                 ],
@@ -183,7 +192,6 @@ dynamic option(context, event) {
   });
 
   // child: const Text('Simple dialog')
-  
 }
 
 dynamic delete_event(context, event) {
