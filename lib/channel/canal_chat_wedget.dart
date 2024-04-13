@@ -112,17 +112,7 @@ class _CanalPageChatState extends State<CanalPageChat> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
             backgroundColor: Color.fromARGB(255, 123, 2, 204),
-            title: Column(
-              children: [
-                Text(widget.room.displayname),
-                widget.room.typingUsers.toString() != '[]'
-                    ? Text(
-                        'Digitando...',
-                        style: TextStyle(color: Colors.amber),
-                      )
-                    : Text('')
-              ],
-            ),
+            title: Text(widget.room.displayname),
             centerTitle: true,
             iconTheme: IconThemeData()),
         body: SafeArea(
@@ -146,11 +136,7 @@ class _CanalPageChatState extends State<CanalPageChat> {
                       onRefresh: timeline.requestHistory,
                       child: Column(
                         children: [
-                          // Center(
-                          //   child: TextButton(
-                          //       onPressed: timeline.requestHistory,
-                          //       child: const Text('Load more...')),
-                          // ),
+                    
                           const Divider(height: 1),
                           Expanded(
                             child: AnimatedList(
@@ -168,9 +154,7 @@ class _CanalPageChatState extends State<CanalPageChat> {
                                                   : 0.5,
                                               child: timeline.events[i].type ==
                                                       "m.room.message"
-                                                  // timeline.events[i]
-                                                  //         .messageType ==
-                                                  //     "m.text"
+                                       
                                                   ?
                                                   //################################################    mensagemde texto simples   ######################################
 
@@ -179,63 +163,18 @@ class _CanalPageChatState extends State<CanalPageChat> {
                                                       room: widget.room,
                                                     )
 
-                                                  // BalonChatReceive(
-                                                  //     name: timeline
-                                                  //         .events[i].sender
-                                                  //         .calcDisplayname(),
-                                                  //     picture: timeline
-                                                  //                 .events[i]
-                                                  //                 .sender
-                                                  //                 .avatarUrl ==
-                                                  //             null
-                                                  //         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-                                                  //         : timeline
-                                                  //             .events[i]
-                                                  //             .sender
-                                                  //             .avatarUrl!
-                                                  //             .getThumbnail(
-                                                  //               widget.room
-                                                  //                   .client,
-                                                  //               width: 56,
-                                                  //               height: 56,
-                                                  //             )
-                                                  //             .toString(),
-                                                  //     body_msg: timeline
-                                                  //         .events[i]
-                                                  //         .getDisplayEvent(
-                                                  //             timeline)
-                                                  //         .body,
-                                                  //     data_time: timeline
-                                                  //         .events[i]
-                                                  //         .originServerTs
-                                                  //         .toIso8601String(),
-                                                  //   )
+                             
                                                   //################################################   eventos relacionado aos menbros    ###########################################
                                                   : timeline.events[i].type ==
                                                           "m.room.member"
                                                       ?
 
-                                                      //   timeline.events[i].sender.messageType == "m.room.message"
-
-                                                      //   timeline.events[i].sender.avatarUrl
-                                                      //
-                                                      //  timeline.events[i].sender.avatarUrl!.getThumbnail(widget.room.client,width: 56,height: 56,).toString()
-                                                      //
-                                                      // timeline.events[i].sender.calcDisplayname()
-                                                      //
-                                                      //  timeline.events[i].originServerTs.toIso8601String()
-                                                      //
-                                                      //  timeline.events[i].getDisplayEvent(timeline).body
-                                                      // body_msg: timeline.events[i].getDisplayEvent(timeline).attachmentMxcUrl.toString(),
-
-                                                      //timeline.events[i].room.fullyRead
 
                                                       Center(
                                                           child: Container(
                                                             margin:
                                                                 const EdgeInsets
                                                                     .all(3),
-                                                            // child: Text(timeline.events[i].getDisplayEvent(timeline).body),
                                                             child: timeline
                                                                         .events[
                                                                             i]

@@ -1,6 +1,6 @@
 import 'package:chat2p/buscar_page.dart';
 import 'package:chat2p/call/calls_page.dart';
-import 'package:chat2p/canal_page.dart';
+import 'package:chat2p/channel/canal_page.dart';
 import 'package:chat2p/perfil_page.dart';
 import 'package:chat2p/spaces/space_page.dart';
 import 'package:chat2p/talk/talk_page.dart';

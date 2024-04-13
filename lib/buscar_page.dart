@@ -40,6 +40,7 @@ class _BuscaPageState extends State<BuscaPage> {
         // final   Room  result =  
        print(  client.getSpaceHierarchy("!idzuYRWVxZHioWSAvs:nitro.chat"));
        print(  client.defineFilter(client.userID.toString(),Filter()));
+       
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(

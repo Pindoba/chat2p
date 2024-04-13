@@ -1,4 +1,5 @@
-import 'package:chat2p/exemplo.dart';
+import 'package:chat2p/channel/canal_chat_wedget.dart';
+import 'package:chat2p/room_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -133,8 +134,9 @@ class ListChat extends StatelessWidget {
 }
 
 void _transforme_canal(Room room) {
-  // room.addTag('canal');
-  room.removeTag('canal');
+  room.addTag('channel');
+  // print('funcao canal executado');
+  // room.removeTag('canal');
 }
 
 void _modal(BuildContext context, avatar) {
@@ -200,21 +202,12 @@ dynamic _option(context, Room room) {
           onTap: () {
             _transforme_canal(room);
             Navigator.pop(context, 'Add account');
-            print(room.tags.isEmpty);
+            // print(room.tags.isEmpty);
           },
         ),
       ],
     ),
-  ).then((returnVal) {
-    if (returnVal != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('You clicked: $returnVal'),
-          action: SnackBarAction(label: 'OK', onPressed: () {}),
-        ),
-      );
-    }
-  });
+  );
 }
 
 void _join(Room room, context) async {
@@ -224,7 +217,7 @@ void _join(Room room, context) async {
   }
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (_) => RoomPage(room: room),
+      builder: (_) => CanalPageChat(room: room),
     ),
   );
 }

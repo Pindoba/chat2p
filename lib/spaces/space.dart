@@ -2,7 +2,7 @@
 
 // import 'dart:js_util';
 
-import 'package:chat2p/exemplo.dart';
+import 'package:chat2p/room_page.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';

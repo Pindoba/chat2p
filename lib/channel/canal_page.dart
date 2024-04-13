@@ -105,7 +105,7 @@ class _CanalPageState extends State<CanalPage> {
           stream: client.onSync.stream,
           builder: (context, _) => ListView.builder(
             itemCount: client.rooms.length,
-            itemBuilder: (context, i) => client.rooms[i].tags.isNotEmpty == true
+            itemBuilder: (context, i) => client.rooms[i].tags.entries.toString().contains('channel') == true
                 ? ListChat(
                     room: client.rooms[i],
                     client: client,

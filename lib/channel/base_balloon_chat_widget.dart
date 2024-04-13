@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:date_time_format/date_time_format.dart';
 
-class BaseBalloonWidget extends StatelessWidget {
-  const BaseBalloonWidget({
+class BaseBalloonChatWidget extends StatelessWidget {
+  const BaseBalloonChatWidget({
     super.key,
     required this.event,
     required this.room,
@@ -37,22 +37,14 @@ class BaseBalloonWidget extends StatelessWidget {
             .toString()
         : 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
 
-    // event.attachmentMxcUrl!.getDownloadLink(room.client, ).toString();
-    // final teste = await event.downloadAndDecryptAttachment(getThumbnail: false, );
-    // print(teste);
-    // : event.sender.avatarUrl!
-    //     .getDownloadLink(
-    //       room.client,
-    //     )
-    //     .toString();
-// event.sendAgain()
+   
     final bool send = event.senderId == room.client.userID ? true : false;
-    // print(send);
+    print(send);
     // event.;
 
     return Row(
       mainAxisAlignment:
-          send == true ? MainAxisAlignment.end : MainAxisAlignment.start,
+          MainAxisAlignment.center ,
       children: [
         Container(
           height: 40,
@@ -82,9 +74,7 @@ class BaseBalloonWidget extends StatelessWidget {
                   ),
                 )
               ],
-              color: send == true
-                  ? Color.fromARGB(190, 4, 79, 218)
-                  : const Color.fromARGB(153, 145, 55, 206),
+              color:  const Color.fromARGB(153, 145, 55, 206),
               borderRadius: BorderRadius.only(
                   bottomLeft:
                       send == true ? Radius.circular(15) : Radius.circular(0),
@@ -95,9 +85,7 @@ class BaseBalloonWidget extends StatelessWidget {
             ),
             child: Row(children: [
               Column(
-                crossAxisAlignment: send == true
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -106,25 +94,17 @@ class BaseBalloonWidget extends StatelessWidget {
                         style:
                             const TextStyle(fontSize: 18, color: Colors.orange),
                       ),
-                      // event.redacted == null
-                      // ?
-
-                      // : Text('' )
+           
                     ],
                   ),
                   Container(
-                      constraints: const BoxConstraints(maxWidth: 250),
+                      // constraints: const BoxConstraints(maxWidth: 350),
                       child: type == "m.text"
                           ? TextBalloon(body_msg: body_msg)
                           : type == "m.audio"
                               ? AudioBalloon()
                               : type == "m.image"
-                                  ? Column(
-                                    children: [
-                                      ImageBalloon(url_image: image),
-                                      TextBalloon(body_msg: body_msg,)
-                                    ],
-                                  )
+                                  ? ImageBalloon(url_image: image)
                                   : Text('data')),
                   Row(
                     children: [
