@@ -20,8 +20,8 @@ class ListChat extends StatelessWidget {
         : room.avatar!
             .getThumbnail(
               client,
-              width: 55,
-              height: 55,
+              width: 50,
+              height: 50,
             )
             .toString();
 
@@ -38,8 +38,8 @@ class ListChat extends StatelessWidget {
               children: [
                 Container(
                     margin: EdgeInsets.only(left: 15, right: 15),
-                    width: 55,
-                    height: 55,
+                    width: 50,
+                    height: 50,
                     child: GestureDetector(
                       onTap: room.avatar != null
                           ? () => _modal(
@@ -66,7 +66,7 @@ class ListChat extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(fontSize: 16),
                                 name,
                                 overflow: TextOverflow.clip,
                                 maxLines: 2,
@@ -115,9 +115,9 @@ class ListChat extends StatelessWidget {
                           onPressed: () {
                             _option(context, room);
                           },
-                          icon: Icon(Icons.more_vert)),
+                          icon: Icon(Icons.more_vert,size: 20,)),
                       room.isFavourite
-                          ? Icon(Icons.push_pin,
+                          ? Icon(Icons.push_pin, size: 20,
                               color: const Color.fromARGB(255, 141, 141, 141))
                           : Text(''),
                     ],
@@ -134,9 +134,15 @@ class ListChat extends StatelessWidget {
 }
 
 void _transforme_canal(Room room) {
+  if(room.tags.entries.toString().contains('channel') == false){
   room.addTag('channel');
+  }else{
+  room.removeTag('channel');
+
+  }
+
+
   // print('funcao canal executado');
-  // room.removeTag('canal');
 }
 
 void _modal(BuildContext context, avatar) {

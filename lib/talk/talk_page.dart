@@ -117,7 +117,9 @@ class _TalkPageState extends State<TalkPage> {
           stream: client.onSync.stream,
           builder: (context, _) => ListView.builder(
             itemCount: client.rooms.length,
-            itemBuilder: (context, i) => client.rooms[i].isSpace == false
+            itemBuilder: (context, i) => 
+            
+            client.rooms[i].isSpace == false && client.rooms[i].tags.entries.toString().contains('channel') == false && client.rooms[i].spaceParents.length == 0
                 ? ListChat(
                     room: client.rooms[i],
                     client: client,

@@ -25,6 +25,9 @@ class _ListSpacePageState extends State<ListSpacePage> {
     );
   }
 
+  List<Room> roomchildren = [];
+  List<String> id_children = [];
+
   void _leave(Room room) async {
     if (room.membership != Membership.leave) {
       await room.leave();
@@ -33,20 +36,33 @@ class _ListSpacePageState extends State<ListSpacePage> {
   }
 
   void _filhos(Room room, client) async {
-    var roomfilho = await room.spaceChildren;
+    setState(() {
+      id_children.clear();
 
-    print(roomfilho[1].roomId);
-    final sala = Room(id: roomfilho[0].toString(), client: client);
-    print(sala);
-    print(room.tags.values.contains(''));
-    print(room.spaceChildren.iterator);
+      var roomfilho = room.spaceChildren;
+      for (int i = 0; i < roomfilho.length; i++) {
+      id_children.add(roomfilho[i].roomId.toString());
+    
+  }
+      print(roomfilho[1].roomId);
+      // final sala = Room(
+      //   id: roomfilho[0].toString(),
+      //   client: client,
+      // );
+
+      // roomchildren.add(sala);
+      // print(room);
+      // print(room.tags.values.contains(''));
+      // print(room.spaceChildren.iterator);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<Client>(context, listen: false);
-    List<Room> roomchildren = [];
 
+    //  (roomchildren);
+    print(client.rooms);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -114,65 +130,60 @@ class _ListSpacePageState extends State<ListSpacePage> {
           //#################### salas referente ao espaço ################################
 
           Container(
-            decoration: const BoxDecoration(
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 3,
-                  offset: Offset(
-                    0.0,
-                    0.3,
-                  ),
-                )
-              ],
-              color: Color.fromARGB(255, 54, 54, 54),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(0),
-                  bottomRight: Radius.circular(0),
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15)),
-            ),
-            width: 300,
-            margin: EdgeInsets.only(top: 15, right: 10),
-            height: double.infinity,
+              decoration: const BoxDecoration(
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 3,
+                    offset: Offset(
+                      0.0,
+                      0.3,
+                    ),
+                  )
+                ],
+                color: Color.fromARGB(255, 54, 54, 54),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
+              ),
+              width: 300,
+              margin: EdgeInsets.only(top: 15, right: 10),
+              height: double.infinity,
+              child: ListView.builder(
+                  itemCount: client.rooms.length,
+                  itemBuilder: (context, i) => 
 
-            child:
-
-            ListView.builder(
-                itemCount: roomchildren.length,
-                itemBuilder: (context, i) => Column(
-                      children: [
-                        ListTile(
-                          title: GestureDetector(
-                            onTap: () {
-                              _join(roomchildren[i]);
-                            },
-                            child: Row(
-                              children: [
-                                Icon(Icons.group),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  roomchildren[i].displayname,
-                                  maxLines: 1,
-                                )),
-                              ],
+                  id_children.contains(client.rooms[i].id) == true ?
+                  
+                  Column(
+                        children: [
+                          ListTile(
+                            title: GestureDetector(
+                              onTap: () {
+                                _join(client.rooms[i]);
+                              },
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.group),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    client.rooms[i].displayname,
+                                    maxLines: 1,
+                                  )),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Divider()
-                      ],
-                    )
-                    )
-
-
-
-
-
-
-          )
+                          const Divider()
+                        ],
+                      ) : Container()
+                      )
+                      )
         ],
       ),
     );
