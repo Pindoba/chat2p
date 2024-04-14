@@ -4,9 +4,10 @@ import 'package:chat2p/channel/canal_page.dart';
 import 'package:chat2p/perfil_page.dart';
 import 'package:chat2p/spaces/space_page.dart';
 import 'package:chat2p/talk/talk_page.dart';
+import 'package:chat2p/teste_buscar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
+import 'package:matrix/matrix.dart';
 
 const _kPages = {
   'Mensagens': Icons.message,
@@ -17,7 +18,8 @@ const _kPages = {
 };
 
 class AppBarPage extends StatefulWidget {
-  const AppBarPage({super.key});
+  const AppBarPage({super.key,  this.client});
+  final Client? client;
 
   @override
   _AppBarPageState createState() => _AppBarPageState();
@@ -29,8 +31,6 @@ class _AppBarPageState extends State<AppBarPage> {
 
   @override
   Widget build(BuildContext context) {
-    // print('aqui ok');
-
     return DefaultTabController(
       length: 5,
       initialIndex: 0,
@@ -38,11 +38,11 @@ class _AppBarPageState extends State<AppBarPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.amber,
           onPressed: () {
-           Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => const BuscaPage(),
-      ),
-    );
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => SearchScreen(),
+              ),
+            );
 
             // (BuildContext context) => BuscarPage(
             //       // client: client,

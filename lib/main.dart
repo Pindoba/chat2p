@@ -25,12 +25,11 @@ void main() async {
       return db;
     },
   );
-    print('esperando o cliente');
+  print('esperando o cliente');
 
   await client.init();
-    print('cliente finalizado');
-      print(client.userID);
-
+  print('cliente finalizado');
+  print(client.userID);
 
   runApp(InitChat(client: client));
 }
@@ -55,13 +54,18 @@ class InitChat extends StatelessWidget {
         create: (context) => client,
         child: child,
       ),
-      home: client.isLogged() ? const AppBarPage() : const LoginPage(),
+      home: client.isLogged()
+          ? AppBarPage(
+              client: client,
+            )
+          : const LoginPage(),
     );
   }
 }
 
 class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+  const SplashPage({super.key, required this.client});
+  final Client client;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +100,12 @@ class SplashPage extends StatelessWidget {
               ],
               isRepeatingAnimation: true,
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AppBarPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AppBarPage(
+                              client: client,
+                            )));
               },
             ),
           ),

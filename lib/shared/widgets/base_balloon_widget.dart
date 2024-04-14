@@ -83,7 +83,7 @@ class BaseBalloonWidget extends StatelessWidget {
                 )
               ],
               color: send == true
-                  ? Color.fromARGB(190, 4, 79, 218)
+                  ? Color.fromARGB(127, 4, 122, 218)
                   : const Color.fromARGB(153, 145, 55, 206),
               borderRadius: BorderRadius.only(
                   bottomLeft:

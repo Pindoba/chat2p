@@ -332,6 +332,9 @@ class _RoomPageState extends State<RoomPage> {
                           icon: const Icon(Icons.add)),
                       Expanded(
                           child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            minLines: 10,
+                            maxLines: 15,
                         controller: _sendController,
                         decoration: const InputDecoration(
                           hintText: 'Enviar mensagem',
