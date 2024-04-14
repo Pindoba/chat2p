@@ -36,14 +36,16 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _search(String searchTerm) async {
-    // Realiza a pesquisa de usuários e salas
-    // Substitua 'searchTerm' com o termo de pesquisa real
-    // var response = await client!.searchUserDirectory(searchTerm, limit: 20);
-    var response =
-        await client!.searchUserDirectory(searchTerm );
+   
+  
+ 
+   try { var response =
+        await client!.searchUserDirectory(searchTerm, limit: 20 );
     setState(() {
       _searchResults = response.results;
-    });
+    });} catch (e)  {
+      _searchResults.clear();
+    }
   }
 
   @override

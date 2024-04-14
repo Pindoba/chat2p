@@ -1,22 +1,25 @@
+import 'package:chat2p/channel/base_balloon_chat_widget.dart';
 import 'package:chat2p/channel/canal_chat_wedget.dart';
 // import 'package:chat2p/room_page.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 // import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 
 class ProfileListWedget extends StatelessWidget {
-  const ProfileListWedget(
-      {super.key,  required this.profile, });
-  // final Room room;
-  // final Client? client;
+  const ProfileListWedget({
+    super.key,
+    required this.profile,
+    this.room,
+  });
+  final Room? room;
   final Profile profile;
 
   @override
   Widget build(BuildContext context) {
-   final client = Provider.of<Client>(context, listen: true);
+    final client = Provider.of<Client>(context, listen: false);
     final String name = profile.displayName.toString();
     final String userId = profile.userId;
     // final String last_msg = room.lastEvent?.body ?? 'Sem mensagem';
@@ -47,9 +50,7 @@ class ProfileListWedget extends StatelessWidget {
                     height: 50,
                     child: GestureDetector(
                       onTap: profile.avatarUrl != null
-                          ? () => _modal(
-                              context,
-                             avatar)
+                          ? () => _modal(context, avatar)
                           : () {},
                       child: CircleAvatar(
                         foregroundImage: NetworkImage(avatar),
@@ -75,22 +76,6 @@ class ProfileListWedget extends StatelessWidget {
                                 softWrap: false,
                               ),
                             ),
-                            // if (room.notificationCount > 0)
-                            //   Material(
-                            //       elevation: 8,
-                            //       borderRadius: BorderRadius.circular(50),
-                            //       color: Colors.amber,
-                            //       child: SizedBox(
-                            //         width: 25,
-                            //         child: Padding(
-                            //           padding: const EdgeInsets.all(2.0),
-                            //           child: Center(
-                            //               child: Text(
-                            //             room.notificationCount.toString(),
-                            //             style: TextStyle(color: Colors.black),
-                            //           )),
-                            //         ),
-                            //       ))
                           ],
                         ),
                         Row(
@@ -114,13 +99,12 @@ class ProfileListWedget extends StatelessWidget {
                     children: [
                       IconButton(
                           onPressed: () {
-                            // _option(context, room);
+                            _option(context, profile);
                           },
                           icon: Icon(
                             Icons.more_vert,
                             size: 20,
                           )),
-                     
                     ],
                   ),
                 )
@@ -133,8 +117,6 @@ class ProfileListWedget extends StatelessWidget {
     );
   }
 }
-
-
 
 void _modal(BuildContext context, avatar) {
   Navigator.of(context).push(
@@ -151,7 +133,7 @@ void _modal(BuildContext context, avatar) {
   );
 }
 
-dynamic _option(context, Room room) {
+dynamic _option(context, Profile profile) {
   return showDialog(
     context: context,
     builder: (BuildContext context) => SimpleDialog(
@@ -159,38 +141,60 @@ dynamic _option(context, Room room) {
       children: [
         ListTile(
           leading: const Icon(Icons.delete),
-          title: const Text('Apagar'),
+          title: const Text('Conversar'),
           onTap: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                      title: Text('Apagar conversa?'),
-                      content: Text(''),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            child: Text('Cancelar')),
-                        TextButton(
-                            onPressed: () {
-                              _leave(room, context);
-                            },
-                            child: Text("Apagar"))
-                      ],
-                    ));
+            final client = Provider.of<Client>(context, listen: false);
+            // client.getDirectChatFromUserId(profile.userId);
+            List<String> member = [profile.userId];
+
+            createroom() async {
+               await client.createRoom(
+                isDirect: true,
+                invite: member,
+                // roomAliasName: profile.userId
+              );
+            }
+            print(createroom());
+
+              Navigator.pop(context);
+              Navigator.pop(context);
+            // var createRoom = Room(id: idRoom.toString(), client: client);
+
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (_) => CanalPageChat(room: createRoom),
+            //   ),
+            // );
+            // showDialog(
+            //     context: context,
+            //     builder: (BuildContext context) => AlertDialog(
+            //           title: Text('Apagar conversa?'),
+            //           content: Text(''),
+            //           actions: [
+            //             TextButton(
+            //                 onPressed: () {
+            //                   Navigator.pop(context);
+            //                   Navigator.pop(context);
+            //                 },
+            //                 child: Text('Cancelar')),
+            //             TextButton(
+            //                 onPressed: () {
+            //                   // _leave(room, context);
+            //                 },
+            //                 child: Text("Apagar"))
+            //           ],
+            //         ));
           },
         ),
         ListTile(
-          leading: room.isFavourite == true
+          leading: profile.userId != ''
               ? const Icon(Icons.block)
               : const Icon(Icons.push_pin),
-          title: room.isFavourite == true
-              ? const Text('Desafixar')
-              : Text("Fixar"),
+          title: profile.userId != ''
+              ? const Text('Bloquear')
+              : Text("Desbloquear"),
           onTap: () {
-            _pin(room, context);
+            // _pin(room, context);
           },
         ),
         ListTile(
