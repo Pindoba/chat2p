@@ -75,7 +75,7 @@ class _TalkPageState extends State<TalkPage> {
         backgroundColor: const Color.fromARGB(151, 0, 0, 0),
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 123, 2, 204),
+          backgroundColor: Theme.of(context).primaryColor,
           actions: [
             IconButton(
               alignment: Alignment.centerRight,
@@ -113,52 +113,61 @@ class _TalkPageState extends State<TalkPage> {
                 )
               : const Text('Conversas'),
         ),
-        body: StreamBuilder(
-          stream: client.onSync.stream,
-          builder: (context, _) => ListView.builder(
-            itemCount: client.rooms.length,
-            itemBuilder: (context, i) => 
-            
-            client.rooms[i].isSpace == false && client.rooms[i].tags.entries.toString().contains('channel') == false && client.rooms[i].spaceParents.length == 0
-                ? ListChat(
-                    room: client.rooms[i],
-                    client: client,
-                  )
-
-                //       Container(
-                //         margin: const EdgeInsets.all(0),
-                //         // decoration: BoxDecoration(
-                //         //     // color: const Color.fromARGB(153, 123, 2, 204),
-                //         //     borderRadius: BorderRadius.circular(5),
-                //         //     boxShadow: const <BoxShadow>[
-                //         //       BoxShadow(
-                //         //           color: Color.fromARGB(141, 0, 0, 0),
-                //         //           blurRadius: 3,
-                //         //           offset: Offset(
-                //         //             0.0,
-                //         //             0.3,
-                //         //           ))
-                //         //     ]),
-                //         child: ListTile(
-                //           subtitleTextStyle: TextStyle(color: client.rooms[i].typingUsers.toString() != '[]' ? Colors.amber : Colors.white),
-                //
-                //
-                //           ),
-                //           subtitle: Text(
-                //             client.rooms[i].typingUsers.toString() != '[]'
-                //                 ? 'Digitando...'
-                //                 : client.rooms[i].lastEvent?.body ??
-                //                     'Sem mensagem',
-                //             maxLines: 1,
-                //           ),
-                //           trailing: IconButton(
-                //               onPressed: () {
-                //                 _option(context, client.rooms[i]);
-                //               },
-                //               icon: const Icon(
-                //                 Icons.more_vert,
-                //
-                : Container(),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Divider(height: 1,color: Colors.amber,),
+              Expanded(
+                child: StreamBuilder(
+                  stream: client.onSync.stream,
+                  builder: (context, _) => ListView.builder(
+                    itemCount: client.rooms.length,
+                    itemBuilder: (context, i) => 
+                    
+                    client.rooms[i].isSpace == false && client.rooms[i].tags.entries.toString().contains('channel') == false && client.rooms[i].spaceParents.length < 1
+                        ? ListChat(
+                            room: client.rooms[i],
+                            client: client,
+                          )
+                
+                        //       Container(
+                        //         margin: const EdgeInsets.all(0),
+                        //         // decoration: BoxDecoration(
+                        //         //     // color: const Color.fromARGB(153, 123, 2, 204),
+                        //         //     borderRadius: BorderRadius.circular(5),
+                        //         //     boxShadow: const <BoxShadow>[
+                        //         //       BoxShadow(
+                        //         //           color: Color.fromARGB(141, 0, 0, 0),
+                        //         //           blurRadius: 3,
+                        //         //           offset: Offset(
+                        //         //             0.0,
+                        //         //             0.3,
+                        //         //           ))
+                        //         //     ]),
+                        //         child: ListTile(
+                        //           subtitleTextStyle: TextStyle(color: client.rooms[i].typingUsers.toString() != '[]' ? Colors.amber : Colors.white),
+                        //
+                        //
+                        //           ),
+                        //           subtitle: Text(
+                        //             client.rooms[i].typingUsers.toString() != '[]'
+                        //                 ? 'Digitando...'
+                        //                 : client.rooms[i].lastEvent?.body ??
+                        //                     'Sem mensagem',
+                        //             maxLines: 1,
+                        //           ),
+                        //           trailing: IconButton(
+                        //               onPressed: () {
+                        //                 _option(context, client.rooms[i]);
+                        //               },
+                        //               icon: const Icon(
+                        //                 Icons.more_vert,
+                        //
+                        : Container(),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

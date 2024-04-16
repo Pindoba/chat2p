@@ -34,6 +34,19 @@ void main() async {
   runApp(InitChat(client: client));
 }
 
+
+
+
+final meuTema = ThemeData(
+  colorScheme: ColorScheme.dark(
+    background: Color.fromARGB(174, 56, 56, 56),
+    
+    ),
+  primaryColor: Color.fromARGB(255, 34, 39, 38), // Cor principal
+  hintColor: Colors.amber, // Cor de destaque
+  // Outras configurações de estilo, como fontes, tamanhos, etc.
+);
+
 class InitChat extends StatelessWidget {
   final Client client;
 
@@ -43,7 +56,8 @@ class InitChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Chat2P',
-      theme: ThemeData.dark().copyWith(),
+      theme: meuTema,
+      // theme: ThemeData.dark().copyWith(),
 
       //  ThemeData(useMaterial3: false,
       // colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 123, 2, 204)),

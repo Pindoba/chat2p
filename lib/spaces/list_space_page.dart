@@ -67,132 +67,141 @@ class _ListSpacePageState extends State<ListSpacePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 123, 2, 204),
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Espaços'),
       ),
-      body: Row(
-        
-        children: [
-          Expanded(
-            flex: 2,
-            child: StreamBuilder(
-              stream: client.onSync.stream,
-              builder: (context, _) => ListView.builder(
-                itemCount: client.rooms.length,
-                itemBuilder: (context, i) => client.rooms[i].isSpace == true
-                    ? Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: GestureDetector(
-                          onTap: () {
-                            // _join(room, context);
-                          },
-                          child: Container(
-                            constraints: BoxConstraints(minWidth: 50),//######################################################################################
-                            // width: 10,
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 15, right: 15),
-                                    width: 50,
-                                    height: 50,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        _filhos(client.rooms[i], client);
-                                      },
-                                      child: CircleAvatar(
-                                        foregroundImage: NetworkImage(client
-                                                    .rooms[i].avatar ==
-                                                null
-                                            ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-                                            : client.rooms[i].avatar!
-                                                .getThumbnail(
-                                                  client,
-                                                  width: 50,
-                                                  height: 50,
-                                                )
-                                                .toString()),
+      body: SafeArea(
+        child: Column(
+          children: [Divider(height: 1,color: Colors.amber,),
+            Expanded(
+              child: Row(
+                
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: StreamBuilder(
+                      stream: client.onSync.stream,
+                      builder: (context, _) => ListView.builder(
+                        itemCount: client.rooms.length,
+                        itemBuilder: (context, i) => client.rooms[i].isSpace == true
+                            ? Container(
+                                margin: EdgeInsets.only(top: 20),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // _join(room, context);
+                                  },
+                                  child: Container(
+                                    constraints: BoxConstraints(minWidth: 50),//######################################################################################
+                                    // width: 10,
+                                    alignment: Alignment.centerLeft,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 15, right: 15),
+                                            width: 50,
+                                            height: 50,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                _filhos(client.rooms[i], client);
+                                              },
+                                              child: CircleAvatar(
+                                                foregroundImage: NetworkImage(client
+                                                            .rooms[i].avatar ==
+                                                        null
+                                                    ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
+                                                    : client.rooms[i].avatar!
+                                                        .getThumbnail(
+                                                          client,
+                                                          width: 50,
+                                                          height: 50,
+                                                        )
+                                                        .toString()),
+                                              ),
+                                            )),
+                                        // Divider(height: 1,),
+                                      ],
+                                    ),
+                                  ),
+                                )
+              
+                                //  ListSpace(room: client.rooms[i], client: client),
+              
+                                )
+                            : Container(),
+                      ),
+                    ),
+                  ),
+              
+                  //#################### salas referente ao espaço ################################
+              
+                  Expanded(
+                    flex: 8,
+                    child: Container(
+                        decoration: const BoxDecoration(
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 3,
+                              offset: Offset(
+                                0.0,
+                                0.3,
+                              ),
+                            )
+                          ],
+                          color: Color.fromARGB(255, 54, 54, 54),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(0),
+                              bottomRight: Radius.circular(0),
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15)),
+                        ),
+                        width: 150,
+                        // constraints: BoxConstraints(maxWidth: 350),
+                        margin: EdgeInsets.only(top: 15, right: 10),
+                        height: double.infinity,
+                        child: ListView.builder(
+                            itemCount: client.rooms.length,
+                            itemBuilder: (context, i) => 
+                    
+                            id_children.contains(client.rooms[i].id) == true ?
+                            
+                            Column(
+                                  children: [
+                                    ListTile(
+                                      title: GestureDetector(
+                                        onTap: () {
+                                          _join(client.rooms[i]);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.group),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                                child: Text(
+                                              client.rooms[i].displayname,
+                                              maxLines: 1,
+                                            )),
+                                          ],
+                                        ),
                                       ),
-                                    )),
-                                Divider(),
-                              ],
-                            ),
-                          ),
-                        )
-
-                        //  ListSpace(room: client.rooms[i], client: client),
-
-                        )
-                    : Container(),
+                                    ),
+                                    const Divider(height: 1,)
+                                  ],
+                                ) : Container(),
+                                
+                                )
+                                ),
+                  )
+                ],
               ),
             ),
-          ),
-
-          //#################### salas referente ao espaço ################################
-
-          Expanded(
-            flex: 8,
-            child: Container(
-                decoration: const BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 3,
-                      offset: Offset(
-                        0.0,
-                        0.3,
-                      ),
-                    )
-                  ],
-                  color: Color.fromARGB(255, 54, 54, 54),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0),
-                      bottomRight: Radius.circular(0),
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15)),
-                ),
-                width: 150,
-                // constraints: BoxConstraints(maxWidth: 350),
-                margin: EdgeInsets.only(top: 15, right: 10),
-                height: double.infinity,
-                child: ListView.builder(
-                    itemCount: client.rooms.length,
-                    itemBuilder: (context, i) => 
-            
-                    id_children.contains(client.rooms[i].id) == true ?
-                    
-                    Column(
-                          children: [
-                            ListTile(
-                              title: GestureDetector(
-                                onTap: () {
-                                  _join(client.rooms[i]);
-                                },
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.group),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                        child: Text(
-                                      client.rooms[i].displayname,
-                                      maxLines: 1,
-                                    )),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Divider()
-                          ],
-                        ) : Container()
-                        )
-                        ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

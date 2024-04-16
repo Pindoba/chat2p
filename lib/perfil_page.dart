@@ -42,8 +42,9 @@ class _PerfilPageState extends State<PerfilPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 123, 2, 204),
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Seu Perfil'),
+        centerTitle: true,
       ),
       body: Container(
         child: Column(children: [

@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
   
  
    try { var response =
-        await client!.searchUserDirectory(searchTerm, limit: 20 );
+        await client!.searchUserDirectory(searchTerm,  );
     setState(() {
       _searchResults = response.results;
     });} catch (e)  {

@@ -1,5 +1,6 @@
 import 'package:chat2p/channel/base_balloon_chat_widget.dart';
 import 'package:chat2p/channel/canal_chat_wedget.dart';
+import 'package:chat2p/room_page.dart';
 // import 'package:chat2p/room_page.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ class ProfileListWedget extends StatelessWidget {
     final client = Provider.of<Client>(context, listen: false);
     final String name = profile.displayName.toString();
     final String userId = profile.userId;
-    // final String last_msg = room.lastEvent?.body ?? 'Sem mensagem';
     final String avatar = profile.avatarUrl == null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
         : profile.avatarUrl!
@@ -216,7 +216,7 @@ void _join(Room room, context) async {
   }
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (_) => CanalPageChat(room: room),
+      builder: (_) => RoomPage(room: room),
     ),
   );
 }

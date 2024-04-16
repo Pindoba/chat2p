@@ -1,10 +1,12 @@
 import 'package:chat2p/channel/canal_chat_wedget.dart';
 import 'package:chat2p/room_page.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:chat2p/room_page.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
+import 'dart:math' as math;
 
 class ListChat extends StatelessWidget {
   const ListChat({super.key, required this.room, required this.client});
@@ -117,15 +119,19 @@ class ListChat extends StatelessWidget {
                           },
                           icon: Icon(Icons.more_vert,size: 20,)),
                       room.isFavourite
-                          ? Icon(Icons.push_pin, size: 20,
-                              color: const Color.fromARGB(255, 141, 141, 141))
+                          ? Transform.rotate(
+                             angle: 45 * math.pi / 180, 
+
+                            child: Icon(Icons.push_pin, size: 20,
+                                color: const Color.fromARGB(255, 141, 141, 141)),
+                          )
                           : Text(''),
                     ],
                   ),
                 )
               ],
             ),
-            Divider(),
+            SizedBox(height: 2,),
           ],
         ),
       ),
@@ -223,7 +229,11 @@ void _join(Room room, context) async {
   }
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (_) => CanalPageChat(room: room),
+      builder: (_) => 
+      // room.tags.entries.toString().contains('channel') == true ?
+      // CanalPageChat(room: room)
+      // :
+      RoomPage(room: room),
     ),
   );
 }

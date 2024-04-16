@@ -14,8 +14,11 @@ class _CallsPageState extends State<CallsPage> {
     
     Scaffold(
 
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 123, 2, 204),
-      title: Text('Chamadas'),),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+      title: Text('Chamadas'),
+      centerTitle: true,
+      ),
       body: Center(
         child: Column(children: [
           Text('Ligações')

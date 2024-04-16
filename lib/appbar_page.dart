@@ -7,6 +7,7 @@ import 'package:chat2p/talk/talk_page.dart';
 import 'package:chat2p/teste_buscar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 
 const _kPages = {
@@ -72,7 +73,8 @@ class _AppBarPageState extends State<AppBarPage> {
         ),
         bottomNavigationBar: ConvexAppBar.badge(
           //  Colors.amber,
-          backgroundColor: const Color.fromARGB(255, 123, 2, 204),
+          backgroundColor: Theme.of(context).primaryColor,
+          // backgroundColor: const Color.fromARGB(255, 123, 2, 204),
           // const <int, dynamic>{3: '69'},
           const <int, dynamic>{0: 0},
           style: _tabStyle,

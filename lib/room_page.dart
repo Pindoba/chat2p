@@ -1,7 +1,7 @@
 // import 'package:chat2p/login/login_page.dart';
 // import 'dart:typed_data';
 
-import 'package:chat2p/shared/widgets/balloon_audio_receive_component.dart';
+import 'package:chat2p/shared/widgets/del.dart';
 import 'package:chat2p/shared/contact_component.dart';
 import 'package:chat2p/channel/base_balloon_chat_widget.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
@@ -92,15 +92,15 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    final client = Client(
-      'Chat2P',
-      databaseBuilder: (_) async {
-        final dir = await getApplicationSupportDirectory();
-        final db = HiveCollectionsDatabase('Chat2P', dir.path);
-        await db.open();
-        return db;
-      },
-    );
+    // final client = Client(
+    //   'Chat2P',
+    //   databaseBuilder: (_) async {
+    //     final dir = await getApplicationSupportDirectory();
+    //     final db = HiveCollectionsDatabase('Chat2P', dir.path);
+    //     await db.open();
+    //     return db;
+    //   },
+    // );
 
     return Container(
       decoration: const BoxDecoration(
@@ -111,7 +111,7 @@ class _RoomPageState extends State<RoomPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-            backgroundColor: Color.fromARGB(255, 123, 2, 204),
+            backgroundColor:Theme.of(context).primaryColor,
             title: Column(
               children: [
                 Text(widget.room.displayname),
@@ -141,8 +141,8 @@ class _RoomPageState extends State<RoomPage> {
                       );
                     }
                     _count = timeline.events.length;
-                    print(timeline.room.tags.entries);
-                    print(timeline.room.tags.entries.toString().contains('m.channel'));
+                    // print(timeline.room.tags.entries);
+                    // print(timeline.room.tags.entries.toString().contains('m.channel'));
 
                     return RefreshIndicator(
                       onRefresh: timeline.requestHistory,
@@ -153,7 +153,7 @@ class _RoomPageState extends State<RoomPage> {
                           //       onPressed: timeline.requestHistory,
                           //       child: const Text('Load more...')),
                           // ),
-                          const Divider(height: 1),
+                          const Divider(height: 1, color: Colors.amber,),
                           Expanded(
                             child: AnimatedList(
                               key: _listKey,
@@ -236,76 +236,79 @@ class _RoomPageState extends State<RoomPage> {
                                                                             : Text(timeline.events[i].asUser.membership.toString()),
                                                               ),
                                                             )
-                                                          : timeline.events[i].type == "m.room.message" && timeline.events[i].messageType == "m.imag"
-                                                              ? BalonImageReceive(
-                                                                  url_image: timeline
-                                                                      .events[i]
-                                                                      .getAttachmentUrl(
-                                                                          getThumbnail:
-                                                                              false,
-                                                                          height:
-                                                                              800,
-                                                                          width:
-                                                                              800,
-                                                                          method:
-                                                                              ThumbnailMethod.scale)
-                                                                      .toString(),
+                                                          : timeline.events[i].type == "m.room.message" && timeline.events[i].messageType == "m.imag" ?
+                                                          BaseBalloonWidget(event: timeline.events[i], room: widget.room)
+                                                              // ? BalonImageReceive(
+                                                              //     url_image: timeline
+                                                              //         .events[i]
+                                                              //         .getAttachmentUrl(
+                                                              //             getThumbnail:
+                                                              //                 false,
+                                                              //             height:
+                                                              //                 800,
+                                                              //             width:
+                                                              //                 800,
+                                                              //             method:
+                                                              //                 ThumbnailMethod.scale)
+                                                              //         .toString(),
 
-                                                                  name: timeline
-                                                                      .events[i]
-                                                                      .sender
-                                                                      .calcDisplayname(),
-                                                                  picture: timeline
-                                                                              .events[
-                                                                                  i]
-                                                                              .sender
-                                                                              .avatarUrl ==
-                                                                          null
-                                                                      ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-                                                                      : timeline
-                                                                          .events[
-                                                                              i]
-                                                                          .sender
-                                                                          .avatarUrl!
-                                                                          .getThumbnail(
-                                                                            widget.room.client,
-                                                                            width:
-                                                                                56,
-                                                                            height:
-                                                                                56,
-                                                                          )
-                                                                          .toString(),
+                                                              //     name: timeline
+                                                              //         .events[i]
+                                                              //         .sender
+                                                              //         .calcDisplayname(),
+                                                              //     picture: timeline
+                                                              //                 .events[
+                                                              //                     i]
+                                                              //                 .sender
+                                                              //                 .avatarUrl ==
+                                                              //             null
+                                                              //         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
+                                                              //         : timeline
+                                                              //             .events[
+                                                              //                 i]
+                                                              //             .sender
+                                                              //             .avatarUrl!
+                                                              //             .getThumbnail(
+                                                              //               widget.room.client,
+                                                              //               width:
+                                                              //                   56,
+                                                              //               height:
+                                                              //                   56,
+                                                              //             )
+                                                              //             .toString(),
 
-                                                                  body_msg: timeline
-                                                                      .events[i]
-                                                                      .attachmentMxcUrl
-                                                                      .toString(), //mxcUrlToHttp//(content.url, window.innerWidth, window.innerHeight, 'scale'),
-                                                                  // body_msg: timeline.events[i].getDisplayEvent(timeline).body,
+                                                              //     body_msg: timeline
+                                                              //         .events[i]
+                                                              //         .attachmentMxcUrl
+                                                              //         .toString(), //mxcUrlToHttp//(content.url, window.innerWidth, window.innerHeight, 'scale'),
+                                                              //     // body_msg: timeline.events[i].getDisplayEvent(timeline).body,
 
-                                                                  data_time: timeline
-                                                                      .events[i]
-                                                                      .originServerTs
-                                                                      .toIso8601String(),
-                                                                )
+                                                              //     data_time: timeline
+                                                              //         .events[i]
+                                                              //         .originServerTs
+                                                              //         .toIso8601String(),
+                                                              //   )
                                                               : timeline.events[i].messageType == "m.file"
                                                                   ? const Center(child: Text('Arquivo'))
                                                                   : timeline.events[i].messageType == "m.video"
                                                                       ? const Center(child: Text('Video'))
                                                                       : timeline.events[i].messageType == "m.audio"
-                                                                          ? BalloonAudioReceive(
-                                                                              name: timeline.events[i].sender.calcDisplayname(),
-                                                                              picture: timeline.events[i].sender.avatarUrl!
-                                                                                  .getThumbnail(
-                                                                                    widget.room.client,
-                                                                                    width: 56,
-                                                                                    height: 56,
-                                                                                  )
-                                                                                  .toString(),
-                                                                              body_msg: timeline.events[i].getDisplayEvent(timeline).body,
-                                                                              data_time: timeline.events[i].originServerTs.toIso8601String(),
-                                                                              url_image: 'url_image',
-                                                                              timeline: timeline,
-                                                                            )
+                                                                          ? 
+                                                                           BaseBalloonWidget(event: timeline.events[i], room: widget.room)
+                                                                          // BalloonAudioReceive(
+                                                                          //     name: timeline.events[i].sender.calcDisplayname(),
+                                                                          //     picture: timeline.events[i].sender.avatarUrl!
+                                                                          //         .getThumbnail(
+                                                                          //           widget.room.client,
+                                                                          //           width: 56,
+                                                                          //           height: 56,
+                                                                          //         )
+                                                                          //         .toString(),
+                                                                          //     body_msg: timeline.events[i].getDisplayEvent(timeline).body,
+                                                                          //     data_time: timeline.events[i].originServerTs.toIso8601String(),
+                                                                          //     url_image: 'url_image',
+                                                                          //     timeline: timeline,
+                                                                          //   )
                                                                           : timeline.events[i].messageType == "m.location"
                                                                               ? const Center(child: Text('Localização'))
                                                                               : const Center(child: Text('evento aleatorio'))),
@@ -333,7 +336,7 @@ class _RoomPageState extends State<RoomPage> {
                       Expanded(
                           child: TextField(
                             keyboardType: TextInputType.multiline,
-                            minLines: 10,
+                            minLines: 1,
                             maxLines: 15,
                         controller: _sendController,
                         decoration: const InputDecoration(
