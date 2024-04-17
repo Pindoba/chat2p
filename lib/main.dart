@@ -41,9 +41,12 @@ final meuTema = ThemeData(
   colorScheme: ColorScheme.dark(
     background: Color.fromARGB(174, 56, 56, 56),
     
+    
     ),
   primaryColor: Color.fromARGB(255, 34, 39, 38), // Cor principal
   hintColor: Colors.amber, // Cor de destaque
+  splashColor: Colors.black45,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(elevation: 1)
   // Outras configurações de estilo, como fontes, tamanhos, etc.
 );
 

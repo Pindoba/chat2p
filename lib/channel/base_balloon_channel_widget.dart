@@ -2,13 +2,14 @@ import 'package:chat2p/shared/widgets/audio_balloon.dart';
 import 'package:chat2p/shared/widgets/image_balloon.dart';
 import 'package:chat2p/shared/widgets/text_balloon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 // import 'package:flutter/widgets.dart';
 // import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 import 'package:date_time_format/date_time_format.dart';
 
-class BaseBalloonChatWidget extends StatelessWidget {
-  const BaseBalloonChatWidget({
+class BaseBalloonChannelWidget extends StatelessWidget {
+  const BaseBalloonChannelWidget({
     super.key,
     required this.event,
     required this.room,
@@ -38,33 +39,31 @@ class BaseBalloonChatWidget extends StatelessWidget {
         : 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
 
    
-    final bool send = event.senderId == room.client.userID ? true : false;
-    print(send);
+    // final bool send = event.senderId == room.client.userID ? true : false;
+    // print(send);
     // event.;
 
     return Row(
       mainAxisAlignment:
           MainAxisAlignment.center ,
       children: [
-        Container(
-          height: 40,
-          padding: const EdgeInsets.only(bottom: 10),
-          alignment: Alignment.bottomLeft,
-          child: send != true
-              ? CircleAvatar(
-                  foregroundImage: NetworkImage(photo),
-                )
-              : Container(),
-        ),
-        GestureDetector(
-          onTap: () {
-            option(context, event);
-          },
+        // Container(
+        //   height: 40,
+        //   padding: const EdgeInsets.only(bottom: 10),
+        //   alignment: Alignment.bottomLeft,
+        //   child: send != true
+        //       ? CircleAvatar(
+        //           foregroundImage: NetworkImage(photo),
+        //         )
+        //       : Container(),
+        // ),
+        Expanded(flex: 1,
           child: Container(
-            margin: const EdgeInsets.only(left: 0, top: 8, right: 8, bottom: 8),
+            
+            margin: const EdgeInsets.only( top: 8,  bottom: 8),
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              boxShadow: const <BoxShadow>[
+            decoration: const BoxDecoration(
+              boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Colors.black,
                   blurRadius: 3,
@@ -74,14 +73,8 @@ class BaseBalloonChatWidget extends StatelessWidget {
                   ),
                 )
               ],
-              color:  const Color.fromARGB(153, 145, 55, 206),
-              borderRadius: BorderRadius.only(
-                  bottomLeft:
-                      send == true ? Radius.circular(15) : Radius.circular(0),
-                  bottomRight:
-                      send == true ? Radius.circular(0) : Radius.circular(15),
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15)),
+              color:  Color.fromARGB(255, 36, 51, 255),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             child: Row(children: [
               Column(
@@ -98,14 +91,17 @@ class BaseBalloonChatWidget extends StatelessWidget {
                     ],
                   ),
                   Container(
-                      // constraints: const BoxConstraints(maxWidth: 350),
+          
+                    // width: 300,
+                      constraints: const BoxConstraints(minWidth: 350,),
                       child: type == "m.text"
                           ? TextBalloon(body_msg: body_msg)
                           : type == "m.audio"
                               ? AudioBalloon()
                               : type == "m.image"
                                   ? ImageBalloon(url_image: image)
-                                  : Text('data')),
+                                  : Text('data'),
+                                  ),
                   Row(
                     children: [
                       Text(
@@ -114,15 +110,7 @@ class BaseBalloonChatWidget extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 12, color: Colors.white54),
                       ),
-                      send == true
-                          ? Icon(
-                              Icons.check_sharp,
-                              size: 17,
-                              color: event.receipts.toString() != '[]'
-                                  ? Color.fromARGB(255, 169, 255, 56)
-                                  : Colors.white54,
-                            )
-                          : Text('')
+                      
                     ],
                   )
                 ],
@@ -130,13 +118,7 @@ class BaseBalloonChatWidget extends StatelessWidget {
             ]),
           ),
         ),
-        // SizedBox(
-        //     width: 50,
-        //     child: Text(
-        //       data_time,
-        //       overflow: TextOverflow.clip,
-        //       style: const TextStyle(fontSize: 8),
-        //     )),
+
       ],
     );
   }
@@ -176,7 +158,6 @@ dynamic option(context, event) {
     }
   });
 
-  // child: const Text('Simple dialog')
 }
 
 dynamic delete_event(context, event) {

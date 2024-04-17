@@ -113,25 +113,83 @@ class ListChat extends StatelessWidget {
                 Container(
                   child: Column(
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            _option(context, room);
-                          },
-                          icon: Icon(Icons.more_vert,size: 20,)),
+                      PopupMenuButton<int>(
+                        shadowColor: Colors.amber,
+                        color: Theme.of(context).primaryColor,
+                        elevation: 5,
+                        itemBuilder: (context) => [
+                          PopupMenuItem<int>(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                room.isFavourite == true
+                                    ? const Icon(Icons.block)
+                                    : const Icon(Icons.push_pin),
+                                    SizedBox(width: 8,),
+                                room.isFavourite == true
+                                    ? const Text('Desafixar')
+                                    : Text("Fixar"),
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem<int>(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                Icon(Icons.change_circle_rounded),
+                                SizedBox(width: 8,),
+                                Text('Modo canal')
+                                    
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem<int>(
+                            value: 3,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.red
+                                ),
+                                SizedBox(width: 8),
+                                Text('Apagar conversa'),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onSelected: (value) {
+                          switch (value) {
+                            case 1:
+                              _pin(room, context);
+                              break;
+                            case 2:
+                              _transforme_canal(room);
+                              break;
+                            case 3:
+                              _confirme( context, room);
+                              break;
+                          }
+                        },
+                      ),
+
+
                       room.isFavourite
                           ? Transform.rotate(
-                             angle: 45 * math.pi / 180, 
-
-                            child: Icon(Icons.push_pin, size: 20,
-                                color: const Color.fromARGB(255, 141, 141, 141)),
-                          )
+                              angle: 45 * math.pi / 180,
+                              child: const Icon(Icons.push_pin,
+                                  size: 20,
+                                  color:
+                                      Color.fromARGB(255, 141, 141, 141)),
+                            )
                           : Text(''),
                     ],
                   ),
                 )
               ],
             ),
-            SizedBox(height: 2,),
+            const SizedBox(
+              height: 8,
+            ),
           ],
         ),
       ),
@@ -140,15 +198,11 @@ class ListChat extends StatelessWidget {
 }
 
 void _transforme_canal(Room room) {
-  if(room.tags.entries.toString().contains('channel') == false){
-  room.addTag('channel');
-  }else{
-  room.removeTag('channel');
-
+  if (room.tags.entries.toString().contains('channel') == false) {
+    room.addTag('channel');
+  } else {
+    room.removeTag('channel');
   }
-
-
-  // print('funcao canal executado');
 }
 
 void _modal(BuildContext context, avatar) {
@@ -166,74 +220,40 @@ void _modal(BuildContext context, avatar) {
   );
 }
 
-dynamic _option(context, Room room) {
-  return showDialog(
-    context: context,
-    builder: (BuildContext context) => SimpleDialog(
-      title: const Text('Opções'),
-      children: [
-        ListTile(
-          leading: const Icon(Icons.delete),
-          title: const Text('Apagar'),
-          onTap: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                      title: Text('Apagar conversa?'),
-                      content: Text(''),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            child: Text('Cancelar')),
-                        TextButton(
-                            onPressed: () {
-                              _leave(room, context);
-                            },
-                            child: Text("Apagar"))
-                      ],
-                    ));
-          },
-        ),
-        ListTile(
-          leading: room.isFavourite == true
-              ? const Icon(Icons.block)
-              : const Icon(Icons.push_pin),
-          title: room.isFavourite == true
-              ? const Text('Desafixar')
-              : Text("Fixar"),
-          onTap: () {
-            _pin(room, context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.add_circle),
-          title: const Text('T canal'),
-          onTap: () {
-            _transforme_canal(room);
-            Navigator.pop(context, 'Add account');
-            // print(room.tags.isEmpty);
-          },
-        ),
-      ],
-    ),
-  );
+void _confirme(context,room) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+            title: Text('Apagar conversa?'),
+            content: Text(''),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancelar')),
+              TextButton(
+                  onPressed: () {
+                    _leave(room, context);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Apagar"))
+            ],
+          )
+          );
 }
 
 void _join(Room room, context) async {
-  // print(room.spaceChildren);
   if (room.membership != Membership.join) {
     await room.join();
   }
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (_) => 
-      // room.tags.entries.toString().contains('channel') == true ?
-      // CanalPageChat(room: room)
-      // :
-      RoomPage(room: room),
+      builder: (_) =>
+          // room.tags.entries.toString().contains('channel') == true ?
+          // CanalPageChat(room: room)
+          // :
+          RoomPage(room: room),
     ),
   );
 }
@@ -244,13 +264,10 @@ void _pin(Room room, context) async {
   } else {
     await room.setFavourite(false);
   }
-  Navigator.pop(context);
 }
 
 void _leave(Room room, context) async {
   if (room.membership != Membership.leave) {
     await room.leave();
-    Navigator.pop(context);
-    Navigator.pop(context);
   }
 }

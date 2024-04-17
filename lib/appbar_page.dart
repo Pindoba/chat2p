@@ -49,14 +49,13 @@ class _AppBarPageState extends State<AppBarPage> {
             //       // client: client,
             //     );
           },
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: Colors.black,
           ),
         ),
         body: const Column(
           children: [
-            // _buildStyleSelector(),
 
             Expanded(
               child: TabBarView(
@@ -72,9 +71,9 @@ class _AppBarPageState extends State<AppBarPage> {
           ],
         ),
         bottomNavigationBar: ConvexAppBar.badge(
+          shadowColor: Colors.amber,
           //  Colors.amber,
           backgroundColor: Theme.of(context).primaryColor,
-          // backgroundColor: const Color.fromARGB(255, 123, 2, 204),
           // const <int, dynamic>{3: '69'},
           const <int, dynamic>{0: 0},
           style: _tabStyle,
@@ -87,25 +86,5 @@ class _AppBarPageState extends State<AppBarPage> {
     );
   }
 
-  // Select style enum from dropdown menu:
-  // Widget _buildStyleSelector() {
-  //   final dropdown = DropdownButton<TabStyle>(
-  //     value: _tabStyle,
-  //     onChanged: (newStyle) {
-  //       if (newStyle != null) setState(() => _tabStyle = newStyle);
-  //     },
-  //     items: [
-  //       for (final style in TabStyle.values)
-  //         DropdownMenuItem(
-  //           value: style,
-  //           child: Text(style.toString()),
-  //         )
-  //     ],
-  //   );
-  //   return ListTile(
-  //     contentPadding: const EdgeInsets.all(8),
-  //     title: const Text('appbar style:'),
-  //     trailing: dropdown,
-  //   );
-  // }
+
 }

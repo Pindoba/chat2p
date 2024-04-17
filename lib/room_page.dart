@@ -3,7 +3,7 @@
 
 import 'package:chat2p/shared/widgets/del.dart';
 import 'package:chat2p/shared/contact_component.dart';
-import 'package:chat2p/channel/base_balloon_chat_widget.dart';
+import 'package:chat2p/channel/base_balloon_channel_widget.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -141,8 +141,7 @@ class _RoomPageState extends State<RoomPage> {
                       );
                     }
                     _count = timeline.events.length;
-                    // print(timeline.room.tags.entries);
-                    // print(timeline.room.tags.entries.toString().contains('m.channel'));
+
 
                     return RefreshIndicator(
                       onRefresh: timeline.requestHistory,
@@ -185,7 +184,7 @@ class _RoomPageState extends State<RoomPage> {
                                                   : timeline.events[i].type ==
                                                               "m.room.message" &&
                                                           timeline.events[i].room.tags.isEmpty == false
-                                                      ? BaseBalloonChatWidget(
+                                                      ? BaseBalloonChannelWidget(
                                                           event: timeline
                                                               .events[i],
                                                           room: widget.room,

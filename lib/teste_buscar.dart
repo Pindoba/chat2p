@@ -53,9 +53,11 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pesquisa Matrix'),
+         backgroundColor:Theme.of(context).primaryColor,
       ),
       body: Column(
         children: <Widget>[
+          Divider(height: 1,color: Colors.amber,),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(

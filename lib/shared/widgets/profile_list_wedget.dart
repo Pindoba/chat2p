@@ -1,4 +1,4 @@
-import 'package:chat2p/channel/base_balloon_chat_widget.dart';
+import 'package:chat2p/channel/base_balloon_channel_widget.dart';
 import 'package:chat2p/channel/canal_chat_wedget.dart';
 import 'package:chat2p/room_page.dart';
 // import 'package:chat2p/room_page.dart';
