@@ -1,14 +1,16 @@
 // import 'package:chat2p/login/login_page.dart';
 // import 'dart:typed_data';
 
-import 'package:chat2p/shared/widgets/del.dart';
-import 'package:chat2p/shared/contact_component.dart';
+import 'package:chat2p/html_editor.dart';
+// import 'package:chat2p/shared/widgets/del.dart';
+// import 'package:chat2p/shared/contact_component.dart';
 import 'package:chat2p/channel/base_balloon_channel_widget.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 // import 'package:uuid/uuid.dart';
 // import 'package:matrix/src/utils/uri_extension.dart';
@@ -72,7 +74,7 @@ class _RoomPageState extends State<RoomPage> {
       //   width: image.width.toDouble(),
       // );
 
-      _image(bytes, 'foto.jpg');
+      // _image(bytes, 'foto.jpg');
 
       // _addMessage(message);
       // widget.room.sendFileEvent(
@@ -85,22 +87,21 @@ class _RoomPageState extends State<RoomPage> {
     _sendController.clear();
   }
 
-  void _image(bytes, name) {
-    widget.room.sendFileEvent(MatrixImageFile(bytes: bytes, name: name));
-    _sendController.clear();
+  void _html_editor() {
+     Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const HtmlEditor()),
+  );
   }
+
+  // void _image(bytes, name) {
+  //   widget.room.sendFileEvent(MatrixImageFile(bytes: bytes, name: name));
+  //   _sendController.clear();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    // final client = Client(
-    //   'Chat2P',
-    //   databaseBuilder: (_) async {
-    //     final dir = await getApplicationSupportDirectory();
-    //     final db = HiveCollectionsDatabase('Chat2P', dir.path);
-    //     await db.open();
-    //     return db;
-    //   },
-    // );
+
 
     return Container(
       decoration: const BoxDecoration(
@@ -111,7 +112,7 @@ class _RoomPageState extends State<RoomPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-            backgroundColor:Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
             title: Column(
               children: [
                 Text(widget.room.displayname),
@@ -142,7 +143,6 @@ class _RoomPageState extends State<RoomPage> {
                     }
                     _count = timeline.events.length;
 
-
                     return RefreshIndicator(
                       onRefresh: timeline.requestHistory,
                       child: Column(
@@ -152,7 +152,10 @@ class _RoomPageState extends State<RoomPage> {
                           //       onPressed: timeline.requestHistory,
                           //       child: const Text('Load more...')),
                           // ),
-                          const Divider(height: 1, color: Colors.amber,),
+                          const Divider(
+                            height: 1,
+                            color: Colors.amber,
+                          ),
                           Expanded(
                             child: AnimatedList(
                               key: _listKey,
@@ -170,7 +173,8 @@ class _RoomPageState extends State<RoomPage> {
                                               //################################################    mensagem chat   ######################################
                                               child: timeline.events[i].type ==
                                                           "m.room.message" &&
-                                                      timeline.events[i].room.tags.isEmpty ==
+                                                      timeline.events[i].room
+                                                              .tags.isEmpty ==
                                                           true
                                                   // timeline.events[i]
                                                   //         .messageType ==
@@ -183,7 +187,12 @@ class _RoomPageState extends State<RoomPage> {
 
                                                   : timeline.events[i].type ==
                                                               "m.room.message" &&
-                                                          timeline.events[i].room.tags.isEmpty == false
+                                                          timeline
+                                                                  .events[i]
+                                                                  .room
+                                                                  .tags
+                                                                  .isEmpty ==
+                                                              false
                                                       ? BaseBalloonChannelWidget(
                                                           event: timeline
                                                               .events[i],
@@ -191,19 +200,14 @@ class _RoomPageState extends State<RoomPage> {
                                                         )
 
                                                       //################################################   eventos relacionado aos menbros    ###########################
-                                                      : timeline.events[i].type == "m.room.member"
+                                                      : timeline.events[i].type ==
+                                                              "m.room.member"
                                                           ?
 
                                                           //   timeline.events[i].sender.messageType == "m.room.message"
 
                                                           //   timeline.events[i].sender.avatarUrl
-                                                          //
-                                                          //  timeline.events[i].sender.avatarUrl!.getThumbnail(widget.room.client,width: 56,height: 56,).toString()
-                                                          //
-                                                          // timeline.events[i].sender.calcDisplayname()
-                                                          //
-                                                          //  timeline.events[i].originServerTs.toIso8601String()
-                                                          //
+
                                                           //  timeline.events[i].getDisplayEvent(timeline).body
                                                           // body_msg: timeline.events[i].getDisplayEvent(timeline).attachmentMxcUrl.toString(),
 
@@ -214,7 +218,6 @@ class _RoomPageState extends State<RoomPage> {
                                                                 margin:
                                                                     const EdgeInsets
                                                                         .all(3),
-                                                                // child: Text(timeline.events[i].getDisplayEvent(timeline).body),
                                                                 child: timeline
                                                                             .events[
                                                                                 i]
@@ -230,84 +233,19 @@ class _RoomPageState extends State<RoomPage> {
                                                                             '${timeline.events[i].sender.calcDisplayname()} saiu da sala')
                                                                         : timeline.events[i].asUser.membership.toString() ==
                                                                                 'Membership.join'
-                                                                            ? Text(timeline.events[i].sender.calcDisplayname() +
-                                                                                ' entrou na sala')
+                                                                            ? Text('${timeline.events[i].sender.calcDisplayname()} entrou na sala')
                                                                             : Text(timeline.events[i].asUser.membership.toString()),
                                                               ),
                                                             )
-                                                          : timeline.events[i].type == "m.room.message" && timeline.events[i].messageType == "m.imag" ?
-                                                          BaseBalloonWidget(event: timeline.events[i], room: widget.room)
-                                                              // ? BalonImageReceive(
-                                                              //     url_image: timeline
-                                                              //         .events[i]
-                                                              //         .getAttachmentUrl(
-                                                              //             getThumbnail:
-                                                              //                 false,
-                                                              //             height:
-                                                              //                 800,
-                                                              //             width:
-                                                              //                 800,
-                                                              //             method:
-                                                              //                 ThumbnailMethod.scale)
-                                                              //         .toString(),
-
-                                                              //     name: timeline
-                                                              //         .events[i]
-                                                              //         .sender
-                                                              //         .calcDisplayname(),
-                                                              //     picture: timeline
-                                                              //                 .events[
-                                                              //                     i]
-                                                              //                 .sender
-                                                              //                 .avatarUrl ==
-                                                              //             null
-                                                              //         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-                                                              //         : timeline
-                                                              //             .events[
-                                                              //                 i]
-                                                              //             .sender
-                                                              //             .avatarUrl!
-                                                              //             .getThumbnail(
-                                                              //               widget.room.client,
-                                                              //               width:
-                                                              //                   56,
-                                                              //               height:
-                                                              //                   56,
-                                                              //             )
-                                                              //             .toString(),
-
-                                                              //     body_msg: timeline
-                                                              //         .events[i]
-                                                              //         .attachmentMxcUrl
-                                                              //         .toString(), //mxcUrlToHttp//(content.url, window.innerWidth, window.innerHeight, 'scale'),
-                                                              //     // body_msg: timeline.events[i].getDisplayEvent(timeline).body,
-
-                                                              //     data_time: timeline
-                                                              //         .events[i]
-                                                              //         .originServerTs
-                                                              //         .toIso8601String(),
-                                                              //   )
+                                                          : timeline.events[i].type == "m.room.message" &&
+                                                                  timeline.events[i].messageType == "m.imag"
+                                                              ? BaseBalloonWidget(event: timeline.events[i], room: widget.room)
                                                               : timeline.events[i].messageType == "m.file"
                                                                   ? const Center(child: Text('Arquivo'))
                                                                   : timeline.events[i].messageType == "m.video"
                                                                       ? const Center(child: Text('Video'))
                                                                       : timeline.events[i].messageType == "m.audio"
-                                                                          ? 
-                                                                           BaseBalloonWidget(event: timeline.events[i], room: widget.room)
-                                                                          // BalloonAudioReceive(
-                                                                          //     name: timeline.events[i].sender.calcDisplayname(),
-                                                                          //     picture: timeline.events[i].sender.avatarUrl!
-                                                                          //         .getThumbnail(
-                                                                          //           widget.room.client,
-                                                                          //           width: 56,
-                                                                          //           height: 56,
-                                                                          //         )
-                                                                          //         .toString(),
-                                                                          //     body_msg: timeline.events[i].getDisplayEvent(timeline).body,
-                                                                          //     data_time: timeline.events[i].originServerTs.toIso8601String(),
-                                                                          //     url_image: 'url_image',
-                                                                          //     timeline: timeline,
-                                                                          //   )
+                                                                          ? BaseBalloonWidget(event: timeline.events[i], room: widget.room)
                                                                           : timeline.events[i].messageType == "m.location"
                                                                               ? const Center(child: Text('Localização'))
                                                                               : const Center(child: Text('evento aleatorio'))),
@@ -327,16 +265,71 @@ class _RoomPageState extends State<RoomPage> {
                   // decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/logo.png'))),
                   child: Row(
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            _handleImageSelection();
-                          },
-                          icon: const Icon(Icons.add)),
+                      PopupMenuButton<int>(
+                        shadowColor: Colors.amber,
+                        color: Theme.of(context).primaryColor,
+                        elevation: 5,
+                        itemBuilder: (context) => [
+                          const PopupMenuItem<int>(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                Icon(Icons.camera_alt_rounded),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text('Camera')
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem<int>(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                Icon(Icons.image_rounded),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text('Galeria')
+                              ],
+                            ),
+                          ),
+                          const PopupMenuItem<int>(
+                            value: 3,
+                            child: Row(
+                              children: [
+                                Icon(Icons.html_rounded),
+                                SizedBox(width: 8),
+                                Text('HTML'),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onSelected: (value) {
+                          switch (value) {
+                            case 1:
+                              break;
+                            case 2:
+                              _handleImageSelection();
+                              break;
+                            case 3:
+                              _html_editor();
+
+                              break;
+                          }
+                        },
+                        icon: const Icon(Icons.add_circle),
+                      ),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       _handleImageSelection();
+                      //     },
+                      //     icon: const Icon(Icons.add)),
                       Expanded(
                           child: TextField(
-                            keyboardType: TextInputType.multiline,
-                            minLines: 1,
-                            maxLines: 15,
+                        keyboardType: TextInputType.multiline,
+                        minLines: 1,
+                        maxLines: 15,
                         controller: _sendController,
                         decoration: const InputDecoration(
                           hintText: 'Enviar mensagem',

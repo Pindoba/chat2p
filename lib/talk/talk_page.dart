@@ -1,13 +1,9 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
-// import 'package:animated_radial_menu/animated_radial_menu.dart';
-// import 'package:chat2p/buscar_page.dart';
 import 'package:chat2p/shared/widgets/list_chat_wedget.dart';
-// import 'package:chat2p/menu_radial.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
-// import 'package:page_transition/page_transition.dart';
 
 class TalkPage extends StatefulWidget {
   const TalkPage({super.key});
@@ -20,7 +16,6 @@ bool lupa = false;
 
 class _TalkPageState extends State<TalkPage> {
   final TextEditingController _addController = TextEditingController();
-  // List<String> pin = ["\$NcVV2A6894exHh5yc6uDzTb01O382nD20YZHN2Bkn4Y"];
   void _create(Client client) async {
     String iduser = _addController.text.trim();
     // room.addToDirectChat('@weltonmoura:nitro.chat');
@@ -106,9 +101,8 @@ class _TalkPageState extends State<TalkPage> {
           title: lupa == true
               ? TextField(
                   decoration: const InputDecoration(
-                      // border: OutlineInputBorder(),
-                      labelText: 'Id do usuário',
-                      hintText: '@usuario:servidor.com'),
+                      labelText: 'Buscar por nome',
+                     ),
                   controller: _addController,
                 )
               : const Text('Conversas'),
@@ -116,7 +110,7 @@ class _TalkPageState extends State<TalkPage> {
         body: SafeArea(
           child: Column(
             children: [
-              Divider(height: 1,color: Colors.amber,),
+              const Divider(height: 1,color: Colors.amber,),
               Expanded(
                 child: StreamBuilder(
                   stream: client.onSync.stream,

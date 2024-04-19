@@ -1,4 +1,4 @@
-import 'package:chat2p/buscar_page.dart';
+// import 'package:chat2p/buscar_page.dart';
 import 'package:chat2p/call/calls_page.dart';
 import 'package:chat2p/channel/canal_page.dart';
 import 'package:chat2p/perfil_page.dart';
@@ -7,7 +7,7 @@ import 'package:chat2p/talk/talk_page.dart';
 import 'package:chat2p/teste_buscar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 
 const _kPages = {
