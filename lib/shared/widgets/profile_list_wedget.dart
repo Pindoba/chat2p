@@ -1,11 +1,7 @@
-import 'package:chat2p/channel/base_balloon_channel_widget.dart';
-import 'package:chat2p/channel/canal_chat_wedget.dart';
+// import 'package:chat2p/channel/base_balloon_channel_widget.dart';
+// import 'package:chat2p/channel/canal_chat_wedget.dart';
 import 'package:chat2p/room_page.dart';
-// import 'package:chat2p/room_page.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 

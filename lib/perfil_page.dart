@@ -18,6 +18,9 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<Client>(context, listen: false);
+    final name = client.getDisplayName('@welton_moura:bolha.chat');
+    name;
+    // final profile = client.getProfileFromUserId(client.userID.toString());
     final String avatar = client.getAvatarUrl(client.userID.toString()) != null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
         : client.getAvatarUrl(client.userID.toString()).toString();
@@ -43,7 +46,7 @@ class _PerfilPageState extends State<PerfilPage> {
 
     // print('name');
 
-    void _handleImageSelection() async {
+    void _updateAvatar() async {
       final result = await ImagePicker().pickImage(
         imageQuality: 70,
         maxWidth: 1440,
@@ -53,25 +56,6 @@ class _PerfilPageState extends State<PerfilPage> {
       if (result != null) {
         final bytes = await result.readAsBytes();
         client.setAvatar(MatrixFile(bytes: bytes, name: 'name'));
-        // final image = await decodeImageFromList(bytes);
-
-        // var _user = null;
-        // final message = types.ImageMessage(
-        //   author: _user,
-        //   createdAt: DateTime.now().millisecondsSinceEpoch,
-        //   height: image.height.toDouble(),
-        //   id: const Uuid().v4(),
-        //   name: result.name,
-        //   size: bytes.length,
-        //   uri: result.path,
-        //   width: image.width.toDouble(),
-        // );
-
-        // _image(bytes, 'foto.jpg');
-
-        // _addMessage(message);
-        // widget.room.sendFileEvent(
-        //     MatrixImageFile(bytes: Uint8List.fromList(List<int> message.size), name: message.name));
       }
     }
 
@@ -89,15 +73,30 @@ class _PerfilPageState extends State<PerfilPage> {
         title: Text('Seu Perfil'),
         centerTitle: true,
       ),
-      body: Container(
+      body: Center(
         child: Column(children: [
-          Image.network(avatar),
-          ElevatedButton(onPressed: _logout, child: Text('Sair da conta')),
-          ElevatedButton(
-              onPressed: () {
-                _handleImageSelection();
-              },
-              child: Text('Alterar avatar'))
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(width: 250, child: Image.network(avatar)),
+              Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(onPressed: _logout, icon: Icon(Icons.logout)),
+                  IconButton(
+                      onPressed: _updateAvatar,
+                      icon: Icon(Icons.image_search_rounded)),
+                ],
+              )
+            ],
+          ),
+          Text(name.toString()),
+          // Image.network(avatar),
+          // ElevatedButton(onPressed: _logout, child: Text('Sair da conta')),
+          // ElevatedButton(
+          //     onPressed: () {
+          //       _updateAvatar();
+          //     },
+          //     child: Text('Alterar avatar'))
         ]),
       ),
     );
