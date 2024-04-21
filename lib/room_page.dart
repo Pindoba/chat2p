@@ -2,13 +2,14 @@
 // import 'dart:typed_data';
 
 import 'package:chat2p/camera.dart';
-import 'package:chat2p/html_editor.dart';
+// import 'package:chat2p/html_editor.dart';
 // import 'package:chat2p/shared/widgets/del.dart';
 // import 'package:chat2p/shared/contact_component.dart';
 import 'package:chat2p/channel/base_balloon_channel_widget.dart';
+import 'package:chat2p/markdown_editor.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
 
@@ -16,7 +17,7 @@ import 'package:matrix/matrix.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 // import 'package:uuid/uuid.dart';
 // import 'package:matrix/src/utils/uri_extension.dart';
-var c = codeHtml.value;
+// var c = codeHtml.value;
 
 class RoomPage extends StatefulWidget {
   final Room room;
@@ -91,10 +92,10 @@ class _RoomPageState extends State<RoomPage> {
     _sendController.clear();
   }
 
-  void _html_editor() {
+  void _editor_markdown() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const HtmlEditor()),
+      MaterialPageRoute(builder: (context) => const EditorMarkdown()),
     );
   }
 
@@ -323,7 +324,7 @@ class _RoomPageState extends State<RoomPage> {
                               _handleImageSelection();
                               break;
                             case 3:
-                              _html_editor();
+                              _editor_markdown();
 
                               break;
                           }

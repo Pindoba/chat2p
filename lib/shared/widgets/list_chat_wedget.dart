@@ -113,6 +113,18 @@ class ListChat extends StatelessWidget {
                 Container(
                   child: Column(
                     children: [
+                         room.isFavourite
+                          ? Transform.rotate(
+                              angle: 45 * math.pi / 180,
+                              child: const Icon(Icons.push_pin,
+                                  size: 20,
+                                  color:
+                                      Color.fromARGB(255, 141, 141, 141)),
+                            )
+                          : Text(''),
+
+
+
                       PopupMenuButton<int>(
                         shadowColor: Colors.amber,
                         color: Theme.of(context).primaryColor,
@@ -173,15 +185,7 @@ class ListChat extends StatelessWidget {
                       ),
 
 
-                      room.isFavourite
-                          ? Transform.rotate(
-                              angle: 45 * math.pi / 180,
-                              child: const Icon(Icons.push_pin,
-                                  size: 20,
-                                  color:
-                                      Color.fromARGB(255, 141, 141, 141)),
-                            )
-                          : Text(''),
+                   
                     ],
                   ),
                 )

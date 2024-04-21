@@ -10,6 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:appflowy_editor/appflowy_editor.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +62,20 @@ class InitChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+
+
+
+       localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        AppFlowyEditorLocalizations.delegate,
+      ],
+      supportedLocales: AppFlowyEditorLocalizations.delegate.supportedLocales,
+
+
+
       title: 'Chat2P',
       theme: meuTema,
       // theme: ThemeData.dark().copyWith(),

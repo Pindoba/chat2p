@@ -95,7 +95,7 @@ class _TalkPageState extends State<TalkPage> {
                   ? const Icon(
                       Icons.close,
                     )
-                  : const Icon(Icons.group_add_sharp),
+                  : const Icon(Icons.search),
             ),
           ],
           title: lupa == true
@@ -118,7 +118,12 @@ class _TalkPageState extends State<TalkPage> {
                     itemCount: client.rooms.length,
                     itemBuilder: (context, i) => 
                     
-                    client.rooms[i].isSpace == false && client.rooms[i].tags.entries.toString().contains('channel') == false && client.rooms[i].spaceParents.length < 1
+                    client.rooms[i].isSpace == false 
+                    && client.rooms[i].tags.entries.toString().contains('channel') == false
+                    && client.rooms[i].spaceParents.isEmpty == true
+                    && client.rooms[i].canSendDefaultMessages == true
+                    
+                    // client.rooms[i].isSpace == false && client.rooms[i].tags.entries.toString().contains('channel') == false || client.rooms[i].spaceParents.isNotEmpty == true && client.rooms[i].isSpace == false
                         ? ListChat(
                             room: client.rooms[i],
                             client: client,

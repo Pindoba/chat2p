@@ -51,13 +51,16 @@ class BaseBalloonWidget extends StatelessWidget {
     // event.;
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment:
           send == true ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           height: 40,
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(right: 5),
+          margin: EdgeInsets.only(bottom: 8, left: 8),
           alignment: Alignment.bottomLeft,
+          
           child: send != true
               ? CircleAvatar(
                   foregroundImage: NetworkImage(photo),
@@ -73,18 +76,18 @@ class BaseBalloonWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               boxShadow: const <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 3,
-                  offset: Offset(
-                    0.0,
-                    0.3,
-                  ),
-                )
+                // BoxShadow(
+                //   color: Colors.black,
+                //   blurRadius: 3,
+                //   offset: Offset(
+                //     0.0,
+                //     0.3,
+                //   ),
+                // )
               ],
               color: send == true
-                  ? Color.fromARGB(255, 62, 160, 59)
-                  : Color.fromARGB(255, 73, 113, 201),
+                  ? Color.fromARGB(204, 62, 160, 59)
+                  : Color.fromARGB(188, 73, 113, 201),
               borderRadius: BorderRadius.only(
                   bottomLeft:
                       send == true ? Radius.circular(15) : Radius.circular(0),

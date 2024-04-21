@@ -88,7 +88,7 @@ class _CanalPageState extends State<CanalPage> {
                   ? const Icon(
                       Icons.close,
                     )
-                  : const Icon(Icons.group_add_sharp),
+                  : const Icon(Icons.search),
             ),
           ],
           title: lupa == true
@@ -109,7 +109,12 @@ class _CanalPageState extends State<CanalPage> {
                   stream: client.onSync.stream,
                   builder: (context, _) => ListView.builder(
                     itemCount: client.rooms.length,
-                    itemBuilder: (context, i) => client.rooms[i].tags.entries.toString().contains('channel') == true
+                    itemBuilder: (context, i) => 
+                    client.rooms[i].tags.entries.toString().contains('channel') == true &&
+                    client.rooms[i].spaceParents.isNotEmpty == true
+                     || client.rooms[i].tags.entries.toString().contains('channel') == true 
+                     || client.rooms[i].canSendDefaultMessages == false
+
                         ? ListChat(
                             room: client.rooms[i],
                             client: client,
