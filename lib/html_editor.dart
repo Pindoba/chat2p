@@ -1,19 +1,20 @@
 import 'dart:convert';
 
-// import 'package:chat2p/login/create_cont.dart';
 import 'package:flutter/material.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
-import 'package:matrix/matrix.dart';
+
+import 'package:signals/signals.dart';
+
 
 class HtmlEditor extends StatefulWidget {
-  final dynamic room;
-  const HtmlEditor({super.key, this.room});
-  
+  const HtmlEditor({
+    super.key,
+  });
 
   @override
   State<HtmlEditor> createState() => _HtmlEditorState();
-  
 }
+final codeHtml = signal('');
 
 class _HtmlEditorState extends State<HtmlEditor> {
   late QuillEditorController controller;
@@ -32,8 +33,6 @@ class _HtmlEditorState extends State<HtmlEditor> {
     ToolBarStyle.addTable,
     ToolBarStyle.editTable,
   ];
-
-  
 
   final _toolbarColor = Colors.grey.shade200;
   final _backgroundColor = Colors.white70;
@@ -169,7 +168,8 @@ class _HtmlEditorState extends State<HtmlEditor> {
               textButton(
                   text: 'Enviar',
                   onPressed: () {
-                    // room.sendTextEvent(controller.getText());
+                    codeHtml.value = controller.getText().toString();
+                    print(codeHtml.get());
                     // setHtmlText(room);
                   }),
               textButton(
@@ -267,9 +267,10 @@ class _HtmlEditorState extends State<HtmlEditor> {
   }
 
   ///[getHtmlText] to get the html text from editor
-  void getHtmlText() async {
+  getHtmlText() async {
     String? htmlText = await controller.getText();
-    debugPrint(htmlText);
+    // debugPrint(htmlText);
+    return htmlText;
   }
 
   // void setHtmlText(Room room) {

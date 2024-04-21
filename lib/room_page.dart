@@ -1,6 +1,7 @@
 // import 'package:chat2p/login/login_page.dart';
 // import 'dart:typed_data';
 
+import 'package:chat2p/camera.dart';
 import 'package:chat2p/html_editor.dart';
 // import 'package:chat2p/shared/widgets/del.dart';
 // import 'package:chat2p/shared/contact_component.dart';
@@ -10,10 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
+
 // import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 // import 'package:uuid/uuid.dart';
 // import 'package:matrix/src/utils/uri_extension.dart';
+var c = codeHtml.value;
 
 class RoomPage extends StatefulWidget {
   final Room room;
@@ -84,14 +87,22 @@ class _RoomPageState extends State<RoomPage> {
 
   void _send() {
     widget.room.sendTextEvent(_sendController.text.trim());
+    // codeHtml;
     _sendController.clear();
   }
 
   void _html_editor() {
-     Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const HtmlEditor()),
-  );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HtmlEditor()),
+    );
+  }
+
+  void _openCamera() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CameraRoom()),
+    );
   }
 
   // void _image(bytes, name) {
@@ -101,8 +112,6 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
@@ -308,6 +317,7 @@ class _RoomPageState extends State<RoomPage> {
                         onSelected: (value) {
                           switch (value) {
                             case 1:
+                              _openCamera();
                               break;
                             case 2:
                               _handleImageSelection();
@@ -332,6 +342,7 @@ class _RoomPageState extends State<RoomPage> {
                         maxLines: 15,
                         controller: _sendController,
                         decoration: const InputDecoration(
+                          // prefixText: ,
                           hintText: 'Enviar mensagem',
                         ),
                       )),

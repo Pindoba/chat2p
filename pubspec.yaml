@@ -41,7 +41,7 @@ dependencies:
   path_provider: ^2.1.2
   image_picker: ^1.0.7
   open_filex: ^4.4.0
-
+  signals: ^5.1.0
   cupertino_icons: ^1.0.6
   flutter_chat_types: ^3.6.2
   mime: ^1.0.5
@@ -55,6 +55,9 @@ dependencies:
   page_transition: ^2.1.0
   # flutter_widget_from_html: ^0.14.11
   quill_html_editor: ^2.2.8
+  camera: ^0.10.5+9
+  video_player: ^2.8.6
+  chat_bubbles: ^1.6.0
 
 dev_dependencies:
   flutter_test:
