@@ -2,9 +2,7 @@ import 'package:chat2p/shared/widgets/audio_balloon.dart';
 import 'package:chat2p/shared/widgets/image_balloon.dart';
 import 'package:chat2p/shared/widgets/text_balloon.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+
 import 'package:matrix/matrix.dart';
 import 'package:date_time_format/date_time_format.dart';
 

@@ -1,12 +1,12 @@
 // import 'package:chat2p/login/login_page.dart';
 // import 'dart:typed_data';
 
-import 'package:chat2p/camera.dart';
+// import 'package:chat2p/camera.dart';
 // import 'package:chat2p/html_editor.dart';
 // import 'package:chat2p/shared/widgets/del.dart';
 // import 'package:chat2p/shared/contact_component.dart';
 import 'package:chat2p/channel/base_balloon_channel_widget.dart';
-import 'package:chat2p/markdown_editor.dart';
+// import 'package:chat2p/markdown_editor.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
@@ -93,17 +93,17 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   void _editor_markdown() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const EditorMarkdown()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const EditorMarkdown()),
+    // );
   }
 
   void _openCamera() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const CameraRoom()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const CameraRoom()),
+    // );
   }
 
   // void _image(bytes, name) {

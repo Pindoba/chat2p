@@ -120,39 +120,6 @@ class _CanalPageState extends State<CanalPage> {
                             client: client,
                           )
                 
-                        //       Container(
-                        //         margin: const EdgeInsets.all(0),
-                        //         // decoration: BoxDecoration(
-                        //         //     // color: const Color.fromARGB(153, 123, 2, 204),
-                        //         //     borderRadius: BorderRadius.circular(5),
-                        //         //     boxShadow: const <BoxShadow>[
-                        //         //       BoxShadow(
-                        //         //           color: Color.fromARGB(141, 0, 0, 0),
-                        //         //           blurRadius: 3,
-                        //         //           offset: Offset(
-                        //         //             0.0,
-                        //         //             0.3,
-                        //         //           ))
-                        //         //     ]),
-                        //         child: ListTile(
-                        //           subtitleTextStyle: TextStyle(color: client.rooms[i].typingUsers.toString() != '[]' ? Colors.amber : Colors.white),
-                        //
-                        //
-                        //           ),
-                        //           subtitle: Text(
-                        //             client.rooms[i].typingUsers.toString() != '[]'
-                        //                 ? 'Digitando...'
-                        //                 : client.rooms[i].lastEvent?.body ??
-                        //                     'Sem mensagem',
-                        //             maxLines: 1,
-                        //           ),
-                        //           trailing: IconButton(
-                        //               onPressed: () {
-                        //                 _option(context, client.rooms[i]);
-                        //               },
-                        //               icon: const Icon(
-                        //                 Icons.more_vert,
-                        //
                         : Container(),
                   ),
                 ),

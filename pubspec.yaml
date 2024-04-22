@@ -55,12 +55,12 @@ dependencies:
   page_transition: ^2.1.0
   # flutter_widget_from_html: ^0.14.11
   quill_html_editor: ^2.2.8
-  camera: ^0.10.5+9
+  # camera: ^0.10.5+9
   video_player: ^2.8.6
   # chat_bubbles: ^1.6.0
   flutter_markdown: ^0.7.1
   appflowy_editor: ^2.3.4
-  google_fonts: ^6.2.0
+  # google_fonts: ^6.2.0
 
 dev_dependencies:
   flutter_test:
@@ -89,10 +89,10 @@ flutter:
     - assets/
     - assets/logo.png
     - assets/image/
-    - assets/images/selection_menu
-    - assets/images/image_toolbar
-    - assets/images/toolbar
-    - assets/images/mobile/toolbar_icons
+    # - assets/images/selection_menu
+    # - assets/images/image_toolbar
+    # - assets/images/toolbar
+    # - assets/images/mobile/toolbar_icons
     - assets/image/f2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

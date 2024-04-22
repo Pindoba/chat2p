@@ -1,10 +1,8 @@
-import 'package:chat2p/channel/canal_chat_wedget.dart';
+// import 'package:chat2p/channel/canal_chat_wedget.dart';
 import 'package:chat2p/room_page.dart';
 // import 'package:chat2p/room_page.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+
 import 'package:matrix/matrix.dart';
 import 'dart:math' as math;
 
@@ -235,13 +233,13 @@ void _confirme(context,room) {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Cancelar')),
+                  child: const Text('Cancelar')),
               TextButton(
                   onPressed: () {
                     _leave(room, context);
                     Navigator.pop(context);
                   },
-                  child: Text("Apagar"))
+                  child: const Text("Apagar"))
             ],
           )
           );
