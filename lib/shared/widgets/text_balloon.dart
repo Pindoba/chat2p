@@ -32,7 +32,7 @@ class TextBalloon extends StatelessWidget {
                     // h2: TextStyle(fontSize: 28),
                     // h3: TextStyle(fontSize: 26),
                     h1Align: WrapAlignment.center,
-                    textScaleFactor: 1.4
+                    textScaleFactor: 1.3
                     
                     ),
                   shrinkWrap: true,

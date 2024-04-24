@@ -15,190 +15,183 @@ class ListChat extends StatelessWidget {
   Widget build(BuildContext context) {
     final String name = room.displayname;
     final String last_msg = room.lastEvent?.body ?? 'Sem mensagem';
+    final bool typin = room.typingUsers.isEmpty;
+    final dateLastEvent = room.receiptState.global.ownPublic?.timestamp;
     final String avatar = room.avatar == null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-        : room.avatar!
-            .getThumbnail(
-              client,
-              width: 50,
-              height: 50,
-            )
-            .toString();
+        : room.avatar!.getThumbnail(client, width: 50, height: 50).toString();
+
+    print(room.typingUsers.isEmpty == false ? 'digitanto' : 'nada');
 
     return GestureDetector(
       onTap: () {
         _join(room, context);
       },
-      child: Container(
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    margin: EdgeInsets.only(left: 15, right: 15),
-                    width: 50,
-                    height: 50,
-                    child: GestureDetector(
-                      onTap: room.avatar != null
-                          ? () => _modal(
-                              context,
-                              room.avatar!
-                                  .getDownloadLink(
-                                    client,
-                                  )
-                                  .toString())
-                          : () {},
-                      child: CircleAvatar(
-                        foregroundImage: NetworkImage(avatar),
-                      ),
-                    )),
-                Flexible(
-                  child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                style: TextStyle(fontSize: 16),
-                                name,
-                                overflow: TextOverflow.clip,
-                                maxLines: 2,
-                                textAlign: TextAlign.start,
-                                softWrap: false,
-                              ),
-                            ),
-                            if (room.notificationCount > 0)
-                              Material(
-                                  elevation: 8,
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Colors.amber,
-                                  child: SizedBox(
-                                    width: 25,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Center(
-                                          child: Text(
-                                        room.notificationCount.toString(),
-                                        style: TextStyle(color: Colors.black),
-                                      )),
-                                    ),
-                                  ))
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.check),
-                            Expanded(
-                              child: Text(
-                                last_msg,
-                                maxLines: 1,
-                                style: TextStyle(color: Colors.white54),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  margin: EdgeInsets.only(left: 15, right: 15),
+                  width: 50,
+                  height: 50,
+                  child: GestureDetector(
+                    onTap: room.avatar != null
+                        ? () => _modal(
+                            context,
+                            room.avatar!
+                                .getDownloadLink(
+                                  client,
+                                )
+                                .toString())
+                        : () {},
+                    child: CircleAvatar(
+                      foregroundImage: NetworkImage(avatar),
                     ),
-                  ),
-                ),
-                Container(
+                  )),
+              Flexible(
+                child: SizedBox(
+                  width: double.infinity,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                         room.isFavourite
-                          ? Transform.rotate(
-                              angle: 45 * math.pi / 180,
-                              child: const Icon(Icons.push_pin,
-                                  size: 20,
-                                  color:
-                                      Color.fromARGB(255, 141, 141, 141)),
-                            )
-                          : Text(''),
-
-
-
-                      PopupMenuButton<int>(
-                        shadowColor: Colors.amber,
-                        color: Theme.of(context).primaryColor,
-                        elevation: 5,
-                        itemBuilder: (context) => [
-                          PopupMenuItem<int>(
-                            value: 1,
-                            child: Row(
-                              children: [
-                                room.isFavourite == true
-                                    ? const Icon(Icons.block)
-                                    : const Icon(Icons.push_pin),
-                                    SizedBox(width: 8,),
-                                room.isFavourite == true
-                                    ? const Text('Desafixar')
-                                    : Text("Fixar"),
-                              ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              style: const TextStyle(fontSize: 16),
+                              name,
+                              overflow: TextOverflow.clip,
+                              maxLines: 2,
+                              textAlign: TextAlign.start,
+                              softWrap: false,
                             ),
                           ),
-                          const PopupMenuItem<int>(
-                            value: 2,
-                            child: Row(
-                              children: [
-                                Icon(Icons.change_circle_rounded),
-                                SizedBox(width: 8,),
-                                Text('Modo canal')
-                                    
-                              ],
-                            ),
-                          ),
-                          const PopupMenuItem<int>(
-                            value: 3,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.red
-                                ),
-                                SizedBox(width: 8),
-                                Text('Apagar conversa'),
-                              ],
+                          if (room.notificationCount > 0)
+                            Material(
+                                elevation: 8,
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.amber,
+                                child: SizedBox(
+                                  width: 25,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Center(
+                                        child: Text(
+                                      room.notificationCount.toString(),
+                                      style: const TextStyle(color: Colors.black),
+                                    )),
+                                  ),
+                                ))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          room.receiptState.global.ownPublic.toString() == '[]'
+                              ? Icon(Icons.check,size: 18)
+                              : Text(''),
+                          Expanded(
+                            child: typin == false ?
+                            Text('Digitando',style: TextStyle(color: Colors.amber)) :
+                            Text(last_msg,
+                              maxLines: 1,
+                              style: TextStyle(color: Colors.white54),
                             ),
                           ),
                         ],
-                        onSelected: (value) {
-                          switch (value) {
-                            case 1:
-                              _pin(room, context);
-                              break;
-                            case 2:
-                              _transforme_canal(room);
-                              break;
-                            case 3:
-                              _confirme( context, room);
-                              break;
-                          }
-                        },
-                      ),
-
-
-                   
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-          ],
-        ),
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: [
+                    room.isFavourite
+                        ? Transform.rotate(
+                            angle: 45 * math.pi / 180,
+                            child: const Icon(Icons.push_pin,
+                                size: 20,
+                                color: Color.fromARGB(255, 141, 141, 141)),
+                          )
+                        : const Text(''),
+                    PopupMenuButton<int>(
+                      shadowColor: Colors.amber,
+                      color: Theme.of(context).primaryColor,
+                      elevation: 5,
+                      itemBuilder: (context) => [
+                        PopupMenuItem<int>(
+                          value: 1,
+                          child: Row(
+                            children: [
+                              room.isFavourite == true
+                                  ? const Icon(Icons.block)
+                                  : const Icon(Icons.push_pin),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              room.isFavourite == true
+                                  ? const Text('Desafixar')
+                                  : const Text("Fixar"),
+                            ],
+                          ),
+                        ),
+                        const PopupMenuItem<int>(
+                          value: 2,
+                          child: Row(
+                            children: [
+                              Icon(Icons.change_circle_rounded),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text('Modo canal')
+                            ],
+                          ),
+                        ),
+                        const PopupMenuItem<int>(
+                          value: 3,
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, color: Colors.red),
+                              SizedBox(width: 8),
+                              Text('Apagar conversa'),
+                            ],
+                          ),
+                        ),
+                      ],
+                      onSelected: (value) {
+                        switch (value) {
+                          case 1:
+                            _pin(room, context);
+                            break;
+                          case 2:
+                            _transforme_canal(room);
+                            break;
+                          case 3:
+                            _confirme(context, room);
+                            break;
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+        ],
       ),
     );
   }
 }
 
+// ignore: non_constant_identifier_names
 void _transforme_canal(Room room) {
   if (room.tags.entries.toString().contains('channel') == false) {
     room.addTag('channel');
@@ -222,12 +215,12 @@ void _modal(BuildContext context, avatar) {
   );
 }
 
-void _confirme(context,room) {
+void _confirme(context, room) {
   showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-            title: Text('Apagar conversa?'),
-            content: Text(''),
+            title: const Text('Apagar conversa?'),
+            content: const Text(''),
             actions: [
               TextButton(
                   onPressed: () {
@@ -241,8 +234,7 @@ void _confirme(context,room) {
                   },
                   child: const Text("Apagar"))
             ],
-          )
-          );
+          ));
 }
 
 void _join(Room room, context) async {

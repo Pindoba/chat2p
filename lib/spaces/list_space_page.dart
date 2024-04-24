@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat2p/room_page.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:chat2p/shared/widgets/list_chat_wedget.dart';

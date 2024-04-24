@@ -1,11 +1,12 @@
 import 'package:chat2p/shared/widgets/audio_balloon.dart';
 import 'package:chat2p/shared/widgets/image_balloon.dart';
 import 'package:chat2p/shared/widgets/text_balloon.dart';
+// import 'package:chat2p/shared/widgets/mxc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 import 'package:date_time_format/date_time_format.dart';
+// import 'package:http/http.dart' as http;
 
 class BaseBalloonWidget extends StatelessWidget {
   const BaseBalloonWidget({
@@ -20,35 +21,18 @@ class BaseBalloonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String name = event.sender.calcDisplayname();
-    // final String photo = 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
     final String photo = event.sender.avatarUrl == null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
-        : event.sender.avatarUrl!
-            .getThumbnail(room.client, width: 56, height: 56)
-            .toString();
+        : event.sender.avatarUrl!.getThumbnail(room.client, width: 56, height: 56).toString();
     final String body_msg = event.body;
     final String data_time = event.originServerTs.format('l, j M, H:i');
     final String type = event.messageType;
-    final String image = event.sender.avatarUrl != null
-        ? event.sender.avatarUrl!
-            .getDownloadLink(
-              room.client,
-            )
-            .toString()
-        : 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
-
-    // event.attachmentMxcUrl!.getDownloadLink(room.client, ).toString();
-    // final teste = await event.downloadAndDecryptAttachment(getThumbnail: false, );
-    // print(teste);
-    // : event.sender.avatarUrl!
-    //     .getDownloadLink(
-    //       room.client,
-    //     )
-    //     .toString();
-// event.sendAgain()
+    final String image = event.sender.avatarUrl != null ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'  : 'nada nada nada';
     final bool send = event.senderId == room.client.userID ? true : false;
-    // print(send);
-    // event.;
+    
+                     
+    print(image.parseIdentifierIntoParts());
+
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -58,12 +42,19 @@ class BaseBalloonWidget extends StatelessWidget {
         Container(
           height: 40,
           padding: const EdgeInsets.only(right: 5),
-          margin: EdgeInsets.only(bottom: 8, left: 8),
+          margin: const EdgeInsets.only(bottom: 8, left: 8),
           alignment: Alignment.bottomLeft,
-          
           child: send != true
               ? CircleAvatar(
                   foregroundImage: NetworkImage(photo),
+                  child: CachedNetworkImage(
+                    imageUrl: photo,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
                 )
               : Container(),
         ),
@@ -86,15 +77,15 @@ class BaseBalloonWidget extends StatelessWidget {
                 // )
               ],
               color: send == true
-                  ? Color.fromARGB(204, 62, 160, 59)
-                  : Color.fromARGB(188, 73, 113, 201),
+                  ? const Color.fromARGB(204, 67, 88, 66)
+                  : const Color.fromARGB(187, 94, 111, 148),
               borderRadius: BorderRadius.only(
                   bottomLeft:
-                      send == true ? Radius.circular(15) : Radius.circular(0),
+                      send == true ? const Radius.circular(15) : const Radius.circular(0),
                   bottomRight:
-                      send == true ? Radius.circular(0) : Radius.circular(15),
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15)),
+                      send == true ? const Radius.circular(0) : const Radius.circular(15),
+                  topLeft: const Radius.circular(15),
+                  topRight: const Radius.circular(15)),
             ),
             child: Row(children: [
               Column(
@@ -120,15 +111,17 @@ class BaseBalloonWidget extends StatelessWidget {
                       child: type == "m.text"
                           ? TextBalloon(body_msg: body_msg)
                           : type == "m.audio"
-                              ? AudioBalloon()
+                              ? const AudioBalloon()
                               : type == "m.image"
                                   ? Column(
-                                    children: [
-                                      ImageBalloon(url_image: image),
-                                      TextBalloon(body_msg: body_msg,)
-                                    ],
-                                  )
-                                  : Text('data')),
+                                      children: [
+                                        ImageBalloon(url_image: image),
+                                        TextBalloon(
+                                          body_msg: body_msg,
+                                        )
+                                      ],
+                                    )
+                                  : const Text('data')),
                   Row(
                     children: [
                       Text(
@@ -142,10 +135,10 @@ class BaseBalloonWidget extends StatelessWidget {
                               Icons.check_sharp,
                               size: 17,
                               color: event.receipts.toString() != '[]'
-                                  ? Color.fromARGB(255, 169, 255, 56)
+                                  ? const Color.fromARGB(255, 169, 255, 56)
                                   : Colors.white54,
                             )
-                          : Text('')
+                          : const Text('')
                     ],
                   )
                 ],
@@ -153,13 +146,7 @@ class BaseBalloonWidget extends StatelessWidget {
             ]),
           ),
         ),
-        // SizedBox(
-        //     width: 50,
-        //     child: Text(
-        //       data_time,
-        //       overflow: TextOverflow.clip,
-        //       style: const TextStyle(fontSize: 8),
-        //     )),
+   
       ],
     );
   }
@@ -199,9 +186,9 @@ dynamic option(context, event) {
     }
   });
 
-  // child: const Text('Simple dialog')
 }
 
+// ignore: non_constant_identifier_names
 dynamic delete_event(context, event) {
   event.redactEvent();
   Navigator.pop(context);

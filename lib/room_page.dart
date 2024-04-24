@@ -1,17 +1,13 @@
-// import 'package:chat2p/login/login_page.dart';
-// import 'dart:typed_data';
-
-// import 'package:chat2p/camera.dart';
-// import 'package:chat2p/html_editor.dart';
-// import 'package:chat2p/shared/widgets/del.dart';
-// import 'package:chat2p/shared/contact_component.dart';
 import 'package:chat2p/channel/base_balloon_channel_widget.dart';
-// import 'package:chat2p/markdown_editor.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_chat_types/flutter_chat_types.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:matrix/matrix.dart';
+import 'package:signals/signals_flutter.dart';
+// import 'package:uuid/uuid.dart';
 
 // import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -65,25 +61,13 @@ class _RoomPageState extends State<RoomPage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       // final image = await decodeImageFromList(bytes);
-
-      // var _user = null;
-      // final message = types.ImageMessage(
-      //   author: _user,
-      //   createdAt: DateTime.now().millisecondsSinceEpoch,
-      //   height: image.height.toDouble(),
-      //   id: const Uuid().v4(),
-      //   name: result.name,
-      //   size: bytes.length,
-      //   uri: result.path,
-      //   width: image.width.toDouble(),
-      // );
-
-      // _image(bytes, 'foto.jpg');
-
-      // _addMessage(message);
-      // widget.room.sendFileEvent(
-      //     MatrixImageFile(bytes: Uint8List.fromList(List<int> message.size), name: message.name));
+      widget.room.sendFileEvent(MatrixImageFile(bytes: bytes, name: 'message.name'));
     }
+  }
+
+  var meteOdedo = Signal(false);
+  _typin() {
+    return meteOdedo.value = widget.room.typingUsers.isEmpty;
   }
 
   void _send() {
@@ -126,10 +110,11 @@ class _RoomPageState extends State<RoomPage> {
             title: Column(
               children: [
                 Text(widget.room.displayname),
-                widget.room.typingUsers.toString() != '[]'
+                // widget.room.typingUsers.isEmpty == false
+                meteOdedo.value == true
                     ? const Text(
                         'Digitando...',
-                        style: TextStyle(color: Colors.amber),
+                        style: TextStyle(color: Colors.amber, fontSize: 16),
                       )
                     : Text('')
               ],
@@ -258,7 +243,7 @@ class _RoomPageState extends State<RoomPage> {
                                                                           ? BaseBalloonWidget(event: timeline.events[i], room: widget.room)
                                                                           : timeline.events[i].messageType == "m.location"
                                                                               ? const Center(child: Text('Localização'))
-                                                                              : const Center(child: Text('evento aleatorio'))),
+                                                                              : Center(child: Text(timeline.events[i].messageType.toString()))),
                                         ),
                             ),
                           ),
@@ -268,93 +253,109 @@ class _RoomPageState extends State<RoomPage> {
                   },
                 ),
               ),
-              const Divider(height: 1),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   // decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/logo.png'))),
-                  child: Row(
-                    children: [
-                      PopupMenuButton<int>(
-                        shadowColor: Colors.amber,
-                        color: Theme.of(context).primaryColor,
-                        elevation: 5,
-                        itemBuilder: (context) => [
-                          const PopupMenuItem<int>(
-                            value: 1,
-                            child: Row(
-                              children: [
-                                Icon(Icons.camera_alt_rounded),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text('Camera')
-                              ],
-                            ),
+                  child: widget.room.canSendDefaultMessages == true
+                      ? Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const <BoxShadow>[
+                              BoxShadow(
+                                  blurRadius: 2,
+                                  color: Colors.amber,
+                                  offset: Offset(.3, .0))
+                            ],
                           ),
-                          const PopupMenuItem<int>(
-                            value: 2,
-                            child: Row(
-                              children: [
-                                Icon(Icons.image_rounded),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text('Galeria')
-                              ],
-                            ),
-                          ),
-                          const PopupMenuItem<int>(
-                            value: 3,
-                            child: Row(
-                              children: [
-                                Icon(Icons.html_rounded),
-                                SizedBox(width: 8),
-                                Text('HTML'),
-                              ],
-                            ),
-                          ),
-                        ],
-                        onSelected: (value) {
-                          switch (value) {
-                            case 1:
-                              _openCamera();
-                              break;
-                            case 2:
-                              _handleImageSelection();
-                              break;
-                            case 3:
-                              _editor_markdown();
+                          child: Row(
+                            children: [
+                              PopupMenuButton<int>(
+                                shadowColor: Colors.amber,
+                                color: Theme.of(context).primaryColor,
+                                elevation: 5,
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem<int>(
+                                    value: 1,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.camera_alt_rounded),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text('Camera')
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem<int>(
+                                    value: 2,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.image_rounded),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text('Galeria')
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem<int>(
+                                    value: 3,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.html_rounded),
+                                        SizedBox(width: 8),
+                                        Text('HTML'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                                onSelected: (value) {
+                                  switch (value) {
+                                    case 1:
+                                      _openCamera();
+                                      break;
+                                    case 2:
+                                      _handleImageSelection();
+                                      break;
+                                    case 3:
+                                      _editor_markdown();
 
-                              break;
-                          }
-                        },
-                        icon: const Icon(Icons.add_circle),
-                      ),
-                      // IconButton(
-                      //     onPressed: () {
-                      //       _handleImageSelection();
-                      //     },
-                      //     icon: const Icon(Icons.add)),
-                      Expanded(
-                          child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines: 15,
-                        controller: _sendController,
-                        decoration: const InputDecoration(
-                          // prefixText: ,
-                          hintText: 'Enviar mensagem',
-                        ),
-                      )),
-                      IconButton(
-                        icon: const Icon(Icons.send_outlined),
-                        onPressed: _send,
-                      ),
-                    ],
-                  ),
+                                      break;
+                                  }
+                                },
+                                icon: const Icon(Icons.add_circle),
+                              ),
+                              // IconButton(
+                              //     onPressed: () {
+                              //       _handleImageSelection();
+                              //     },
+                              //     icon: const Icon(Icons.add)),
+                              Expanded(
+                                child: TextField(
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 1,
+                                  maxLines: 15,
+                                  controller: _sendController,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enviar mensagem',
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.send_outlined),
+                                onPressed: _send,
+                              ),
+                            ],
+                          ),
+                        )
+                      : const Text(''),
                 ),
               ),
+              SizedBox(
+                height: 8,
+              )
             ],
           ),
         ),
