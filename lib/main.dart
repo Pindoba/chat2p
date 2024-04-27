@@ -42,13 +42,16 @@ void main() async {
 
 
 final meuTema = ThemeData(
-  colorScheme: ColorScheme.dark(
+  colorScheme: const ColorScheme.dark(
     background: Color.fromARGB(174, 56, 56, 56),
+    primary: Colors.amber,
     
     
     ),
+    // primaryColorDark: Colors.am,
   primaryColor: Color.fromARGB(255, 34, 39, 38), // Cor principal
-  hintColor: Colors.amber, // Cor de destaque
+  indicatorColor: Colors.amber,
+  hintColor: Colors.white54, // Cor de destaque
   splashColor: Colors.black45,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(elevation: 1)
   // Outras configurações de estilo, como fontes, tamanhos, etc.

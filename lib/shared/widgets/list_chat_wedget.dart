@@ -13,10 +13,11 @@ class ListChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String name = room.displayname;
+    final String name = room.displayname.replaceAll('Group with ', '');
     final String last_msg = room.lastEvent?.body ?? 'Sem mensagem';
     final bool typin = room.typingUsers.isEmpty;
     final dateLastEvent = room.receiptState.global.ownPublic?.timestamp;
+    // final bool send = room.lastEvent.;//senderId == room.client.userID ? true : false;
     final String avatar = room.avatar == null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
         : room.avatar!.getThumbnail(client, width: 50, height: 50).toString();
@@ -75,7 +76,7 @@ class ListChat extends StatelessWidget {
                             Material(
                                 elevation: 8,
                                 borderRadius: BorderRadius.circular(50),
-                                color: Colors.amber,
+                                color: Theme.of(context).indicatorColor,
                                 child: SizedBox(
                                   width: 25,
                                   child: Padding(
@@ -96,11 +97,16 @@ class ListChat extends StatelessWidget {
                               : Text(''),
                           Expanded(
                             child: typin == false ?
-                            Text('Digitando',style: TextStyle(color: Colors.amber)) :
-                            Text(last_msg,
-                              maxLines: 1,
-                              style: TextStyle(color: Colors.white54),
-                            ),
+                            Text('Digitando...',style: TextStyle(color: Theme.of(context).indicatorColor)) :
+                            // room.getTimeline()..toString() != '[]' ?
+                            
+                              
+                                Text(last_msg,
+                                  maxLines: 1,
+                                  style: TextStyle(color: Colors.white54),
+                                ),
+                              
+                        
                           ),
                         ],
                       )
@@ -120,7 +126,7 @@ class ListChat extends StatelessWidget {
                           )
                         : const Text(''),
                     PopupMenuButton<int>(
-                      shadowColor: Colors.amber,
+                      shadowColor: Theme.of(context).indicatorColor,
                       color: Theme.of(context).primaryColor,
                       elevation: 5,
                       itemBuilder: (context) => [

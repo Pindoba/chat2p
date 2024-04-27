@@ -72,17 +72,8 @@ class _TalkPageState extends State<TalkPage> {
           centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
           actions: [
-            IconButton(
-              alignment: Alignment.centerRight,
-              onPressed: () {
-                _create(client);
-              },
-              icon: lupa == true
-                  ? const Icon(
-                      Icons.add,
-                    )
-                  : const Text(''),
-            ),
+           
+            
             IconButton(
               onPressed: lupa != true
                   ? () {
@@ -110,7 +101,8 @@ class _TalkPageState extends State<TalkPage> {
         body: SafeArea(
           child: Column(
             children: [
-              const Divider(height: 1,color: Colors.amber,),
+               Divider(height: 1,color: Theme.of(context).indicatorColor,),
+              SizedBox(height: 13),
               Expanded(
                 child: StreamBuilder(
                   stream: client.onSync.stream,

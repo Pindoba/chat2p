@@ -19,7 +19,7 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget build(BuildContext context) {
     final client = Provider.of<Client>(context, listen: false);
     final name = client.getDisplayName('@welton_moura:bolha.chat');
-    name;
+    
     // final profile = client.getProfileFromUserId(client.userID.toString());
     final String avatar = client.getAvatarUrl(client.userID.toString()) != null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'

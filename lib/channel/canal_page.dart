@@ -103,7 +103,8 @@ class _CanalPageState extends State<CanalPage> {
         ),
         body: SafeArea(
           child: Column(
-            children: [Divider(color: Colors.amber,height: 1,),
+            children: [Divider(color: Theme.of(context).indicatorColor,height: 1,),
+            SizedBox(height: 13),
               Expanded(
                 child: StreamBuilder(
                   stream: client.onSync.stream,

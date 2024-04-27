@@ -57,13 +57,13 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: Column(
         children: <Widget>[
-          Divider(height: 1,color: Colors.amber,),
+          Divider(height: 1,color: Theme.of(context).indicatorColor,),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: 'Pesquisar',
+                labelText: 'Pesquisar usuário',
                 suffixIcon: Icon(Icons.search),
               ),
             ),

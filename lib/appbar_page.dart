@@ -37,7 +37,7 @@ class _AppBarPageState extends State<AppBarPage> {
       initialIndex: 0,
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.amber,
+          backgroundColor: Theme.of(context).indicatorColor,
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -71,7 +71,7 @@ class _AppBarPageState extends State<AppBarPage> {
           ],
         ),
         bottomNavigationBar: ConvexAppBar.badge(
-          shadowColor: Colors.amber,
+          shadowColor: Theme.of(context).indicatorColor,
           //  Colors.amber,
           backgroundColor: Theme.of(context).primaryColor,
           // const <int, dynamic>{3: '69'},

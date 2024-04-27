@@ -109,14 +109,14 @@ class _RoomPageState extends State<RoomPage> {
             backgroundColor: Theme.of(context).primaryColor,
             title: Column(
               children: [
-                Text(widget.room.displayname),
+                Text(widget.room.displayname.replaceAll('Group with ', '')),
                 // widget.room.typingUsers.isEmpty == false
                 meteOdedo.value == true
-                    ? const Text(
+                    ?  Text(
                         'Digitando...',
-                        style: TextStyle(color: Colors.amber, fontSize: 16),
+                        style: TextStyle(color: Theme.of(context).indicatorColor, fontSize: 16),
                       )
-                    : Text('')
+                    : const SizedBox()
               ],
             ),
             centerTitle: true,
@@ -147,9 +147,9 @@ class _RoomPageState extends State<RoomPage> {
                           //       onPressed: timeline.requestHistory,
                           //       child: const Text('Load more...')),
                           // ),
-                          const Divider(
+                           Divider(
                             height: 1,
-                            color: Colors.amber,
+                            color: Theme.of(context).indicatorColor,
                           ),
                           Expanded(
                             child: AnimatedList(
@@ -257,22 +257,22 @@ class _RoomPageState extends State<RoomPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   // decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/logo.png'))),
-                  child: widget.room.canSendDefaultMessages == true
+                  child:  widget.room.canSendDefaultMessages == true
                       ? Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: const <BoxShadow>[
+                            boxShadow:  <BoxShadow>[
                               BoxShadow(
                                   blurRadius: 2,
-                                  color: Colors.amber,
+                                  color: Theme.of(context).indicatorColor,
                                   offset: Offset(.3, .0))
                             ],
                           ),
                           child: Row(
                             children: [
                               PopupMenuButton<int>(
-                                shadowColor: Colors.amber,
+                                shadowColor: Theme.of(context).indicatorColor,
                                 color: Theme.of(context).primaryColor,
                                 elevation: 5,
                                 itemBuilder: (context) => [
@@ -334,6 +334,7 @@ class _RoomPageState extends State<RoomPage> {
                               //     icon: const Icon(Icons.add)),
                               Expanded(
                                 child: TextField(
+                                  // readOnly: widget.room.canSendDefaultMessages == true ? true : false,
                                   keyboardType: TextInputType.multiline,
                                   minLines: 1,
                                   maxLines: 15,

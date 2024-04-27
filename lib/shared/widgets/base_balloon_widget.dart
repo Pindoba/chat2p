@@ -24,7 +24,7 @@ class BaseBalloonWidget extends StatelessWidget {
     final String photo = event.sender.avatarUrl == null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
         : event.sender.avatarUrl!.getThumbnail(room.client, width: 56, height: 56).toString();
-    final String body_msg = event.body;
+    final String body_msg = event.plaintextBody;
     final String data_time = event.originServerTs.format('l, j M, H:i');
     final String type = event.messageType;
     final String image = event.sender.avatarUrl != null ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'  : 'nada nada nada';
@@ -47,14 +47,7 @@ class BaseBalloonWidget extends StatelessWidget {
           child: send != true
               ? CircleAvatar(
                   foregroundImage: NetworkImage(photo),
-                  child: CachedNetworkImage(
-                    imageUrl: photo,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                  ),
+                 
                 )
               : Container(),
         ),
@@ -135,7 +128,7 @@ class BaseBalloonWidget extends StatelessWidget {
                               Icons.check_sharp,
                               size: 17,
                               color: event.receipts.toString() != '[]'
-                                  ? const Color.fromARGB(255, 169, 255, 56)
+                                  ? Theme.of(context).indicatorColor
                                   : Colors.white54,
                             )
                           : const Text('')

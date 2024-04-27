@@ -32,7 +32,7 @@ class TextBalloon extends StatelessWidget {
                     // h2: TextStyle(fontSize: 28),
                     // h3: TextStyle(fontSize: 26),
                     h1Align: WrapAlignment.center,
-                    textScaleFactor: 1.3
+                    textScaleFactor: 1.2
                     
                     ),
                   shrinkWrap: true,
@@ -52,7 +52,7 @@ class TextBalloon extends StatelessWidget {
                   },
                   data:body_msg.toString(),
                   selectable: true,
-                  // onTapLink: (text, href, title) => body_msg,
+                  // onTapLink: (text, href, title) => Uri(),
                   
                   ),
                      
