@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat2p/room_page.dart';
-import 'package:flutter/cupertino.dart';
 // import 'package:chat2p/shared/widgets/list_chat_wedget.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +44,7 @@ class _ListSpacePageState extends State<ListSpacePage> {
       id_children.add(roomfilho[i].roomId.toString());
     
   }
-      print(roomfilho[1].roomId);
+      // print(roomfilho[1].roomId);
       // final sala = Room(
       //   id: roomfilho[0].toString(),
       //   client: client,
@@ -64,7 +62,7 @@ class _ListSpacePageState extends State<ListSpacePage> {
     final client = Provider.of<Client>(context, listen: false);
 
     //  (roomchildren);
-    print(client.rooms);
+    // print(client.rooms);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -83,6 +81,7 @@ class _ListSpacePageState extends State<ListSpacePage> {
                     child: StreamBuilder(
                       stream: client.onSync.stream,
                       builder: (context, _) => ListView.builder(
+                       
                         itemCount: client.rooms.length,
                         itemBuilder: (context, i) => client.rooms[i].isSpace == true
                             ? Container(

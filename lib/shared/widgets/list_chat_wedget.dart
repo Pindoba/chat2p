@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'dart:math' as math;
 
+import 'package:signals/signals_flutter.dart';
+
 class ListChat extends StatelessWidget {
   const ListChat({super.key, required this.room, required this.client});
   final Room room;
@@ -18,15 +20,19 @@ class ListChat extends StatelessWidget {
     final bool typin = room.typingUsers.isEmpty;
     final dateLastEvent = room.receiptState.global.ownPublic?.timestamp;
     // final bool send = room.lastEvent.;//senderId == room.client.userID ? true : false;
-    final String avatar = room.avatar == null
+    // final String avatar = room.avatar == null
+    //     ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
+    //     : room.avatar!.getThumbnail(client, width: 50, height: 50).toString();
+
+    final  avatar = room.avatar == null
         ? 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png'
         : room.avatar!.getThumbnail(client, width: 50, height: 50).toString();
 
-    print(room.typingUsers.isEmpty == false ? 'digitanto' : 'nada');
+    // print(room.typingUsers.isEmpty == false ? 'digitanto' : 'nada');
 
     return GestureDetector(
       onTap: () {
-        _join(room, context, avatar);
+        _join(room, context);
       },
       child: Column(
         children: [
@@ -84,7 +90,8 @@ class ListChat extends StatelessWidget {
                                     child: Center(
                                         child: Text(
                                       room.notificationCount.toString(),
-                                      style: const TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                     )),
                                   ),
                                 ))
@@ -93,20 +100,22 @@ class ListChat extends StatelessWidget {
                       Row(
                         children: [
                           room.receiptState.global.ownPublic.toString() == '[]'
-                              ? Icon(Icons.check,size: 18)
+                              ? Icon(Icons.check, size: 18)
                               : Text(''),
                           Expanded(
-                            child: typin == false ?
-                            Text('Digitando...',style: TextStyle(color: Theme.of(context).indicatorColor)) :
-                            // room.getTimeline()..toString() != '[]' ?
-                            
-                              
-                                Text(last_msg,
-                                  maxLines: 1,
-                                  style: TextStyle(color: Colors.white54),
-                                ),
-                              
-                        
+                            child: typin == false
+                                ? Text('Digitando...',
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).indicatorColor))
+                                :
+                                // room.getTimeline()..toString() != '[]' ?
+
+                                Text(
+                                    last_msg,
+                                    maxLines: 1,
+                                    style: TextStyle(color: Colors.white54),
+                                  ),
                           ),
                         ],
                       )
@@ -243,17 +252,17 @@ void _confirme(context, room) {
           ));
 }
 
-void _join(Room room, context, avatar) async {
+void _join(Room room, context) async {
   if (room.membership != Membership.join) {
     await room.join();
+    
   }
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (_) =>
-          // room.tags.entries.toString().contains('channel') == true ?
-          // CanalPageChat(room: room)
-          // :
-          RoomPage(room: room, avatar: avatar,),
+          
+          RoomPage(
+        room: room ),
     ),
   );
 }

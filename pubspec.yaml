@@ -62,6 +62,7 @@ dependencies:
   appflowy_editor: ^2.3.4
   # google_fonts: ^6.2.0
   cached_network_image: ^3.3.1
+  animated_floating_buttons: ^0.0.2
 
 dev_dependencies:
   flutter_test:

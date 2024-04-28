@@ -18,7 +18,8 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   Widget build(BuildContext context) {
     final client = Provider.of<Client>(context, listen: false);
-    final name = client.getDisplayName('@welton_moura:bolha.chat');
+    final name =  client.getDisplayName('@welton_moura:bolha.chat');
+    
     
     // final profile = client.getProfileFromUserId(client.userID.toString());
     final String avatar = client.getAvatarUrl(client.userID.toString()) != null
@@ -76,9 +77,18 @@ class _PerfilPageState extends State<PerfilPage> {
       body: Center(
         child: Column(children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Container(width: 250, child: Image.network(avatar)),
+              Column(
+                children: [
+                IconButton(onPressed: (){}, icon: Icon(Icons.share_sharp)),
+                IconButton(onPressed: (){}, icon: Icon(Icons.qr_code_2_rounded)),
+
+              ],),
+              Container
+              (width: 150, 
+              height: 150,
+              child: CircleAvatar(foregroundImage: NetworkImage(avatar),)),
               Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(onPressed: _logout, icon: Icon(Icons.logout)),

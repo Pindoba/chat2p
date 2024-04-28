@@ -1,13 +1,10 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
-// import 'package:animated_radial_menu/animated_radial_menu.dart';
-// import 'package:chat2p/buscar_page.dart';
 import 'package:chat2p/shared/widgets/list_chat_wedget.dart';
-// import 'package:chat2p/menu_radial.dart';
+
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
-// import 'package:page_transition/page_transition.dart';
 
 class CanalPage extends StatefulWidget {
   const CanalPage({super.key});

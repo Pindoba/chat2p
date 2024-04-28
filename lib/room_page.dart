@@ -1,7 +1,9 @@
+import 'dart:ffi';
+
 import 'package:chat2p/channel/base_balloon_channel_widget.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart';
 
@@ -18,13 +20,14 @@ import 'package:signals/signals_flutter.dart';
 
 class RoomPage extends StatefulWidget {
   final Room room;
-  final String? avatar;
+ 
 
-  const RoomPage({required this.room, Key? key, this.avatar}) : super(key: key);
+  const RoomPage({required this.room, Key? key}) : super(key: key);
 
   @override
   _RoomPageState createState() => _RoomPageState();
 }
+  
 
 class _RoomPageState extends State<RoomPage> {
   late final Future<Timeline> _timelineFuture;
@@ -68,10 +71,10 @@ class _RoomPageState extends State<RoomPage> {
     }
   }
 
-  var meteOdedo = Signal(false);
-  _typin() {
-    return meteOdedo.value = widget.room.typingUsers.isEmpty;
-  }
+   Signal meteOdedo = Signal( false);
+  // _typin() {
+  //   return meteOdedo.value = widget.room.typingUsers.isEmpty;
+  // }
 
   void _send() {
     widget.room.sendTextEvent(_sendController.text.trim());
@@ -121,7 +124,7 @@ class _RoomPageState extends State<RoomPage> {
                   children: [
                     Text(widget.room.displayname.replaceAll('Group with ', '')),
                     // widget.room.typingUsers.isEmpty == false
-                    meteOdedo.value == true
+                    meteOdedo.watch(context) == true
                         ? Text(
                             'Digitando...',
                             style: TextStyle(
@@ -134,7 +137,7 @@ class _RoomPageState extends State<RoomPage> {
               ],
             ),
             centerTitle: true,
-            iconTheme: IconThemeData()),
+            iconTheme: const IconThemeData()),
         body: SafeArea(
           child: Column(
             children: [
@@ -175,11 +178,8 @@ class _RoomPageState extends State<RoomPage> {
                                                   ? 1
                                                   : 0.5,
                                               //################################################    mensagem chat   ######################################
-                                              child: timeline.events[i].type ==
-                                                          "m.room.message" &&
-                                                      timeline.events[i].room
-                                                              .tags.isEmpty ==
-                                                          true
+                                              child: timeline.events[i].type == "m.room.message" &&
+                                                      timeline.events[i].room.tags.entries.toString().contains('channel') == false
                                                   // timeline.events[i]
                                                   //         .messageType ==
                                                   //     "m.text"
@@ -189,14 +189,8 @@ class _RoomPageState extends State<RoomPage> {
                                                     )
                                                   // ################################################# Canal ###################################################
 
-                                                  : timeline.events[i].type ==
-                                                              "m.room.message" &&
-                                                          timeline
-                                                                  .events[i]
-                                                                  .room
-                                                                  .tags
-                                                                  .isEmpty ==
-                                                              false
+                                                  : timeline.events[i].type == "m.room.message" &&
+                                                          timeline.events[i].room.tags.entries.toString().contains('channel') == true
                                                       ? BaseBalloonChannelWidget(
                                                           event: timeline
                                                               .events[i],
@@ -220,15 +214,12 @@ class _RoomPageState extends State<RoomPage> {
                                                           Center(
                                                               child: Container(
                                                                 margin:
-                                                                    const EdgeInsets
-                                                                        .all(3),
+                                                                    const EdgeInsets.all(3),
                                                                 child: timeline
-                                                                            .events[
-                                                                                i]
+                                                                            .events[i]
                                                                             .asUser
                                                                             .membership
-                                                                            .toString() ==
-                                                                        Null
+                                                                            .toString() == Null
                                                                     ? Text(
                                                                         '${timeline.events[i].sender.calcDisplayname()} nulo')
                                                                     : timeline.events[i].asUser.membership.toString() ==
@@ -252,7 +243,7 @@ class _RoomPageState extends State<RoomPage> {
                                                                           ? BaseBalloonWidget(event: timeline.events[i], room: widget.room)
                                                                           : timeline.events[i].messageType == "m.location"
                                                                               ? const Center(child: Text('Localização'))
-                                                                              : Center(child: Text(timeline.events[i].messageType.toString()))),
+                                                                              : Center(child: Text(timeline.events[i].body.toString()))),
                                         ),
                             ),
                           ),
@@ -336,11 +327,7 @@ class _RoomPageState extends State<RoomPage> {
                                 },
                                 icon: const Icon(Icons.add_circle),
                               ),
-                              // IconButton(
-                              //     onPressed: () {
-                              //       _handleImageSelection();
-                              //     },
-                              //     icon: const Icon(Icons.add)),
+                         
                               Expanded(
                                 child: TextField(
                                   // readOnly: widget.room.canSendDefaultMessages == true ? true : false,
@@ -363,9 +350,7 @@ class _RoomPageState extends State<RoomPage> {
                       : const Text(''),
                 ),
               ),
-              SizedBox(
-                height: 8,
-              )
+              const SizedBox( height: 8 )
             ],
           ),
         ),
