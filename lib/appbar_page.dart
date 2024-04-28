@@ -1,13 +1,11 @@
-// import 'package:chat2p/buscar_page.dart';
 import 'package:chat2p/call/calls_page.dart';
 import 'package:chat2p/channel/canal_page.dart';
 import 'package:chat2p/perfil_page.dart';
 import 'package:chat2p/spaces/space_page.dart';
 import 'package:chat2p/talk/talk_page.dart';
-import 'package:chat2p/teste_buscar.dart';
+import 'package:chat2p/search_page.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:matrix/matrix.dart';
 
 const _kPages = {
@@ -41,13 +39,11 @@ class _AppBarPageState extends State<AppBarPage> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => SearchScreen(),
+                builder: (_) => SearchPage(),
               ),
             );
 
-            // (BuildContext context) => BuscarPage(
-            //       // client: client,
-            //     );
+       
           },
           child: const Icon(
             Icons.add,
@@ -72,10 +68,9 @@ class _AppBarPageState extends State<AppBarPage> {
         ),
         bottomNavigationBar: ConvexAppBar.badge(
           shadowColor: Theme.of(context).indicatorColor,
-          //  Colors.amber,
           backgroundColor: Theme.of(context).primaryColor,
-          // const <int, dynamic>{3: '69'},
-          const <int, dynamic>{0: 0},
+          const <int, dynamic>{3: '69', 0:'3'},
+          // const <int, dynamic>{0: 0},
           style: _tabStyle,
           items: <TabItem>[
             for (final entry in _kPages.entries)

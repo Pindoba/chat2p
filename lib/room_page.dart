@@ -1,6 +1,7 @@
 import 'package:chat2p/channel/base_balloon_channel_widget.dart';
 import 'package:chat2p/shared/widgets/base_balloon_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 // import 'package:flutter/services.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart';
 
@@ -17,8 +18,9 @@ import 'package:signals/signals_flutter.dart';
 
 class RoomPage extends StatefulWidget {
   final Room room;
+  final String? avatar;
 
-  const RoomPage({required this.room, Key? key}) : super(key: key);
+  const RoomPage({required this.room, Key? key, this.avatar}) : super(key: key);
 
   @override
   _RoomPageState createState() => _RoomPageState();
@@ -61,7 +63,8 @@ class _RoomPageState extends State<RoomPage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       // final image = await decodeImageFromList(bytes);
-      widget.room.sendFileEvent(MatrixImageFile(bytes: bytes, name: 'message.name'));
+      widget.room
+          .sendFileEvent(MatrixImageFile(bytes: bytes, name: 'message.name'));
     }
   }
 
@@ -97,6 +100,7 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   Widget build(BuildContext context) {
+    final avatar = 'https://ramenparados.com/wp-content/uploads/2019/03/no-avatar-png-8.png';
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
@@ -107,16 +111,26 @@ class _RoomPageState extends State<RoomPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
             backgroundColor: Theme.of(context).primaryColor,
-            title: Column(
+            title: Row(
               children: [
-                Text(widget.room.displayname.replaceAll('Group with ', '')),
-                // widget.room.typingUsers.isEmpty == false
-                meteOdedo.value == true
-                    ?  Text(
-                        'Digitando...',
-                        style: TextStyle(color: Theme.of(context).indicatorColor, fontSize: 16),
-                      )
-                    : const SizedBox()
+                CircleAvatar(
+                  foregroundImage: NetworkImage(avatar),
+                ),
+                SizedBox(width: 15,),
+                Column(
+                  children: [
+                    Text(widget.room.displayname.replaceAll('Group with ', '')),
+                    // widget.room.typingUsers.isEmpty == false
+                    meteOdedo.value == true
+                        ? Text(
+                            'Digitando...',
+                            style: TextStyle(
+                                color: Theme.of(context).indicatorColor,
+                                fontSize: 16),
+                          )
+                        : const SizedBox()
+                  ],
+                ),
               ],
             ),
             centerTitle: true,
@@ -142,12 +156,7 @@ class _RoomPageState extends State<RoomPage> {
                       onRefresh: timeline.requestHistory,
                       child: Column(
                         children: [
-                          // Center(
-                          //   child: TextButton(
-                          //       onPressed: timeline.requestHistory,
-                          //       child: const Text('Load more...')),
-                          // ),
-                           Divider(
+                          Divider(
                             height: 1,
                             color: Theme.of(context).indicatorColor,
                           ),
@@ -257,12 +266,12 @@ class _RoomPageState extends State<RoomPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   // decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/logo.png'))),
-                  child:  widget.room.canSendDefaultMessages == true
+                  child: widget.room.canSendDefaultMessages == true
                       ? Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow:  <BoxShadow>[
+                            boxShadow: <BoxShadow>[
                               BoxShadow(
                                   blurRadius: 2,
                                   color: Theme.of(context).indicatorColor,

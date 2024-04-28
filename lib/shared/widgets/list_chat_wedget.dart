@@ -26,7 +26,7 @@ class ListChat extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        _join(room, context);
+        _join(room, context, avatar);
       },
       child: Column(
         children: [
@@ -243,7 +243,7 @@ void _confirme(context, room) {
           ));
 }
 
-void _join(Room room, context) async {
+void _join(Room room, context, avatar) async {
   if (room.membership != Membership.join) {
     await room.join();
   }
@@ -253,7 +253,7 @@ void _join(Room room, context) async {
           // room.tags.entries.toString().contains('channel') == true ?
           // CanalPageChat(room: room)
           // :
-          RoomPage(room: room),
+          RoomPage(room: room, avatar: avatar,),
     ),
   );
 }

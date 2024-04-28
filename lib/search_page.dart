@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchPage extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   Client? client;
   List<dynamic> _searchResults = [];

@@ -1,24 +1,19 @@
-// v1
 
-// import 'package:chat2p/exemplo.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chat2p/appbar_page.dart';
 import 'package:chat2p/login/login_page.dart';
-// import 'package:chat2p/login/splash_page.dart';
-// import 'package:chat2p/talk/talk_page.dart';
+import 'package:chat2p/style/theme.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:appflowy_editor/appflowy_editor.dart';
 
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // final client = Client('Chat2P');
   print('inicio do main');
   final client = Client(
     'Chat2P',
@@ -39,24 +34,6 @@ void main() async {
 }
 
 
-
-
-final meuTema = ThemeData(
-  colorScheme: const ColorScheme.dark(
-    background: Color.fromARGB(174, 56, 56, 56),
-    primary: Colors.amber,
-    
-    
-    ),
-    // primaryColorDark: Colors.am,
-  primaryColor: Color.fromARGB(255, 34, 39, 38), // Cor principal
-  indicatorColor: Colors.amber,
-  hintColor: Colors.white54, // Cor de destaque
-  splashColor: Colors.black45,
-  bottomNavigationBarTheme: BottomNavigationBarThemeData(elevation: 1)
-  // Outras configurações de estilo, como fontes, tamanhos, etc.
-);
-
 class InitChat extends StatelessWidget {
   final Client client;
 
@@ -66,28 +43,8 @@ class InitChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
 
-
-
-
-       localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        AppFlowyEditorLocalizations.delegate,
-      ],
-      supportedLocales: AppFlowyEditorLocalizations.delegate.supportedLocales,
-
-
-
       title: 'Chat2P',
       theme: meuTema,
-      // theme: ThemeData.dark().copyWith(),
-
-      //  ThemeData(useMaterial3: false,
-      // colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 123, 2, 204)),
-      //   // brightness: Brightness.dark,
-      //   primaryColor: Color.fromARGB(255, 123, 2, 204)),
-
       builder: (context, child) => Provider<Client>(
         create: (context) => client,
         child: child,
@@ -101,54 +58,3 @@ class InitChat extends StatelessWidget {
   }
 }
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key, required this.client});
-  final Client client;
-
-  @override
-  Widget build(BuildContext context) {
-    const colorizeColors = [
-      Colors.purple,
-      Colors.blue,
-      Colors.yellow,
-      Colors.red,
-    ];
-
-    const colorizeTextStyle = TextStyle(
-      fontSize: 80.0,
-      fontFamily: 'Horizon',
-    );
-
-    // return
-    return Scaffold(
-      body: Center(
-        child: Container(
-          color: const Color.fromARGB(255, 63, 63, 63),
-          width: double.infinity,
-          height: double.infinity,
-          child: Center(
-            child: AnimatedTextKit(
-              animatedTexts: [
-                ColorizeAnimatedText(
-                  'Chat2P',
-                  textStyle: colorizeTextStyle,
-                  colors: colorizeColors,
-                  speed: const Duration(seconds: 2),
-                ),
-              ],
-              isRepeatingAnimation: true,
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AppBarPage(
-                              client: client,
-                            )));
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -1,11 +1,6 @@
-// import 'dart:html';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chat2p/appbar_page.dart';
-// import 'package:chat2p/login/create_cont.dart';
-import 'package:chat2p/login/splash_page.dart';
-// import 'package:chat2p/exemplo.dart';
-// import 'package:chat2p/talk/talk_page.dart';
 import 'package:flutter/material.dart';
 import 'package:matrix/matrix.dart';
 import 'package:provider/provider.dart';
@@ -72,18 +67,16 @@ final Uri _url = Uri.parse('https://element.bolha.chat/#/register', );
   @override
   Widget build(BuildContext context) {
 
-    const colorizeColors = [
-  Color.fromARGB(255, 86, 0, 136),
+    var colorizeColors = [
+  Theme.of(context).indicatorColor,
+  Theme.of(context).primaryColorDark,
   Colors.white,
   Color.fromARGB(255, 140, 0, 255),
   Color.fromARGB(255, 43, 11, 187),
 ];
-
-const colorizeTextStyle = TextStyle(
+  const colorizeTextStyle = TextStyle(
   fontSize: 40.0,
-  // fontFamily: GoogleFonts,
   fontFamily: 'Horizon',
-
 );
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -93,18 +86,10 @@ const colorizeTextStyle = TextStyle(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 200,
                 child: Image.asset('assets/logo.png',fit: BoxFit.scaleDown,)),
-              
-              
-              
-              
               Center(
-          child: Container(
-            // color: const Color.fromARGB(255, 63, 63, 63),
-          // width: double.infinity,
-          // height: double.infinity,
           child: Center(
             child: AnimatedTextKit(
                animatedTexts: [
@@ -113,23 +98,16 @@ const colorizeTextStyle = TextStyle(
                 textStyle: colorizeTextStyle,
                 colors: colorizeColors,
                 speed: const Duration(seconds: 2),
-        
               ),
-              
-             
             ],
             isRepeatingAnimation: true,
-            onTap: () {
-               
-            },
+            // onTap: () { },
               ),
           ),
           ),
-          )
               
               
-              
-              ,
+            
               TextField(
                 controller: _homeserverTextField,
                 readOnly: _loading,
@@ -172,15 +150,7 @@ const colorizeTextStyle = TextStyle(
                       : const Text('Entrar'),
                 ),
               ),
-              // ElevatedButton(
-              //     onPressed: () {
-              //       // Navigator.push(context,
-              //       //     MaterialPageRoute(builder: (context) => CreateCont()));
-              //       _launchUrl();
-              //     },
-              //     child: const Text('Criar uma conta no bolha.chat')),
-        
-                  Link(
+             Link(
                   uri: Uri.parse('https://element.bolha.chat/#/register'),
                   target: LinkTarget.self,
                   builder: (BuildContext ctx, FollowLink? openLink) {
